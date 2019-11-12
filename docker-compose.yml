@@ -2,14 +2,14 @@ version: "2"
 
 services:
 
-    bee-postgres:
-        container_name: employee-car-rental-postgres
-        image: postgres:9.6
-        restart: always
-        ports:
-            - 5430:5432
-        environment:
-          POSTGRES_PASSWORD: q1w2e3r4
-          POSTGRES_USER: postgres
-          POSTGRES_DB: employee_car_rental_db 
+  bee-postgres:
+    container_name: employee-car-rental-postgres
+    image: postgres:9.6
+    restart: always
+    ports:
+      - 5430:5432
+    environment:
+      POSTGRES_PASSWORD: q1w2e3r4
+      POSTGRES_USER: postgres
+      POSTGRES_DB: employee_car_rental_db
 
