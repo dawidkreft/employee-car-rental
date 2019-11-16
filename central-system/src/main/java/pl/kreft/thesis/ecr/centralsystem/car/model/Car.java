@@ -4,10 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -18,6 +15,7 @@ import java.util.UUID;
 public class Car {
 
     @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     @Type(type = "uuid-char")
     @Column(name = "car_id")
     UUID id;

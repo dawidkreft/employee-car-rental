@@ -30,17 +30,9 @@ public class CarService {
         throw new ObjectNotFoundException("Unable to locate car with id: " + id);
     }
 
-    public boolean save(Car car) throws Exception {
-        Optional<Car> foundCar = carRepository.findById(car.getId());
-        if (foundCar.isPresent()) {
-            log.info("Found car by id: " + car.getId());
-            Car updatedCar = car.
-
-    //TODO
-        }else{
-
-        }
-        return carRepository.findById(id).isPresent();
+    public Car save(Car car) throws Exception {
+        log.info("Saving new car in db : " + car.toString());
+        return carRepository.save(car);
     }
 
 }
