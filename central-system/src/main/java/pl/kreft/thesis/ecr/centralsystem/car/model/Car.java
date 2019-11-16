@@ -55,4 +55,19 @@ public class Car {
 
     @Column(name = "car_removed")
     Boolean removed;
+
+    public Car(CarStatus status, String model, String brand, CarType type, Instant productionDate, Long currentCourse, double currentFuelLevel, Instant dateOfLastReview, Instant dateOfNextReview, Instant dateOfNextTechnicalExamination, Instant creationDate, Boolean removed) {
+        this.status = status;
+        this.model = model;
+        this.brand = brand;
+        this.type = type;
+        this.productionDate = productionDate;
+        this.currentCourse = currentCourse;
+        this.currentFuelLevel = currentFuelLevel;
+        this.dateOfLastReview = dateOfLastReview;
+        this.dateOfNextReview = dateOfNextReview;
+        this.dateOfNextTechnicalExamination = dateOfNextTechnicalExamination;
+        this.creationDate = creationDate;
+        this.removed = removed;
+    }
 }

@@ -12,4 +12,5 @@ public interface CarRepository extends JpaRepository<Car, UUID> {
 
     Optional<Car> findById(UUID id);
 
+    Car save(Car car);
 }
