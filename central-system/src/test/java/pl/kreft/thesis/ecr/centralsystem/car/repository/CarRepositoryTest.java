@@ -1,8 +1,6 @@
 package pl.kreft.thesis.ecr.centralsystem.car.repository;
 
-import org.assertj.core.api.Fail;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,7 @@ class CarRepositoryTest {
     @Autowired
     CarRepository carRepository;
 
-    @After
+    @AfterEach
     public void tearDown() {
         try {
             clearDatabase();
