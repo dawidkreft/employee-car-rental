@@ -1,15 +1,17 @@
 server:
-  port: 1020
+  port: 8000
 
 spring:
   profiles.active: prod
   datasource:
     name: employee_car_rental_db
-    url: jdbc:postgresql://localhost:5432/employee_car_rental_db
+    url: jdbc:postgresql://localhost:5430/employee_car_rental_db
     username: postgres
     password: password
     driver-class-name: org.postgresql.Driver
   jpa:
     database: POSTGRESQL
     hibernate.ddl-auto: create-drop
-    show-sql: true
+
+
+

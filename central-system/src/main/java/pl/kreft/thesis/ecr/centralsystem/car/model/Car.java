@@ -21,6 +21,7 @@ public class Car {
     UUID id;
 
     @Column(name = "car_status")
+    @Enumerated(EnumType.STRING)
     CarStatus status;
 
     @Column(name = "model")
@@ -30,6 +31,7 @@ public class Car {
     String brand;
 
     @Column(name = "type")
+    @Enumerated(EnumType.STRING)
     CarType type;
 
     @Column(name = "production_date")

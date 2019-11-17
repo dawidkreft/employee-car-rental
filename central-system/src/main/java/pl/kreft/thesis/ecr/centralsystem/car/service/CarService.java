@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
 import pl.kreft.thesis.ecr.centralsystem.car.repository.CarRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,4 +36,8 @@ public class CarService {
         return carRepository.save(car);
     }
 
+    public List<Car> getAll() {
+        log.info("Returning all car");
+        return carRepository.findAll();
+    }
 }
