@@ -1,5 +1,6 @@
 package pl.kreft.thesis.ecr.centralsystem.user.repository;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static pl.kreft.thesis.ecr.centralsystem.dbtestcleaner.DbCleaner.clearDatabase;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -19,6 +21,15 @@ class UserRepositoryTest {
 
     @Autowired
     UserRepository userRepository;
+
+    @AfterEach
+    public void tearDown() {
+        try {
+            clearDatabase();
+        } catch (Exception e) {
+            throw new ExceptionInInitializerError("Initialize db exception");
+        }
+    }
 
     @Test
     void shouldSaveAndFindById() {

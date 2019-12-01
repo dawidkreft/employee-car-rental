@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static pl.kreft.thesis.ecr.centralsystem.dbtestcleaner.DbCleaner.clearDatabase;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.CarFactory.getCar;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.RentalFactory.getRandomRental;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getEmployee;
@@ -50,10 +51,12 @@ class RentalRepositoryTest {
     }
 
     @AfterEach
-    public void clearDB() {
-        rentalRepository.deleteAll();
-        userRepository.deleteAll();
-        carRepository.deleteAll();
+    public void tearDown() {
+        try {
+            clearDatabase();
+        } catch (Exception e) {
+            throw new ExceptionInInitializerError("Initialize db exception");
+        }
     }
 
     @Test
