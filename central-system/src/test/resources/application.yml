@@ -9,6 +9,10 @@ spring:
     password: password
     driver-class-name: org.h2.Driver
   jpa:
+<<<<<<< HEAD
     hibernate.ddl-auto: create
     show-sql: true
+=======
+    hibernate.ddl-auto: create-drop
+>>>>>>> 9aaa0a8279c55e0f57d6097af510ff97ea738f2f
     database-platform: org.hibernate.dialect.H2Dialect

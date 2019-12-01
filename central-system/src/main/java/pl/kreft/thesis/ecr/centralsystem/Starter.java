@@ -19,7 +19,7 @@ public class Starter implements CommandLineRunner {
     @Autowired CarRepository carRepository;
 
     @Override public void run(String... args) throws Exception {
-        carRepository.save(new Car(CarStatus.AVAILABLE,
+        /*carRepository.save(new Car(CarStatus.AVAILABLE,
                 "Tigra",
                 "Opel",
                 CarType.CAR,
@@ -29,7 +29,7 @@ public class Starter implements CommandLineRunner {
                 Instant.now().plus(Duration.ofDays(200)),
                 Instant.now().plus(Duration.ofDays(200)),
                 Instant.now(),
-                false));
+                false));*/
     }
 
 
