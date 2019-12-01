@@ -1,7 +1,8 @@
-package pl.kreft.thesis.ecr.centralsystem.car;
+package pl.kreft.thesis.ecr.centralsystem;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
 import pl.kreft.thesis.ecr.centralsystem.car.model.CarStatus;
@@ -12,6 +13,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 @Component
+@Profile("prod")
 public class Starter implements CommandLineRunner {
 
     @Autowired CarRepository carRepository;

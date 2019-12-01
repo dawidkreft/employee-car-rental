@@ -1,4 +1,4 @@
-package pl.kreft.thesis.ecr.centralsystem.rental;
+package pl.kreft.thesis.ecr.centralsystem.rental.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

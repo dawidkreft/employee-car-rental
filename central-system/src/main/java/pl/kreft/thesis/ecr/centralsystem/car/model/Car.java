@@ -72,4 +72,5 @@ public class Car {
         this.creationDate = creationDate;
         this.removed = removed;
     }
+
 }

@@ -1,4 +1,4 @@
-package pl.kreft.thesis.ecr.centralsystem.inspection;
+package pl.kreft.thesis.ecr.centralsystem.inspection.model;
 
 public enum VisualCondition {
     GREAT,

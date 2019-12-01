@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -47,4 +47,18 @@ public class User {
 
     @Column(name = "user_removed")
     Boolean removed;
+
+    public User(String name, String surname, String password, String email, UserRole role,
+            UUID boss, Boolean isActive, Instant creationDate, Boolean removed) {
+        this.name = name;
+        this.surname = surname;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.boss = boss;
+        this.isActive = isActive;
+        this.creationDate = creationDate;
+        this.removed = removed;
+    }
+
 }

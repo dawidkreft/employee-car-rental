@@ -2,6 +2,7 @@ package pl.kreft.thesis.ecr.centralsystem.rental.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.hibernate.annotations.Type;
 import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
 import pl.kreft.thesis.ecr.centralsystem.user.model.User;
@@ -22,10 +23,12 @@ public class Rental {
     @Column(name = "rental_id")
     UUID id;
 
+    @NonNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lender_user_fk")
     User lender;
 
+    @NonNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rental_car_fk")
     Car car;
@@ -68,5 +71,27 @@ public class Rental {
 
     @Column(name = "rental_removed")
     Boolean removed;
+
+    public Rental(@NonNull User lender, @NonNull Car car, Instant applicationDate, String target,
+            Instant plannedRentalStart, Instant plannedRentalEnd, Instant realRentalStart,
+            Instant realRentalEnd, Boolean isAcceptedByBoss, Boolean isReceivedPositively,
+            String receivedDescription, Boolean isReceivedCheckedByDispatcher,
+            String dispatcherComment, Instant creationDate, Boolean removed) {
+        this.lender = lender;
+        this.car = car;
+        this.applicationDate = applicationDate;
+        this.target = target;
+        this.plannedRentalStart = plannedRentalStart;
+        this.plannedRentalEnd = plannedRentalEnd;
+        this.realRentalStart = realRentalStart;
+        this.realRentalEnd = realRentalEnd;
+        this.isAcceptedByBoss = isAcceptedByBoss;
+        this.isReceivedPositively = isReceivedPositively;
+        this.receivedDescription = receivedDescription;
+        this.isReceivedCheckedByDispatcher = isReceivedCheckedByDispatcher;
+        this.dispatcherComment = dispatcherComment;
+        this.creationDate = creationDate;
+        this.removed = removed;
+    }
 }
 
