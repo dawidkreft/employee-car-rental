@@ -22,8 +22,8 @@ public class CarService {
         this.carRepository = carRepository;
     }
 
-    public Car find(UUID id) throws Exception {
-        Optional<Car> car = carRepository.findById(id);
+    public Car find(UUID id) throws ObjectNotFoundException {
+        Optional<Car> car = carRepository.findByIdAndRemovedFalse(id);
         if (car.isPresent()) {
            log.info("Found car by id: " + id);
             return car.get();
@@ -31,13 +31,45 @@ public class CarService {
         throw new ObjectNotFoundException("Unable to locate car with id: " + id);
     }
 
-    public Car save(Car car) throws Exception {
-        log.info("Saving new car in db : " + car.toString());
-        return carRepository.save(car);
+    public Car save(Car car)  {
+        Optional<Car> carInDbOptional = carRepository.findByIdAndRemovedFalse(car.getId());
+        Car savedCar;
+        if(carInDbOptional.isPresent()){
+            Car oldCar = carInDbOptional.get();
+            oldCar.setBrand(car.getBrand());
+            oldCar.setModel(car.getModel());
+            oldCar.setCurrentCourse(car.getCurrentCourse());
+            oldCar.setCurrentFuelLevel(car.getCurrentFuelLevel());
+            oldCar.setDateOfLastReview(car.getDateOfLastReview());
+            oldCar.setDateOfNextReview(car.getDateOfNextReview());
+            oldCar.setDateOfNextTechnicalExamination(car.getDateOfNextTechnicalExamination());
+            oldCar.setProductionDate(car.getProductionDate());
+            oldCar.setStatus(car.getStatus());
+            oldCar.setType(car.getType());
+            savedCar = carRepository.save(oldCar);
+            log.info("Update old car in db to : " + car.toString());
+        }else{
+           savedCar = carRepository.save(car);
+            log.info("Saved new car in db : " + car.toString());
+        }
+        return savedCar;
     }
 
     public List<Car> getAll() {
         log.info("Returning all car");
         return carRepository.findAll();
+    }
+
+    public void remove(UUID carId) throws ObjectNotFoundException {
+        Optional<Car> car = carRepository.findByIdAndRemovedFalse(carId);
+        if (car.isPresent()) {
+            Car carInDb = car.get();
+            carInDb.setRemoved(true);
+            carRepository.save(carInDb);
+            log.info("Removed car by id: " + carId);
+
+        } else {
+            throw new ObjectNotFoundException("Unable to locate car with id: " + carId);
+        }
     }
 }
