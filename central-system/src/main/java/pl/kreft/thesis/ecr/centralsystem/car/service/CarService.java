@@ -10,6 +10,7 @@ import pl.kreft.thesis.ecr.centralsystem.car.repository.CarRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -57,7 +58,9 @@ public class CarService {
 
     public List<Car> getAll() {
         log.info("Returning all car");
-        return carRepository.findAll();
+        List<Car> allCars = carRepository.findAll();
+        allCars =  allCars.stream().filter(item-> !item.getRemoved()).collect(Collectors.toList());
+        return allCars;
     }
 
     public void remove(UUID carId) throws ObjectNotFoundException {
@@ -67,7 +70,6 @@ public class CarService {
             carInDb.setRemoved(true);
             carRepository.save(carInDb);
             log.info("Removed car by id: " + carId);
-
         } else {
             throw new ObjectNotFoundException("Unable to locate car with id: " + carId);
         }

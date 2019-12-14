@@ -33,7 +33,7 @@ class CarRepositoryTest {
     }
 
     @Test
-    void shouldSaveAndFindById() throws SQLException {
+    public void shouldSaveAndFindById() throws SQLException {
         Car testCar = CarFactory.getCar();
         Car testPremiumCar = CarFactory.getPremiumCar();
 
@@ -47,7 +47,7 @@ class CarRepositoryTest {
     }
 
     @Test
-    void shouldSaveAndFindAllCars() {
+    public void shouldSaveAndFindAllCars() {
         carRepository.save(CarFactory.getCar());
         carRepository.save(CarFactory.getCar());
         carRepository.save(CarFactory.getPremiumCar());

@@ -9,16 +9,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
+import pl.kreft.thesis.ecr.centralsystem.car.repository.CarRepository;
 import pl.kreft.thesis.ecr.centralsystem.testobjectfactories.CarFactory;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static pl.kreft.thesis.ecr.centralsystem.dbtestcleaner.DbCleaner.clearDatabase;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class CarServiceTest {
-    
-    @Autowired CarService carService;
+
+    @Autowired
+    CarService carService;
+
+    @Autowired
+    CarRepository carRepository;
 
     @AfterEach
     public void tearDown() {
@@ -30,7 +38,7 @@ class CarServiceTest {
     }
 
     @Test
-    void shouldSaveAndFindById() throws ObjectNotFoundException {
+    public void shouldSaveAndFindById() throws ObjectNotFoundException {
         Car testCar = CarFactory.getCar();
         Car testPremiumCar = CarFactory.getPremiumCar();
 
@@ -43,7 +51,7 @@ class CarServiceTest {
 
     @SneakyThrows
     @Test
-    void shouldRemoveAndReturnExceptionWhenTryFindRemovedCar() {
+    public void shouldRemoveAndReturnExceptionWhenTryFindRemovedCar() {
         Car savedCar = carService.save(CarFactory.getCar());
 
         Car foundCar = carService.find(savedCar.getId());
@@ -51,7 +59,21 @@ class CarServiceTest {
 
         assertEquals(savedCar.getId(), foundCar.getId());
         assertThrows(ObjectNotFoundException.class, () -> {
-           carService.find(savedCar.getId());
+            carService.find(savedCar.getId());
         });
+    }
+
+    @Test
+    void shouldReturnAllCarsWhereRemovedIsFalse() throws ObjectNotFoundException {
+        carService.save(CarFactory.getPremiumCar());
+        carService.save(CarFactory.getPremiumCar());
+        carService.save(CarFactory.getPremiumCar());
+        Car savedCar = carService.save(CarFactory.getPremiumCar());
+
+        carService.remove(savedCar.getId());
+        List<Car> allCars = carService.getAll();
+
+        assertEquals(3, allCars.size());
+        assertEquals(4, carRepository.findAll().size());
     }
 }
