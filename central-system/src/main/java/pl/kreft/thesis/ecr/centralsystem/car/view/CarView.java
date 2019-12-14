@@ -1,4 +1,4 @@
-package pl.kreft.thesis.ecr.centralsystem.car.web;
+package pl.kreft.thesis.ecr.centralsystem.car.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,12 +8,12 @@ import pl.kreft.thesis.ecr.centralsystem.car.service.CarService;
 
 @RequestMapping("/car")
 @Controller
-public class CarController {
+public class CarView {
 
     private CarService carService;
 
     @Autowired
-    public CarController(CarService carService) {
+    public CarView(CarService carService) {
         this.carService = carService;
     }
 

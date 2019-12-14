@@ -12,12 +12,12 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/car")
-public class CarRestController {
+public class CarController {
 
     private CarService carService;
 
     @Autowired
-    public CarRestController(CarService carService) {
+    public CarController(CarService carService) {
         this.carService = carService;
     }
 

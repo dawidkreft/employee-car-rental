@@ -17,7 +17,7 @@ public class UserFactory {
                 null,
                 true,
                 Instant.now(),
-                true
+                false
         );
     }
 
@@ -31,7 +31,7 @@ public class UserFactory {
                 null,
                 true,
                 Instant.now(),
-                true
+                false
         );
     }
 
