@@ -18,4 +18,8 @@ public interface RentalRepository extends JpaRepository<Rental, UUID> {
     Optional<Rental> findByIdAndRemovedFalse(UUID id);
 
     List<Rental> findAllByLenderId(UUID userId);
+
+    List<Rental> findAllByCarIdAndRealRentalEndIsNull(UUID carId);
+
+    List<Rental> findAllByLenderIdAndRealRentalEndIsNull(UUID userId);
 }

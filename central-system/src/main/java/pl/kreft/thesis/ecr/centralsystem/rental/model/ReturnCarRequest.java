@@ -3,7 +3,6 @@ package pl.kreft.thesis.ecr.centralsystem.rental.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.persistence.Column;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -13,8 +12,17 @@ public class ReturnCarRequest {
 
     private UUID rentalId;
 
-    Instant realRentalEnd;
+    Instant realRentalStartDate;
+
+    Instant realRentalEndDate;
 
     String receivedDescription;
 
+    Long distanceTraveled;
+
+    Long numberKilometerFromMeter;
+
+    String carCondition;
+
+    double currentFuelLevel;
 }

@@ -3,43 +3,61 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <title>Pojazdy</title>
-
     <link rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
- <!--   <link rel="stylesheet" th:href="@{/css/main.css}"/> -->
-
+    <!--   <link rel="stylesheet" th:href="@{/css/main.css}"/> -->
 </head>
-
 <body>
 <main role="main" class="container">
-
     <div class="starter-template">
-        <h1>Spring Boot Web Thymeleaf Example</h1>
-        <h2>
-        Hello
-        </h2>
+        <h1>Lista pojazdów</h1>
     </div>
     <table>
-            <thead>
-            <tr>
-                    <th> Producent  </th>
-                    <th> Model </th>
-                    <th> Typ </th>
-                    <th> Przebieg </th>
-                </tr>
-        </thead>
-            <tbody>
-        <tr th:if="${cars.empty}">
-                    <td colspan="2"> Brak pojazdów </td>
-                </tr>
-            <tr th:each="car : ${cars}">
-                    <td><span th:text="${car.brand}">  </span></td>
-                    <td><span th:text="${car.model}">  </span></td>
-                    <td><span th:text="${car.type}">  </span></td>
-                    <td><span th:text="${car.currentCourse}">  </span></td>
-                </tr>
-        </tbody>
+            
+        <thead>
+                 
+        <tr>            
+            <th> Producent</th>
+                        
+            <th> Model</th>
+                        
+            <th> Typ</th>
+
+            <th> Data produkcji</th>
+                        
+            <th> Przebieg</th>
+                        
+            <th> Aktualny stan</th>
+                        
+            <th> Stan paliwa</th>      
+        </tr>
+        </thead>
+         
+        <tbody>    
+        <tr th:if="${cars.empty}">
+               
+            <td colspan="2"> Brak pojazdów</td>
+                    
+        </tr>
+                 
+        <tr th:each="car : ${cars}">
+                        
+            <td><span th:text="${car.brand}">  </span></td>
+                        
+            <td><span th:text="${car.model}">  </span></td>
+                        
+            <td><span th:text="${car.type}">  </span></td>
+
+            <td><span th:text="${#temporals.format(${car.productionDate}, 'dd-MM-yyyy HH:mm')}">  </span></td>
+                        
+            <td><span th:text="${car.currentCourse}">  </span></td>
+
+            <td><span th:text="${car.status}">  </span></td>
+
+            <td><span th:text="${car.currentFuelLevel}">  </span>%</td>
+                   
+        </tr>
+        </tbody>
     </table>
 </main>
 

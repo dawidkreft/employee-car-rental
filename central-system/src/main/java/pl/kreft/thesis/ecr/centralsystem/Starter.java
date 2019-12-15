@@ -30,7 +30,30 @@ public class Starter implements CommandLineRunner {
                 Instant.now().plus(Duration.ofDays(200)),
                 Instant.now(),
                 false));
-    }
 
+        carRepository.save(new Car(CarStatus.IN_SERVICE,
+                "E60",
+                "BMW",
+                CarType.CAR,
+                Instant.now().minus(Duration.ofDays(5300l)),
+                200_000l, 40.0,
+                Instant.now().minus(Duration.ofDays(150)),
+                Instant.now().plus(Duration.ofDays(150)),
+                Instant.now().plus(Duration.ofDays(150)),
+                Instant.now(),
+                false));
+
+        carRepository.save(new Car(CarStatus.AVAILABLE,
+                "A6",
+                "AUDI",
+                CarType.CAR,
+                Instant.now().minus(Duration.ofDays(540l)),
+                20_000l, 80.0,
+                Instant.now().minus(Duration.ofDays(150)),
+                Instant.now().plus(Duration.ofDays(150)),
+                Instant.now().plus(Duration.ofDays(150)),
+                Instant.now(),
+                false));
+    }
 
 }

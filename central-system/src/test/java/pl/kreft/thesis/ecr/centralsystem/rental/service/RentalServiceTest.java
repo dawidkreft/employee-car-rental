@@ -12,6 +12,7 @@ import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
 import pl.kreft.thesis.ecr.centralsystem.car.repository.CarRepository;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.CarRentalRequest;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.Rental;
+import pl.kreft.thesis.ecr.centralsystem.rental.model.ReturnCarRequest;
 import pl.kreft.thesis.ecr.centralsystem.rental.repository.RentalRepository;
 import pl.kreft.thesis.ecr.centralsystem.user.model.User;
 import pl.kreft.thesis.ecr.centralsystem.user.repository.UserRepository;
@@ -21,8 +22,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static pl.kreft.thesis.ecr.centralsystem.dbtestcleaner.DbCleaner.clearDatabase;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.CarFactory.getCar;
-import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.RentalFactory.getRandomRental;
-import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.RentalFactory.prepareRequest;
+import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.RentalFactory.*;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getEmployee;
 
 @RunWith(SpringRunner.class)
@@ -91,5 +91,18 @@ class RentalServiceTest {
         assertEquals(rental.getPlannedRentalStart().getEpochSecond(), rentalInDb.getPlannedRentalStart().getEpochSecond());
         assertEquals(lender.getId(), rentalInDb.getLender().getId());
         assertEquals(car.getId(), rentalInDb.getCar().getId());
+    }
+
+    @Test
+    public void shouldCorrectSaveNewRentalAndUpdatedReturnCar() throws ObjectNotFoundException {
+        CarRentalRequest carRentalRequest = prepareRequest(lender.getId(), car.getId());
+
+        Rental rental = rentalService.rentCar(carRentalRequest);
+        ReturnCarRequest returnCarRequest = prepareReturnRequest(rental.getId());
+        Rental finishedRental = rentalService.returnCar(returnCarRequest);
+
+        assertEquals(rental.getId(), finishedRental.getId());
+        assertEquals(rental.getPlannedRentalStart(), finishedRental.getPlannedRentalStart());
+        assertEquals(returnCarRequest.getRealRentalEndDate(), finishedRental.getRealRentalEnd());
     }
 }

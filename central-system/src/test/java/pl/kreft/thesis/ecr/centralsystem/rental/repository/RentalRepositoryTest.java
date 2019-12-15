@@ -72,4 +72,30 @@ class RentalRepositoryTest {
         assertEquals(testRental.getId(), rental.get().getId());
         assertEquals(2, allRentals.size());
     }
+
+    @Test
+    void shouldFindRentalFromUserIdWhenNotReturnCar() {
+        Rental testRental = getRandomRental(lender, car);
+        Rental savedRental = rentalRepository.save(testRental);
+
+        List<Rental> foundRentals = rentalRepository.findAllByLenderIdAndRealRentalEndIsNull(
+                lender.getId());
+
+        assertEquals(1, foundRentals.size());
+        assertEquals(lender.getId(),foundRentals.get(0).getLender().getId());
+        assertEquals(savedRental.getId(),foundRentals.get(0).getId());
+    }
+
+    @Test
+    void shouldFindRentalFromCarIdWhenIsNotReturn() {
+        Rental testRental = getRandomRental(lender, car);
+        Rental savedRental = rentalRepository.save(testRental);
+
+        List<Rental> foundRentals = rentalRepository.findAllByCarIdAndRealRentalEndIsNull(
+                car.getId());
+
+        assertEquals(1, foundRentals.size());
+        assertEquals(car.getId(),foundRentals.get(0).getCar().getId());
+        assertEquals(savedRental.getId(),foundRentals.get(0).getId());
+    }
 }
