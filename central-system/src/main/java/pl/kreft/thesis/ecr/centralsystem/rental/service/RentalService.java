@@ -8,6 +8,7 @@ import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
 import pl.kreft.thesis.ecr.centralsystem.car.repository.CarRepository;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.CarRentalRequest;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.Rental;
+import pl.kreft.thesis.ecr.centralsystem.rental.model.ReturnCarRequest;
 import pl.kreft.thesis.ecr.centralsystem.rental.repository.RentalRepository;
 import pl.kreft.thesis.ecr.centralsystem.user.model.User;
 import pl.kreft.thesis.ecr.centralsystem.user.repository.UserRepository;
@@ -60,6 +61,8 @@ class RentalService {
         Optional<User> user = userRepository.findById(request.getLenderUserId());
         Optional<Car> car = carRepository.findById(request.getRentalCarId());
         if (user.isPresent() && car.isPresent()) {
+            checkIsUserAbilityToRentCar(user.get());
+            checkIsCarAbilityForRent(car.get());
             Rental savedRental = rentalRepository.save(new Rental(
                     user.get(),
                     car.get(),
@@ -67,6 +70,9 @@ class RentalService {
                     request.getTarget(),
                     request.getDateOfStartRent(),
                     request.getDateOfEndRent(),
+                    null,
+                    null,
+                    null,
                     null,
                     null,
                     null,
@@ -83,5 +89,16 @@ class RentalService {
         log.warn("Could not find input car with id: {} or user with id: {}",
                 request.getRentalCarId(), request.getLenderUserId());
         throw new IllegalArgumentException("Argument not exists");
+    }
+
+    public void returnCar(ReturnCarRequest returnCarRequest){
+
+    }
+
+    private void checkIsCarAbilityForRent(Car car) {
+        //TODO
+    }
+    private void checkIsUserAbilityToRentCar(User user) {
+        //TODO
     }
 }

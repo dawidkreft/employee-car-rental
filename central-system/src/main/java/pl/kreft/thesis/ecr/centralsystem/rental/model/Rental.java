@@ -51,6 +51,15 @@ public class Rental {
     @Column(name = "real_rental_end_date")
     Instant realRentalEnd;
 
+    @Column(name = "distance_traveled")
+    Long distanceTraveled;
+
+    @Column(name = "actual_kilometer_in_car_meter")
+    Long numberKilometerFromMeter;
+
+    @Column(name = "car_condition_descript")
+    String carCondition;
+
     @Column(name = "boss_accepted")
     Boolean isAcceptedByBoss;
 
@@ -74,7 +83,8 @@ public class Rental {
 
     public Rental(@NonNull User lender, @NonNull Car car, Instant applicationDate, String target,
             Instant plannedRentalStart, Instant plannedRentalEnd, Instant realRentalStart,
-            Instant realRentalEnd, Boolean isAcceptedByBoss, Boolean isReceivedPositively,
+            Instant realRentalEnd,Long distanceTraveled, Long numberKilometerFromMeter, String carCondition,
+            Boolean isAcceptedByBoss, Boolean isReceivedPositively,
             String receivedDescription, Boolean isReceivedCheckedByDispatcher,
             String dispatcherComment, Instant creationDate, Boolean removed) {
         this.lender = lender;
@@ -85,6 +95,9 @@ public class Rental {
         this.plannedRentalEnd = plannedRentalEnd;
         this.realRentalStart = realRentalStart;
         this.realRentalEnd = realRentalEnd;
+        this.distanceTraveled = distanceTraveled;
+        this.numberKilometerFromMeter = numberKilometerFromMeter;
+        this.carCondition = carCondition;
         this.isAcceptedByBoss = isAcceptedByBoss;
         this.isReceivedPositively = isReceivedPositively;
         this.receivedDescription = receivedDescription;
