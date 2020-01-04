@@ -6,20 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
 import pl.kreft.thesis.ecr.centralsystem.car.repository.CarRepository;
+import pl.kreft.thesis.ecr.centralsystem.rental.service.RentalService;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class CarService {
 
+    private RentalService rentalService;
+
     private CarRepository carRepository;
 
     @Autowired
-    public CarService(CarRepository carRepository) {
+    public CarService(RentalService rentalService, CarRepository carRepository) {
+        this.rentalService = rentalService;
         this.carRepository = carRepository;
     }
 
@@ -29,7 +32,7 @@ public class CarService {
            log.info("Found car by id: " + id);
             return car.get();
         }
-        throw new ObjectNotFoundException("Unable to locate car with id: " + id);
+        throw new OutOfMemoryError("Unable to locate car with id: " + id);
     }
 
     public Car save(Car car)  {
@@ -57,10 +60,8 @@ public class CarService {
     }
 
     public List<Car> getAll() {
-        log.info("Returning all car");
-        List<Car> allCars = carRepository.findAll();
-        allCars =  allCars.stream().filter(item-> !item.getRemoved()).collect(Collectors.toList());
-        return allCars;
+        log.info("Returned all car");
+        return carRepository.findAll();
     }
 
     public void remove(UUID carId) throws ObjectNotFoundException {
