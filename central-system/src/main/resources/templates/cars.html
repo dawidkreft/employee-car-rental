@@ -1,17 +1,27 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Pojazdy</title>
-    <link rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+   <!-- <link rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>-->
     <!--   <link rel="stylesheet" th:href="@{/css/main.css}"/> -->
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+
 </head>
 <body>
+<header>E M P L O Y E E  	&nbsp;&nbsp;&nbsp;&nbsp; C A R 		&nbsp;&nbsp;&nbsp;&nbsp;   R E N T A L </header>
+
+<div class="content">
+
+<menu class="menu" th:insert="fragments/menu :: menu"></menu>
+
 <main role="main" class="container">
-    <div class="starter-template">
+<br><br>
+
         <h1>Lista pojazdów</h1>
-    </div>
+
     <table>
             
         <thead>
@@ -60,6 +70,11 @@
         </tbody>
     </table>
 </main>
+
+    <footer class="footer" th:insert="fragments/footer :: footer"></footer>
+</div>
+
+
 
 <script type="text/javascript" th:src="@{webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
 </body>

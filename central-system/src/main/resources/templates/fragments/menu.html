@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+
+</head>
+<body>
+<div th:fragment="menu">
+    <ul>
+        <li><strong><span style="font-size: x-large; ">Witaj użytkowniku</span></strong></li>
+        <li></li>
+        <li><span style="font-size: x-large; ">MENU</span></li>
+        <li></li>
+        <li th:classappend="${#httpServletRequest.getRequestURI() == '/' ? 'active':''}"><a th:href="@{/}"><span>Strona Główna</span></a></li>
+        <li th:classappend="${#httpServletRequest.getRequestURI() == '/car/all' ? 'active':''}"><a th:href="@{/car/all}"><span>Pojazdy</span></a></li>
+        <li th:classappend="${#httpServletRequest.getRequestURI() == '/orders' ? 'active':''}"><a th:href="@{/orders}"><span>Orders</span></a></li>
+        <li th:classappend="${#httpServletRequest.getRequestURI() == '/income' ? 'active':''}"><a th:href="@{/income}"><span>Income</span></a></li>
+    </ul>
+</div>
+</body>
+</html>

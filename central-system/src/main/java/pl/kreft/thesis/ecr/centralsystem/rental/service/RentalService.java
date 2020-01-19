@@ -16,6 +16,7 @@ import pl.kreft.thesis.ecr.centralsystem.user.model.UserRole;
 import pl.kreft.thesis.ecr.centralsystem.user.repository.UserRepository;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-class RentalService {
+public class RentalService {
 
     private RentalRepository rentalRepository;
     private UserRepository userRepository;
@@ -70,8 +71,8 @@ class RentalService {
                     car,
                     Instant.now(),
                     request.getTarget(),
-                    request.getDateOfStartRent(),
-                    request.getDateOfEndRent(),
+                    request.getDateOfStartRent().toInstant(ZoneOffset.MIN),
+                    request.getDateOfEndRent().toInstant(ZoneOffset.MAX),
                     null,
                     null,
                     null,

@@ -8,6 +8,9 @@ import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
 import pl.kreft.thesis.ecr.centralsystem.car.model.CarStatus;
 import pl.kreft.thesis.ecr.centralsystem.car.model.CarType;
 import pl.kreft.thesis.ecr.centralsystem.car.repository.CarRepository;
+import pl.kreft.thesis.ecr.centralsystem.user.model.User;
+import pl.kreft.thesis.ecr.centralsystem.user.model.UserRole;
+import pl.kreft.thesis.ecr.centralsystem.user.repository.UserRepository;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -16,9 +19,14 @@ import java.time.Instant;
 @Profile("prod")
 public class Starter implements CommandLineRunner {
 
-    @Autowired CarRepository carRepository;
+    @Autowired
+    CarRepository carRepository;
 
-    @Override public void run(String... args) throws Exception {
+    @Autowired
+    UserRepository userRepository;
+
+    @Override
+    public void run(String... args) throws Exception {
         carRepository.save(new Car(CarStatus.AVAILABLE,
                 "Tigra",
                 "Opel",
@@ -54,6 +62,16 @@ public class Starter implements CommandLineRunner {
                 Instant.now().plus(Duration.ofDays(150)),
                 Instant.now(),
                 false));
-    }
 
+        userRepository.save(new User(
+                "Edek",
+                "Edkowy",
+                "123456789",
+                "edek@wp.pl",
+                UserRole.ADMIN,
+                null,
+                true,
+                Instant.now(),
+                false));
+    }
 }

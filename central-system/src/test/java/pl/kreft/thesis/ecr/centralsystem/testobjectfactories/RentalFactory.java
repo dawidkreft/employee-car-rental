@@ -8,6 +8,7 @@ import pl.kreft.thesis.ecr.centralsystem.user.model.User;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.UUID;
 
@@ -44,8 +45,8 @@ public class RentalFactory {
         return new CarRentalRequest(
                 carId,
                 userId,
-                Instant.now().plus(Duration.ofDays(2)),
-                Instant.now().plus(Duration.ofDays(4)),
+                LocalDateTime.now().plus(Duration.ofDays(2)),
+                LocalDateTime.now().plus(Duration.ofDays(4)),
                 "Podróż służbowa"
         );
     }
