@@ -6,9 +6,8 @@ import pl.kreft.thesis.ecr.centralsystem.rental.model.Rental;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.ReturnCarRequest;
 import pl.kreft.thesis.ecr.centralsystem.user.model.User;
 
-import java.time.Duration;
 import java.time.Instant;
-import java.time.Period;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class RentalFactory {
@@ -18,49 +17,37 @@ public class RentalFactory {
     public static double testFuelLevel = 40.5;
 
     static public Rental getRandomRental(User lender, Car car) {
-        return new Rental(
-                lender,
-                car,
-                Instant.now(),
-                "wyjazd",
-                Instant.now().plus(Period.ofDays(1)),
-                Instant.now().plus(Period.ofDays(3)),
-                null,
-                null,
-                null,
-                null,
-                null,
-                true,
-                true,
-                null,
-                false,
-                null,
-                Instant.now(),
-                false
-        );
+        return Rental.builder()
+                     .car(car)
+                     .lender(lender)
+                     .target("Podróż służbowa")
+                     .carCondition("OK")
+                     .plannedRentalStart(LocalDateTime.now())
+                     .plannedRentalEnd(LocalDateTime.now())
+                     .applicationDate(Instant.now())
+                     .creationDate(Instant.now())
+                     .removed(false)
+                     .build();
     }
 
-    static public CarRentalRequest prepareRequest(UUID userId, UUID carId){
-        return new CarRentalRequest(
-                carId,
-                userId,
-                Instant.now().plus(Duration.ofDays(2)),
-                Instant.now().plus(Duration.ofDays(4)),
-                "Podróż służbowa"
-        );
+    static public CarRentalRequest prepareRequest(UUID userId, UUID carId) {
+        return CarRentalRequest.builder()
+                               .rentalCarId(carId)
+                               .lenderUserId(userId)
+                               .target("Podróż służbowa")
+                               .dateOfStartRent(LocalDateTime.now())
+                               .dateOfEndRent(LocalDateTime.now())
+                               .build();
     }
 
-    static public ReturnCarRequest prepareReturnRequest(UUID rentalId){
-        return new ReturnCarRequest(
-                rentalId,
-                Instant.now().plus(Duration.ofDays(2)),
-                Instant.now().plus(Duration.ofDays(4)),
-                "OK",
-                testCarDistance,
-                testCurrentCarKilometer,
-                "OK",
-                testFuelLevel
-
-        );
+    static public ReturnCarRequest prepareReturnRequest(UUID rentalId) {
+        return ReturnCarRequest.builder()
+                               .rentalId(rentalId)
+                               .carCondition("OK")
+                               .currentFuelLevel(testFuelLevel)
+                               .receivedDescription("OK")
+                               .numberKilometerFromMeter(testCurrentCarKilometer)
+                               .distanceTraveled(testCarDistance)
+                               .build();
     }
 }

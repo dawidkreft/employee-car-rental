@@ -21,16 +21,20 @@ import static pl.kreft.thesis.ecr.centralsystem.dbtestcleaner.DbCleaner.clearDat
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.CarFactory.getCar;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.InspectionFactory.getRandomInspection;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getInspector;
+import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getSecondInspector;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class InspectionRepositoryTest {
 
-    @Autowired InspectionRepository inspectionRepository;
+    @Autowired
+    InspectionRepository inspectionRepository;
 
-    @Autowired UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
 
-    @Autowired CarRepository carRepository;
+    @Autowired
+    CarRepository carRepository;
 
     private Car car;
     private User inspector;
@@ -40,7 +44,7 @@ class InspectionRepositoryTest {
     public void setUp() {
         car = getCar();
         inspector = getInspector();
-        inspector1 = getInspector();
+        inspector1 = getSecondInspector();
         carRepository.save(car);
         userRepository.save(inspector);
         userRepository.save(inspector1);

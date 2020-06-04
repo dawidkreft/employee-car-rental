@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
-import pl.kreft.thesis.ecr.centralsystem.car.repository.CarRepository;
 import pl.kreft.thesis.ecr.centralsystem.car.service.CarService;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.CarRentalRequest;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.Rental;
@@ -16,6 +15,7 @@ import pl.kreft.thesis.ecr.centralsystem.user.model.UserRole;
 import pl.kreft.thesis.ecr.centralsystem.user.repository.UserRepository;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,7 +30,8 @@ class RentalService {
     private CarService carService;
 
     @Autowired
-    public RentalService(RentalRepository rentalRepository, UserRepository userRepository, CarService carService) {
+    public RentalService(RentalRepository rentalRepository, UserRepository userRepository,
+            CarService carService) {
         this.rentalRepository = rentalRepository;
         this.userRepository = userRepository;
         this.carService = carService;
@@ -48,14 +49,18 @@ class RentalService {
     public List<Rental> getAll() {
         log.info("Returning all rental list");
         List<Rental> allRentals = rentalRepository.findAll();
-        allRentals =  allRentals.stream().filter(item-> !item.getRemoved()).collect(Collectors.toList());
+        allRentals = allRentals.stream()
+                               .filter(item -> !item.getRemoved())
+                               .collect(Collectors.toList());
         return allRentals;
     }
 
     public List<Rental> getAllByUserId(UUID userId) {
         log.info("Returning all rental list for user Id: " + userId);
         List<Rental> allRentals = rentalRepository.findAllByLenderId(userId);
-        allRentals =  allRentals.stream().filter(item-> !item.getRemoved()).collect(Collectors.toList());
+        allRentals = allRentals.stream()
+                               .filter(item -> !item.getRemoved())
+                               .collect(Collectors.toList());
         return allRentals;
     }
 
@@ -65,27 +70,19 @@ class RentalService {
         if (user.isPresent()) {
             checkIsUserAbilityToRentCar(user.get());
             checkIsCarAbilityForRent(car);
-            Rental savedRental = rentalRepository.save(new Rental(
-                    user.get(),
-                    car,
-                    Instant.now(),
-                    request.getTarget(),
-                    request.getDateOfStartRent(),
-                    request.getDateOfEndRent(),
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    Instant.now(),
-                    false
-            ));
-            log.info("Rental with id: {} successfully saved" ,savedRental.getId() );
+            Rental savedRental = rentalRepository.save(Rental.builder()
+                                                             .applicationDate(Instant.now())
+                                                             .car(car)
+                                                             .creationDate(Instant.now())
+                                                             .plannedRentalEnd(
+                                                                     request.getDateOfEndRent())
+                                                             .plannedRentalStart(
+                                                                     request.getDateOfStartRent())
+                                                             .lender(user.get())
+                                                             .removed(false)
+                                                             .target(request.getTarget())
+                                                             .build());
+            log.info("Rental with id: {} successfully saved", savedRental.getId());
             return savedRental;
         }
         log.warn("Could not find input car with id: {} or user with id: {}",
@@ -95,37 +92,35 @@ class RentalService {
 
     public Rental returnCar(ReturnCarRequest returnCarRequest) throws ObjectNotFoundException {
         Rental rental = find(returnCarRequest.getRentalId());
-        rental.setRealRentalStart(returnCarRequest.getRealRentalStartDate());
-        rental.setRealRentalEnd(returnCarRequest.getRealRentalEndDate());
         rental.setCarCondition(returnCarRequest.getCarCondition());
         rental.setDistanceTraveled(returnCarRequest.getDistanceTraveled());
         rental.setNumberKilometerFromMeter(returnCarRequest.getNumberKilometerFromMeter());
         rental.setReceivedDescription(returnCarRequest.getReceivedDescription());
 
         Car car = carService.find(rental.getCar().getId());
-        car.setCurrentCourse(returnCarRequest.getNumberKilometerFromMeter());
-        car.setCurrentFuelLevel(returnCarRequest.getCurrentFuelLevel());
         carService.save(car);
-        log.info("Rental with id: {} was return;",rental.getId());
+        log.info("Rental with id: {} was return;", rental.getId());
         return rentalRepository.save(rental);
     }
 
     private void checkIsCarAbilityForRent(Car car) {
-        List<Rental> foundRentals = rentalRepository.findAllByCarIdAndRealRentalEndIsNull(
-                car.getId());
+        List<Rental> foundRentals = rentalRepository.findAllByCarIdAndPlannedRentalEndIsGreaterThan(
+                car.getId(), LocalDateTime.now());
 
-        if(!foundRentals.isEmpty()){
-            throw new IllegalArgumentException(String.format("Car with id: {} is not available",car.getId()));
+        if (!foundRentals.isEmpty()) {
+            throw new IllegalArgumentException(
+                    String.format("Car with id: {} is not available", car.getId()));
         }
     }
 
     private void checkIsUserAbilityToRentCar(User user) {
-       if(user.getRole().equals(UserRole.EMPLOYEE)){
-           List<Rental> foundRentals = rentalRepository.findAllByLenderIdAndRealRentalEndIsNull(
-                   user.getId());
-           if(!foundRentals.isEmpty()){
-               throw new IllegalArgumentException(String.format("User with id: {} cannot rent a car",user.getId()));
-           }
-       }
+        if (user.getRole().equals(UserRole.EMPLOYEE)) {
+            List<Rental> foundRentals = rentalRepository.findAllByLenderIdAndPlannedRentalEndIsGreaterThan(
+                    user.getId(), LocalDateTime.now());
+            if (!foundRentals.isEmpty()) {
+                throw new IllegalArgumentException(
+                        String.format("User with id: {} cannot rent a car", user.getId()));
+            }
+        }
     }
 }

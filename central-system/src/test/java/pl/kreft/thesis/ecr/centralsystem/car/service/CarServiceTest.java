@@ -1,7 +1,6 @@
 package pl.kreft.thesis.ecr.centralsystem.car.service;
 
 import javassist.tools.rmi.ObjectNotFoundException;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -9,8 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
+import pl.kreft.thesis.ecr.centralsystem.car.model.NewCarRequest;
 import pl.kreft.thesis.ecr.centralsystem.car.repository.CarRepository;
-import pl.kreft.thesis.ecr.centralsystem.testobjectfactories.CarFactory;
+import pl.kreft.thesis.ecr.centralsystem.testobjectfactories.NewCarRequestFactory;
 
 import java.util.List;
 
@@ -38,21 +38,22 @@ class CarServiceTest {
     }
 
     @Test
-    public void shouldSaveAndFindById() throws ObjectNotFoundException {
-        Car testCar = CarFactory.getCar();
-        Car testPremiumCar = CarFactory.getPremiumCar();
+    public void shouldSaveNewCarAndFindById() throws ObjectNotFoundException {
+        NewCarRequest testCar = NewCarRequestFactory.getNewCarRequest();
 
-        carService.save(testCar);
-        carService.save(testPremiumCar);
-        Car car = carService.find(testCar.getId());
+        Car savedCar = carService.save(testCar);
+        Car car = carService.find(savedCar.getId());
 
-        assertEquals(testCar.getId(), car.getId());
+        assertEquals(testCar.getBrand(), car.getBrand());
+        assertEquals(testCar.getModel(), car.getModel());
+        assertEquals(testCar.getDateOfLastReview(), car.getDateOfLastReview());
+        assertEquals(testCar.getDateOfNextReview(), car.getDateOfNextReview());
     }
 
-    @SneakyThrows
     @Test
-    public void shouldRemoveAndReturnExceptionWhenTryFindRemovedCar() {
-        Car savedCar = carService.save(CarFactory.getCar());
+    public void shouldRemoveAndReturnExceptionWhenTryFindRemovedCar()
+            throws ObjectNotFoundException {
+        Car savedCar = carService.save(NewCarRequestFactory.getNewCarRequest());
 
         Car foundCar = carService.find(savedCar.getId());
         carService.remove(savedCar.getId());
@@ -65,10 +66,10 @@ class CarServiceTest {
 
     @Test
     void shouldReturnAllCarsWhereRemovedIsFalse() throws ObjectNotFoundException {
-        carService.save(CarFactory.getPremiumCar());
-        carService.save(CarFactory.getPremiumCar());
-        carService.save(CarFactory.getPremiumCar());
-        Car savedCar = carService.save(CarFactory.getPremiumCar());
+        carService.save(NewCarRequestFactory.getNewCarRequestForPremiumCar());
+        carService.save(NewCarRequestFactory.getNewCarRequestForPremiumCar());
+        carService.save(NewCarRequestFactory.getNewCarRequestForPremiumCar());
+        Car savedCar = carService.save(NewCarRequestFactory.getNewCarRequestForPremiumCar());
 
         carService.remove(savedCar.getId());
         List<Car> allCars = carService.getAll();

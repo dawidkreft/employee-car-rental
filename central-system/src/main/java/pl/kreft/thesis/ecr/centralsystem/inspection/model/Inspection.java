@@ -1,5 +1,7 @@
 package pl.kreft.thesis.ecr.centralsystem.inspection.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -7,18 +9,30 @@ import org.hibernate.annotations.Type;
 import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
 import pl.kreft.thesis.ecr.centralsystem.user.model.User;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.Instant;
 import java.util.UUID;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "inspection")
 public class Inspection {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type = "uuid-char")
     @Column(name = "inspection_id")
     UUID id;
@@ -37,7 +51,7 @@ public class Inspection {
     Instant inspectionDate;
 
     @Column(name = "description")
-    String  description;
+    String description;
 
     @Column(name = "car_condition")
     @Enumerated(EnumType.STRING)
@@ -53,16 +67,4 @@ public class Inspection {
     @Column(name = "inspection_removed")
     Boolean removed;
 
-    public Inspection(@NonNull User inspector, @NonNull Car inspectedCar, Instant inspectionDate,
-            String description, VisualCondition carCondition, VisualCondition tireCondition,
-            Instant creationDate, Boolean removed) {
-        this.inspector = inspector;
-        this.inspectedCar = inspectedCar;
-        this.inspectionDate = inspectionDate;
-        this.description = description;
-        this.carCondition = carCondition;
-        this.tireCondition = tireCondition;
-        this.creationDate = creationDate;
-        this.removed = removed;
-    }
 }

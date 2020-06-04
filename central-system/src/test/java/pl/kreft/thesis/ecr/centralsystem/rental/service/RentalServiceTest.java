@@ -22,8 +22,11 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static pl.kreft.thesis.ecr.centralsystem.dbtestcleaner.DbCleaner.clearDatabase;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.CarFactory.getCar;
-import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.RentalFactory.*;
+import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.RentalFactory.getRandomRental;
+import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.RentalFactory.prepareRequest;
+import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.RentalFactory.prepareReturnRequest;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getEmployee;
+import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getSecondEmployee;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -49,7 +52,7 @@ class RentalServiceTest {
     public void setUp() {
         car = getCar();
         lender = getEmployee();
-        lender1 = getEmployee();
+        lender1 = getSecondEmployee();
         car = carRepository.save(car);
         lender = userRepository.save(lender);
         lender1 = userRepository.save(lender1);
@@ -88,7 +91,7 @@ class RentalServiceTest {
         Rental rentalInDb = rentalService.find(rental.getId());
 
         assertEquals(rental.getId(), rentalInDb.getId());
-        assertEquals(rental.getPlannedRentalStart().getEpochSecond(), rentalInDb.getPlannedRentalStart().getEpochSecond());
+        assertEquals(rental.getPlannedRentalStart(), rentalInDb.getPlannedRentalStart());
         assertEquals(lender.getId(), rentalInDb.getLender().getId());
         assertEquals(car.getId(), rentalInDb.getCar().getId());
     }
@@ -103,6 +106,5 @@ class RentalServiceTest {
 
         assertEquals(rental.getId(), finishedRental.getId());
         assertEquals(rental.getPlannedRentalStart(), finishedRental.getPlannedRentalStart());
-        assertEquals(returnCarRequest.getRealRentalEndDate(), finishedRental.getRealRentalEnd());
     }
 }

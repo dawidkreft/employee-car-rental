@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static pl.kreft.thesis.ecr.centralsystem.dbtestcleaner.DbCleaner.clearDatabase;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getEmployee;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getInspector;
+import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getSecondEmployee;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -37,7 +38,7 @@ class UserServiceTest {
     public void shouldSaveFindAllAndFindByUserId() throws ObjectNotFoundException {
         User savedUser = userService.save(getEmployee());
         userService.save(getInspector());
-        userService.save(getEmployee());
+        userService.save(getSecondEmployee());
 
         List<User> allUsers = userService.getAll();
         User foundUser = userService.find(savedUser.getId());
@@ -48,7 +49,7 @@ class UserServiceTest {
 
     @Test
     public void shouldSaveAndDisableUser() throws ObjectNotFoundException {
-        User savedUser = userService.save(getEmployee());
+        User savedUser = userService.save(getSecondEmployee());
         userService.save(getInspector());
         userService.save(getEmployee());
 
@@ -62,7 +63,7 @@ class UserServiceTest {
 
     @Test
     public void shouldSaveAndRemoveUser() throws ObjectNotFoundException {
-        User savedUser = userService.save(getEmployee());
+        User savedUser = userService.save(getSecondEmployee());
         userService.save(getInspector());
         userService.save(getEmployee());
 

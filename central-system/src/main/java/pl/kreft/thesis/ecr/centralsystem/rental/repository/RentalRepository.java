@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.Rental;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,7 +20,7 @@ public interface RentalRepository extends JpaRepository<Rental, UUID> {
 
     List<Rental> findAllByLenderId(UUID userId);
 
-    List<Rental> findAllByCarIdAndRealRentalEndIsNull(UUID carId);
+    List<Rental> findAllByCarIdAndPlannedRentalEndIsGreaterThan(UUID carId, LocalDateTime date);
 
-    List<Rental> findAllByLenderIdAndRealRentalEndIsNull(UUID userId);
+    List<Rental> findAllByLenderIdAndPlannedRentalEndIsGreaterThan(UUID userId, LocalDateTime date);
 }

@@ -1,24 +1,38 @@
 package pl.kreft.thesis.ecr.centralsystem.rental.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.hibernate.annotations.Type;
+import org.springframework.lang.Nullable;
 import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
 import pl.kreft.thesis.ecr.centralsystem.user.model.User;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "rental")
 public class Rental {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type = "uuid-char")
     @Column(name = "rental_id")
     UUID id;
@@ -33,78 +47,52 @@ public class Rental {
     @JoinColumn(name = "rental_car_fk")
     Car car;
 
-    @Column(name = "application_date")
+    @NonNull
+    @Column(name = "rental_application_date")
     Instant applicationDate;
 
-    @Column(name = "target")
+    @NonNull
+    @Column(name = "rental_target")
     String target;
 
-    @Column(name = "planned_rental_start_date")
-    Instant plannedRentalStart;
+    @NonNull
+    @Column(name = "rental_planned_start_date")
+    LocalDateTime plannedRentalStart;
 
-    @Column(name = "planned_rental_end_date")
-    Instant plannedRentalEnd;
+    @NonNull
+    @Column(name = "rental_planned_end_date")
+    LocalDateTime plannedRentalEnd;
 
-    @Column(name = "real_rental_start_date")
-    Instant realRentalStart;
-
-    @Column(name = "real_rental_end_date")
-    Instant realRentalEnd;
-
-    @Column(name = "distance_traveled")
+    @Nullable
+    @Column(name = "rental_distance_traveled")
     Long distanceTraveled;
 
-    @Column(name = "actual_kilometer_in_car_meter")
+    @Nullable
+    @Column(name = "rental_actual_kilometer_in_car_meter")
     Long numberKilometerFromMeter;
 
-    @Column(name = "car_condition_descript")
+    @Nullable
+    @Column(name = "rental_car_condition_description")
     String carCondition;
 
-    @Column(name = "boss_accepted")
+    @Nullable
+    @Column(name = "rental_boss_accepted")
     Boolean isAcceptedByBoss;
 
-    @Column(name = "positively_received")
+    @Nullable
+    @Column(name = "rental_positively_received")
     Boolean isReceivedPositively;
 
-    @Column(name = "received_description")
+    @Nullable
+    @Column(name = "rental_received_description")
     String receivedDescription;
 
-    @Column(name = "received_checked_by_dispatcher")
-    Boolean isReceivedCheckedByDispatcher;
-
-    @Column(name = "dispatcher_comment")
-    String dispatcherComment;
-
-    @Column(name = "creation_date")
+    @NonNull
+    @Column(name = "rental_creation_date")
     Instant creationDate;
 
+    @NonNull
     @Column(name = "rental_removed")
     Boolean removed;
-
-    public Rental(@NonNull User lender, @NonNull Car car, Instant applicationDate, String target,
-            Instant plannedRentalStart, Instant plannedRentalEnd, Instant realRentalStart,
-            Instant realRentalEnd,Long distanceTraveled, Long numberKilometerFromMeter, String carCondition,
-            Boolean isAcceptedByBoss, Boolean isReceivedPositively,
-            String receivedDescription, Boolean isReceivedCheckedByDispatcher,
-            String dispatcherComment, Instant creationDate, Boolean removed) {
-        this.lender = lender;
-        this.car = car;
-        this.applicationDate = applicationDate;
-        this.target = target;
-        this.plannedRentalStart = plannedRentalStart;
-        this.plannedRentalEnd = plannedRentalEnd;
-        this.realRentalStart = realRentalStart;
-        this.realRentalEnd = realRentalEnd;
-        this.distanceTraveled = distanceTraveled;
-        this.numberKilometerFromMeter = numberKilometerFromMeter;
-        this.carCondition = carCondition;
-        this.isAcceptedByBoss = isAcceptedByBoss;
-        this.isReceivedPositively = isReceivedPositively;
-        this.receivedDescription = receivedDescription;
-        this.isReceivedCheckedByDispatcher = isReceivedCheckedByDispatcher;
-        this.dispatcherComment = dispatcherComment;
-        this.creationDate = creationDate;
-        this.removed = removed;
-    }
 }
 

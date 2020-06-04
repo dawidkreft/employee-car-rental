@@ -32,6 +32,15 @@ public class UserService {
         throw new ObjectNotFoundException("Unable to locate user with id: " + id);
     }
 
+    public User findByEmail(String email) throws ObjectNotFoundException {
+        Optional<User> user = userRepository.findByEmailAndRemovedFalse(email);
+        if (user.isPresent()) {
+            log.info("Found user by email: " + email);
+            return user.get();
+        }
+        throw new ObjectNotFoundException("Unable to locate user with email: " + email);
+    }
+
     public User save(User user) {
         Optional<User> userInDbOptional = userRepository.findByIdAndRemovedFalse(user.getId());
         User savedUser;
@@ -57,14 +66,18 @@ public class UserService {
     public List<User> getAll() {
         log.info("Returning all users");
         List<User> allUsers = userRepository.findAll();
-        allUsers = allUsers.stream().filter(item -> !item.getRemoved()).collect(Collectors.toList());
+        allUsers = allUsers.stream()
+                           .filter(item -> !item.getRemoved())
+                           .collect(Collectors.toList());
         return allUsers;
     }
 
     public List<User> getAllActiveUser() {
         log.info("Returning all active users");
         List<User> allUsers = userRepository.findAll();
-        allUsers = allUsers.stream().filter(item -> !item.getRemoved() && item.getIsActive()).collect(Collectors.toList());
+        allUsers = allUsers.stream()
+                           .filter(item -> !item.getRemoved() && item.getIsActive())
+                           .collect(Collectors.toList());
         return allUsers;
     }
 
@@ -80,7 +93,7 @@ public class UserService {
         }
     }
 
-    public void disableUser (UUID userId) throws ObjectNotFoundException {
+    public void disableUser(UUID userId) throws ObjectNotFoundException {
         Optional<User> user = userRepository.findByIdAndRemovedFalse(userId);
         if (user.isPresent()) {
             User userInDb = user.get();

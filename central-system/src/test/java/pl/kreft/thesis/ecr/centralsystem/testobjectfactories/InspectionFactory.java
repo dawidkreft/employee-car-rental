@@ -8,16 +8,16 @@ import pl.kreft.thesis.ecr.centralsystem.user.model.User;
 import java.time.Instant;
 
 public class InspectionFactory {
-    public static Inspection getRandomInspection(User inspector, Car car){
-        return new Inspection(
-                inspector,
-                car,
-                Instant.now(),
-                "OK",
-                VisualCondition.GOOD,
-                VisualCondition.GREAT,
-                Instant.now(),
-                false
-        );
+    public static Inspection getRandomInspection(User inspector, Car car) {
+        return Inspection.builder()
+                         .carCondition(VisualCondition.GOOD)
+                         .inspectedCar(car)
+                         .description("OK")
+                         .inspector(inspector)
+                         .inspectionDate(Instant.now())
+                         .tireCondition(VisualCondition.GOOD)
+                         .creationDate(Instant.now())
+                         .removed(false)
+                         .build();
     }
 }

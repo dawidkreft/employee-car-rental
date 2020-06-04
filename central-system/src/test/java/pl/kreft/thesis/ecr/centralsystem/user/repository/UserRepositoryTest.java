@@ -34,7 +34,7 @@ class UserRepositoryTest {
     @Test
     void shouldSaveAndFindById() {
         User testUser = UserFactory.getEmployee();
-        User testUser1 = UserFactory.getEmployee();
+        User testUser1 = UserFactory.getSecondEmployee();
 
         userRepository.save(testUser);
         userRepository.save(testUser1);

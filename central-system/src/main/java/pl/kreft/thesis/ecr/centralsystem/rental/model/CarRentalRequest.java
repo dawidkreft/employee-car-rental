@@ -1,23 +1,30 @@
 package pl.kreft.thesis.ecr.centralsystem.rental.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NonNull;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Builder
 @Data
 @AllArgsConstructor
 public class CarRentalRequest {
 
-    private UUID rentalCarId;
+    @NonNull
+    UUID rentalCarId;
 
-    private UUID lenderUserId;
+    @NonNull
+    UUID lenderUserId;
 
-    private Instant dateOfStartRent;
+    @NonNull
+    LocalDateTime dateOfStartRent;
 
-    private Instant dateOfEndRent;
+    @NonNull
+    LocalDateTime dateOfEndRent;
 
-    private String target;
-
+    @NonNull
+    String target;
 }
