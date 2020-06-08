@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="/fragments/header :: header"/>
+
+<div class="wrapper">
+    <div class="menu">
+
+        <div th:replace="/fragments/menu :: menu"/>
+
+
+    </div>
+
+    <div class="container">
+
+        <h1>Zwróć auto</h1>aaabb
+        <p th:text="${rentalId}">nie widoczny tekst</p>
+
+        <form action="#" th:action="@{/rentals/return}" th:object="${returnCarRequest}"
+              method="post">
+            <input type="hidden" th:field="*{rentalId}">
+            <p>opis: <input type="text" th:field="*{receivedDescription}"/></p>
+            <p>przebyty dystans: <input type="number" th:field="*{distanceTraveled}"/></p>
+            <p>dane z licznika: <input type="number" th:field="*{numberKilometerFromMeter}"/></p>
+            <p>opis auta: <input type="text" th:field="*{carCondition}"/></p>
+            <p>stan paliwa: <input type="number" th:field="*{currentFuelLevel}"/></p>
+            <p><input type="submit" value="Zwróć"/> <input type="reset" value="Reset"/></p>
+        </form>
+    </div>
+
+
+</div>
+
+          
+<div th:replace="/fragments/footer :: footer"/>
+</body>
+</html>

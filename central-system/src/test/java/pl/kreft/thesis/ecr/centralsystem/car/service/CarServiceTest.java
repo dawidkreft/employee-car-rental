@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
+import pl.kreft.thesis.ecr.centralsystem.car.model.CarStatus;
 import pl.kreft.thesis.ecr.centralsystem.car.model.NewCarRequest;
 import pl.kreft.thesis.ecr.centralsystem.car.repository.CarRepository;
 import pl.kreft.thesis.ecr.centralsystem.testobjectfactories.NewCarRequestFactory;
@@ -76,5 +77,19 @@ class CarServiceTest {
 
         assertEquals(3, allCars.size());
         assertEquals(4, carRepository.findAll().size());
+    }
+
+    @Test
+    void shouldReturnAllFreeCars() throws ObjectNotFoundException {
+        carService.save(NewCarRequestFactory.getNewCarRequestForPremiumCar());
+        Car savedCar = carService.save(NewCarRequestFactory.getNewCarRequestForPremiumCar());
+        savedCar.setStatus(CarStatus.LOAN);
+        carRepository.save(savedCar);
+
+        List<Car> allFreeCars = carService.getAllFreeCars();
+        List<Car> allCars = carService.getAll();
+
+        assertEquals(1, allFreeCars.size());
+        assertEquals(2, allCars.size());
     }
 }

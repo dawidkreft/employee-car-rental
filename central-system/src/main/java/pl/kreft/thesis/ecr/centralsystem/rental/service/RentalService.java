@@ -4,10 +4,12 @@ import javassist.tools.rmi.ObjectNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
 import pl.kreft.thesis.ecr.centralsystem.car.service.CarService;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.CarRentalRequest;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.Rental;
+import pl.kreft.thesis.ecr.centralsystem.rental.model.RentalHistoryDTO;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.ReturnCarRequest;
 import pl.kreft.thesis.ecr.centralsystem.rental.repository.RentalRepository;
 import pl.kreft.thesis.ecr.centralsystem.user.model.User;
@@ -16,18 +18,22 @@ import pl.kreft.thesis.ecr.centralsystem.user.repository.UserRepository;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static pl.kreft.thesis.ecr.centralsystem.config.GlobalConfiguration.defaultTimeZone;
+
 @Slf4j
 @Service
-class RentalService {
+public class RentalService {
 
-    private RentalRepository rentalRepository;
-    private UserRepository userRepository;
-    private CarService carService;
+    private final RentalRepository rentalRepository;
+    private final UserRepository userRepository;
+    private final CarService carService;
 
     @Autowired
     public RentalService(RentalRepository rentalRepository, UserRepository userRepository,
@@ -64,8 +70,18 @@ class RentalService {
         return allRentals;
     }
 
-    public Rental rentCar(CarRentalRequest request) throws ObjectNotFoundException {
-        Optional<User> user = userRepository.findById(request.getLenderUserId());
+    public List<Rental> getAllActiveByUserId(UUID userId) {
+        log.info("Method getAllActiveByUserId called for user Id: " + userId);
+        List<Rental> allRentals = rentalRepository.findAllByLenderId(userId);
+        allRentals = allRentals.stream()
+                               .filter(item -> !item.getRemoved() && !item.getIsReturned())
+                               .collect(Collectors.toList());
+        return allRentals;
+    }
+
+    @Transactional
+    public Rental rentCar(CarRentalRequest request, UUID userId) throws ObjectNotFoundException {
+        Optional<User> user = userRepository.findById(userId);
         Car car = carService.find(request.getRentalCarId());
         if (user.isPresent()) {
             checkIsUserAbilityToRentCar(user.get());
@@ -80,26 +96,33 @@ class RentalService {
                                                                      request.getDateOfStartRent())
                                                              .lender(user.get())
                                                              .removed(false)
+                                                             .isReturned(false)
                                                              .target(request.getTarget())
                                                              .build());
+
+            carService.rentCar(car);
             log.info("Rental with id: {} successfully saved", savedRental.getId());
             return savedRental;
         }
         log.warn("Could not find input car with id: {} or user with id: {}",
-                request.getRentalCarId(), request.getLenderUserId());
+                request.getRentalCarId(), userId);
         throw new IllegalArgumentException("Argument not exists");
     }
 
+    @Transactional
     public Rental returnCar(ReturnCarRequest returnCarRequest) throws ObjectNotFoundException {
+        log.info("Method returnCar was called");
         Rental rental = find(returnCarRequest.getRentalId());
         rental.setCarCondition(returnCarRequest.getCarCondition());
         rental.setDistanceTraveled(returnCarRequest.getDistanceTraveled());
         rental.setNumberKilometerFromMeter(returnCarRequest.getNumberKilometerFromMeter());
         rental.setReceivedDescription(returnCarRequest.getReceivedDescription());
+        rental.setIsReturned(true);
+        rental.setReturnDate(Instant.now());
 
-        Car car = carService.find(rental.getCar().getId());
-        carService.save(car);
-        log.info("Rental with id: {} was return;", rental.getId());
+        carService.returnCar(rental.getCar());
+        log.debug("Rental with the following request:" + returnCarRequest.toString()
+                + " was returned");
         return rentalRepository.save(rental);
     }
 
@@ -122,5 +145,39 @@ class RentalService {
                         String.format("User with id: {} cannot rent a car", user.getId()));
             }
         }
+    }
+
+    public List<RentalHistoryDTO> getRentalHistory(UUID lenderId) throws ObjectNotFoundException {
+        List<RentalHistoryDTO> results = new ArrayList<>();
+        int index = 1;
+        List<Rental> rentals = rentalRepository.findAllByLenderId(lenderId);
+        for (Rental rental : rentals) {
+            Car car = carService.find(rental.getCar().getId());
+            results.add(RentalHistoryDTO.builder()
+                                        .ordinalNumber(index)
+                                        .id(rental.getId())
+                                        .applicationDate(
+                                                LocalDateTime.ofInstant(rental.getApplicationDate(),
+                                                        ZoneId.of(defaultTimeZone)))
+                                        .carId(rental.getCar().getId())
+                                        .carBrand(car.getBrand())
+                                        .carModel(car.getModel())
+                                        .carType(car.getType())
+                                        .carCondition(rental.getCarCondition())
+                                        .distanceTraveled(rental.getDistanceTraveled())
+                                        .isAcceptedByBoss(rental.getIsAcceptedByBoss())
+                                        .isReceivedPositively(rental.getIsReceivedPositively())
+                                        .isReturned(rental.getIsReturned())
+                                        .numberKilometerFromMeter(
+                                                rental.getNumberKilometerFromMeter())
+                                        .plannedRentalEnd(rental.getPlannedRentalEnd())
+                                        .plannedRentalStart(rental.getPlannedRentalStart())
+                                        .returnDate(LocalDateTime.ofInstant(rental.getReturnDate(),
+                                                ZoneId.of(defaultTimeZone)))
+                                        .target(rental.getTarget())
+                                        .build());
+            index++;
+        }
+        return results;
     }
 }

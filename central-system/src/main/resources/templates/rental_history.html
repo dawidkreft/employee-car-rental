@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="/fragments/header :: header"/>
+
+<div class="wrapper">
+    <div class="menu">
+
+        <div th:replace="/fragments/menu :: menu"/>
+
+
+    </div>
+
+    <div class="container">
+
+        <h1>Historia wypożyczeń</h1>
+    </div>
+    <table>
+            
+        <thead>
+                 
+        <tr>        
+            <th> Lp. </th>   
+            <th> Cel </th> 
+            <th> Start </th> 
+            <th> Koniec </th> 
+            <th> Producent</th>
+            <th> Model</th>
+            <th> Typ</th>
+            <th> Data złożenia wniosku </th>    
+            <th> Pokonany dystans</th>    
+            <th> Stan licznika </th>    
+            <th> Zaakaceptowane przez przełożonego</th>    
+            <th> Odbiór pozytywny </th>    
+        </tr>
+        </thead>
+         
+        <tbody>    
+        <tr th:if="${rentals.empty}">
+               
+            <td colspan="2"> Nie wypożyczyłeś jeszcze auta! <br> Zrób to! </td>
+                   
+        </tr>
+                 
+        <tr th:each="rental : ${rentals}">
+
+            <td><span th:text="${rental.ordinalNumber}">  </span></td>
+
+            <td><span th:text="${rental.target}">  </span></td>
+                        
+            <td><span th:text="${rental.plannedRentalStart}">  </span></td>
+                        
+            <td><span th:text="${rental.plannedRentalEnd}">  </span></td> 
+
+            <td><span th:text="${rental.carBrand}">  </span></td>
+
+            <td><span th:text="${rental.carModel}">  </span></td>
+
+            <td><span th:text="${rental.carType.displayValue}">  </span></td>
+
+            <td><span th:text="${rental.applicationDate}">  </span></td>
+
+            <td><span th:text="${rental.distanceTraveled}">  </span></td>
+
+            <td><span th:text="${rental.numberKilometerFromMeter}">  </span></td>
+
+            <td><span th:text="${rental.isAcceptedByBoss}">  </span></td>
+
+            <td><span th:text="${rental.isReceivedPositively}">  </span></td>
+             
+        </tr>
+        </tbody>
+    </table>
+    </div>
+
+
+</div>
+
+          
+<div th:replace="/fragments/footer :: footer"/>
+</body>
+</html>

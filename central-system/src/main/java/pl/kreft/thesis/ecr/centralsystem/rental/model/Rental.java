@@ -80,6 +80,14 @@ public class Rental {
     Boolean isAcceptedByBoss;
 
     @Nullable
+    @Column(name = "rental_is_returned")
+    Boolean isReturned;
+
+    @Nullable
+    @Column(name = "rental_return_date")
+    Instant returnDate;
+
+    @Nullable
     @Column(name = "rental_positively_received")
     Boolean isReceivedPositively;
 

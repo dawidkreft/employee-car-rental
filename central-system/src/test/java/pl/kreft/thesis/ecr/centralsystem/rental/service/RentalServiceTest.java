@@ -85,9 +85,9 @@ class RentalServiceTest {
 
     @Test
     public void shouldSaveNewRentalRequestAndFind() throws ObjectNotFoundException {
-        CarRentalRequest carRentalRequest = prepareRequest(lender.getId(), car.getId());
+        CarRentalRequest carRentalRequest = prepareRequest(car.getId());
 
-        Rental rental = rentalService.rentCar(carRentalRequest);
+        Rental rental = rentalService.rentCar(carRentalRequest, lender.getId());
         Rental rentalInDb = rentalService.find(rental.getId());
 
         assertEquals(rental.getId(), rentalInDb.getId());
@@ -97,14 +97,28 @@ class RentalServiceTest {
     }
 
     @Test
-    public void shouldCorrectSaveNewRentalAndUpdatedReturnCar() throws ObjectNotFoundException {
-        CarRentalRequest carRentalRequest = prepareRequest(lender.getId(), car.getId());
+    public void shouldCorrectSaveNewRentalAndReturnCar() throws ObjectNotFoundException {
+        CarRentalRequest carRentalRequest = prepareRequest(car.getId());
 
-        Rental rental = rentalService.rentCar(carRentalRequest);
+        Rental rental = rentalService.rentCar(carRentalRequest, lender.getId());
         ReturnCarRequest returnCarRequest = prepareReturnRequest(rental.getId());
         Rental finishedRental = rentalService.returnCar(returnCarRequest);
 
         assertEquals(rental.getId(), finishedRental.getId());
         assertEquals(rental.getPlannedRentalStart(), finishedRental.getPlannedRentalStart());
+    }
+
+    @Test
+    public void shouldNotFindRentalWhenAllAreReturned() throws ObjectNotFoundException {
+        CarRentalRequest carRentalRequest = prepareRequest(car.getId());
+        Rental rental = rentalService.rentCar(carRentalRequest, lender.getId());
+        ReturnCarRequest returnCarRequest = prepareReturnRequest(rental.getId());
+        rentalService.returnCar(returnCarRequest);
+
+        List<Rental> rentals = rentalService.getAllActiveByUserId(lender.getId());
+
+        int rentalsNumber = rentalRepository.findAll().size();
+        assertEquals(rentals.size(), 0);
+        assertEquals(rentalsNumber, 1);
     }
 }

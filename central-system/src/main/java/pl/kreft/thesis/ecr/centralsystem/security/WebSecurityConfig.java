@@ -11,6 +11,7 @@ import pl.kreft.thesis.ecr.centralsystem.user.service.UserDetailsProvider;
 
 import static pl.kreft.thesis.ecr.centralsystem.common.RequestPageMappingInfo.HOME_PAGE_REQUEST;
 import static pl.kreft.thesis.ecr.centralsystem.common.RequestPageMappingInfo.LOGIN_PAGE_REQUEST;
+import static pl.kreft.thesis.ecr.centralsystem.common.RequestPageMappingInfo.RENTAL_REQUEST;
 
 @Configuration
 @EnableWebSecurity
@@ -33,12 +34,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-            .antMatchers("/", HOME_PAGE_REQUEST)
+            .antMatchers("/", HOME_PAGE_REQUEST, "/css/style.css", "/image/logo.png")
             .permitAll()
             .anyRequest()
             .authenticated()
             .and()
             .formLogin()
+            .defaultSuccessUrl(RENTAL_REQUEST,true)
             .loginPage(LOGIN_PAGE_REQUEST)
             .permitAll()
             .and()
@@ -47,7 +49,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .logout()
             .permitAll();
-
     }
 }
 

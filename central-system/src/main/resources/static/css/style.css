@@ -1,0 +1,96 @@
+body {
+    background-color: #f3f3f3;
+    width: 1200px;
+    max-height: 1000px;
+}
+
+.wrapper {
+    display: flex;
+}
+
+.menu{
+
+    text-align: center;
+    margin-right: 10px;
+    width: 250px;
+}
+
+.menu li{
+    height: 22px;
+    border-bottom: 1px solid silver;
+    list-style-type: none;
+}
+.menu a
+{
+    color: #a00e0e;
+    text-decoration: none;
+}
+
+.menu a:hover, a:active{
+ color: #1abc9c;
+}
+
+.menu li:hover{
+    color: #1abc9c;
+    background-color: #f7f7f7;
+}
+
+.logout-li{
+    padding-top: 20px;
+    height: 30px;
+}
+
+.logout-li:hover{
+    background-color: #f1f1f1;
+}
+
+.container{
+    margin-left: 30px;
+}
+
+
+.header img {
+
+    padding-left: 280px;
+    width: 900px;
+    height: 180px;
+}
+
+.footer {
+    width: 700px;
+    padding-left: 380px;
+    margin-top: 65px;
+    text-align: center;
+    align-content: center;
+}
+
+.footer hr {
+    border-top: 1px solid silver;
+}
+
+.login-status {
+    height: 30px;
+}
+
+.login-panel {
+    margin-top: 50px;
+    padding-left: 530px;
+    width: 400px;
+    align-content: center;
+    text-align: center;
+}
+
+.red_paragraph {
+    color: red;
+}
+
+.green_paragraph {
+    color: green;
+}
+
+.greeting{
+    padding-left: 50px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+}

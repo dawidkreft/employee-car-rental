@@ -30,10 +30,9 @@ public class RentalFactory {
                      .build();
     }
 
-    static public CarRentalRequest prepareRequest(UUID userId, UUID carId) {
+    static public CarRentalRequest prepareRequest(UUID carId) {
         return CarRentalRequest.builder()
                                .rentalCarId(carId)
-                               .lenderUserId(userId)
                                .target("Podróż służbowa")
                                .dateOfStartRent(LocalDateTime.now())
                                .dateOfEndRent(LocalDateTime.now())

@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Pracownicza wypożyczalnia pojazdów</title>
+</head>
+<body>
+<div class="container">
+    <h1 th:if="${errorMessage}" th:utext="${errorMessage}">Error java.lang.NullPointerException</h1>
+    <h1 th:if="!${errorMessage}">Strona nie istnieje</h1>
+    <a href="index.html" th:href="@{/home}"> Wróć do strony głownej</a>
+</div>
+
+
+</body>
+</html>

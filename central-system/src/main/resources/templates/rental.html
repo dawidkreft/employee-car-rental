@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="/fragments/header :: header"/>
+
+<div class="wrapper">
+    <div class="menu">
+
+        <div th:replace="/fragments/menu :: menu"/>
+
+
+    </div>
+
+    <div class="container">
+
+        <h1>Lista aktualnie wynajętych pojazdów</h1>
+
+        <table class="rent-car-list">
+            <thead>      
+            <tr>            
+                <th> Cel podróży</th>
+                            
+                <th> Start</th>
+                            
+                <th> Koniec</th>
+
+                    
+            </tr>
+            </thead>
+             
+            <tbody>    
+            <tr th:if="${activeRentals.empty}">
+                   
+                <td colspan="2"> Aktualnie nie posiadasz wynajętych pojazdów</td>
+                        
+            </tr>
+                     
+            <tr th:each="rental : ${activeRentals}">
+                <td><span th:text="${rental.target}">  </span></td>
+                     
+                <td><span
+                        th:text="${#temporals.format(rental.plannedRentalStart, 'dd-MM-yyyy HH:mm')}">  </span>
+                </td>
+                            
+                <td><span
+                        th:text="${#temporals.format(rental.plannedRentalEnd, 'dd-MM-yyyy HH:mm')}"></span>
+                </td>
+                <td>
+                    <form action="#" th:action="@{'/rentals/return/{id}'(id=${rental.id})}"
+                          th:method="GET">
+                        <button type="submit">Zwróć</button>
+                    </form>
+                </td>
+                           
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+          
+<div th:replace="/fragments/footer :: footer"/>
+</body>
+</html>

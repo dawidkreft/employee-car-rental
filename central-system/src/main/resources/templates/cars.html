@@ -1,55 +1,49 @@
 <!DOCTYPE HTML>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Pojazdy</title>
-    <link rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
-    <!--   <link rel="stylesheet" th:href="@{/css/main.css}"/> -->
+    <div th:replace="/fragments/header :: header-css"/>
 </head>
 <body>
-<main role="main" class="container">
-    <div class="starter-template">
-        <h1>Lista pojazdów</h1>
+<div th:replace="/fragments/header :: header"/>
+
+<div class="wrapper">
+    <div class="menu">
+
+        <div th:replace="/fragments/menu :: menu"/>
+
+
     </div>
-    <table>
-            
-        <thead>
-                 
-        <tr>            
-            <th> Producent</th>
-                        
-            <th> Model</th>
-                        
-            <th> Typ</th>
 
-            <th> Data produkcji</th>
-                
-        </tr>
-        </thead>
-         
-        <tbody>    
-        <tr th:if="${cars.empty}">
-               
-            <td colspan="2"> Brak pojazdów</td>
-                    
-        </tr>
-                 
-        <tr th:each="car : ${cars}">
-                        
-            <td><span th:text="${car.brand}">  </span></td>
-                        
-            <td><span th:text="${car.model}">  </span></td>
-                        
-            <td><span th:text="${car.type.displayValue}">  </span></td>
+    <div class="container">
+        <h1>Lista pojazdów</h1>
+        <table>
+            <thead>
+            <tr>
+                <th> Producent</th>
+                <th> Model</th>
+                <th> Typ</th>
+                <th> Data produkcji</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${cars.empty}">
+                <td colspan="2"> Brak pojazdów</td>
+            </tr>
+            <tr th:each="car : ${cars}">
+            <tr th:id="${car.id}" th:each="car,iterStat : ${cars}">
+                <td><span th:text="${car.brand}">  </span></td>
+                <td><span th:text="${car.model}">  </span></td>
+                <td><span th:text="${car.type.displayValue}">  </span></td>
+                <td><span th:text="${car.productionYear }"></span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-            <td><span th:text="${car.productionYear }"></span></td>
-                       
-        </tr>
-        </tbody>
-    </table>
-</main>
 
-<script type="text/javascript" th:src="@{webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+</div>
+
+          
+<div th:replace="/fragments/footer :: footer"/>
 </body>
 </html>

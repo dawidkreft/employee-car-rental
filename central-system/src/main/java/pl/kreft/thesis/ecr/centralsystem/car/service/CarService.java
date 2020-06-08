@@ -56,9 +56,18 @@ public class CarService {
     }
 
     public List<Car> getAll() {
-        log.info("Returning all car");
+        log.info("Returning all cars");
         List<Car> allCars = carRepository.findAll();
         allCars = allCars.stream().filter(item -> !item.getRemoved()).collect(Collectors.toList());
+        return allCars;
+    }
+
+    public List<Car> getAllFreeCars() {
+        log.info("Returning all free cars");
+        List<Car> allCars = carRepository.findAll();
+        allCars = allCars.stream()
+                         .filter(item -> !item.getRemoved() && item.getStatus().equals(CarStatus.AVAILABLE))
+                         .collect(Collectors.toList());
         return allCars;
     }
 
@@ -72,5 +81,17 @@ public class CarService {
         } else {
             throw new ObjectNotFoundException("Unable to locate car with id: " + carId);
         }
+    }
+
+    public void rentCar(Car car) {
+        log.info("Changing car status to busy with id:" + car.getId());
+        car.setStatus(CarStatus.LOAN);
+        carRepository.save(car);
+    }
+
+    public void returnCar(Car car) {
+        log.info("Changing car status to free with id:" + car.getId());
+        car.setStatus(CarStatus.AVAILABLE);
+        carRepository.save(car);
     }
 }
