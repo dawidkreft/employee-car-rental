@@ -27,7 +27,7 @@
                             
                 <th> Koniec</th>
 
-                    
+                <th> Akcja</th>
             </tr>
             </thead>
              
@@ -51,7 +51,7 @@
                 <td>
                     <form action="#" th:action="@{'/rentals/return/{id}'(id=${rental.id})}"
                           th:method="GET">
-                        <button type="submit">Zwróć</button>
+                        <button id="return-button" type="submit">Zwróć</button>
                     </form>
                 </td>
                            

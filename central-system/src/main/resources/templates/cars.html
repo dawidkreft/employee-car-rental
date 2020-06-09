@@ -16,25 +16,31 @@
 
     <div class="container">
         <h1>Lista pojazdów</h1>
-        <table>
+        <table class="cars-table">
             <thead>
             <tr>
                 <th> Producent</th>
                 <th> Model</th>
                 <th> Typ</th>
                 <th> Data produkcji</th>
+                <th> Status</th>
             </tr>
             </thead>
             <tbody>
             <tr th:if="${cars.empty}">
                 <td colspan="2"> Brak pojazdów</td>
             </tr>
+
             <tr th:each="car : ${cars}">
             <tr th:id="${car.id}" th:each="car,iterStat : ${cars}">
                 <td><span th:text="${car.brand}">  </span></td>
                 <td><span th:text="${car.model}">  </span></td>
                 <td><span th:text="${car.type.displayValue}">  </span></td>
                 <td><span th:text="${car.productionYear }"></span></td>
+                <td><span th:style="|${car.status.displayValue == 'Dostępny' ? 'color: green;' : 'color: red;'}|"
+                          th:text="${car.status.displayValue }"></span></td>
+
+
             </tr>
             </tbody>
         </table>

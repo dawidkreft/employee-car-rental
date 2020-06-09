@@ -2,39 +2,43 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="/fragments/header :: header-css"/>
+    <link href="../../static/css/return_car_form.css" th:href="@{/css/return_car_form.css}"
+          rel="stylesheet"/>
 </head>
 <body>
 <div th:replace="/fragments/header :: header"/>
 
 <div class="wrapper">
     <div class="menu">
-
         <div th:replace="/fragments/menu :: menu"/>
-
-
     </div>
 
     <div class="container">
-
         <h1>Wynajmnij auto</h1>
-        <form action="#" th:action="@{/rentals}" th:object="${carRentalRequest}" method="post">
 
-            <select th:field="*{rentalCarId}">
-                <option th:each="car : ${cars}"
-                        th:value="${car.id}"
-                        th:text="${ car.type.displayValue  + ' ' + car.brand + ' ' + car.model + ' '  + car.productionYear }">Car
-                </option>
-            </select>
-            <p>start: <input type="datetime-local" th:field="*{dateOfStartRent}"/></p>
-            <p>koniec: <input type="datetime-local" th:field="*{dateOfEndRent}"/></p>
-            <p>cel: <input type="text" th:field="*{target}"/></p>
-            <p><input type="submit" value="Wynajmnij"/> <input type="reset" value="Reset"/></p>
-        </form>
+        <div class="form-style-5">
+            <form action="#" th:action="@{/rentals}" th:object="${carRentalRequest}" method="post">
+                <fieldset>
+                    <legend> Szczegóły</legend>
+<label>Wybierz auto</label>
+                    <select th:field="*{rentalCarId}">
+                        <option th:each="car : ${cars}"
+                                th:value="${car.id}"
+                                th:text="${ car.type.displayValue  + ' ' + car.brand + ' ' + car.model + ' '  + car.productionYear }">
+                        </option>
+                    </select>
+                    <label> Wybierz date startu:</label>
+                    <input type="datetime-local" th:field="*{dateOfStartRent}"/>
+                    <label> Wybierz date zwrotu:</label>
+                    <input type="datetime-local" th:field="*{dateOfEndRent}"/>
+                    <label> Cel wypożyczenia</label>
+                    <input type="text" th:field="*{target}" placeholder="Opisz cel wyjazdu"/>
+                </fieldset>
+                <input type="submit" value="Wynajmnij"/>       
+            </form>
+        </div>
     </div>
-
-
 </div>
-
           
 <div th:replace="/fragments/footer :: footer"/>
 </body>

@@ -17,63 +17,86 @@
     <div class="container">
 
         <h1>Historia wypożyczeń</h1>
-    </div>
-    <table>
-            
-        <thead>
-                 
-        <tr>        
-            <th> Lp. </th>   
-            <th> Cel </th> 
-            <th> Start </th> 
-            <th> Koniec </th> 
-            <th> Producent</th>
-            <th> Model</th>
-            <th> Typ</th>
-            <th> Data złożenia wniosku </th>    
-            <th> Pokonany dystans</th>    
-            <th> Stan licznika </th>    
-            <th> Zaakaceptowane przez przełożonego</th>    
-            <th> Odbiór pozytywny </th>    
-        </tr>
-        </thead>
-         
-        <tbody>    
-        <tr th:if="${rentals.empty}">
-               
-            <td colspan="2"> Nie wypożyczyłeś jeszcze auta! <br> Zrób to! </td>
-                   
-        </tr>
-                 
-        <tr th:each="rental : ${rentals}">
 
-            <td><span th:text="${rental.ordinalNumber}">  </span></td>
+        <table class="rent-history-table">
+                
+            <thead>         
+            <tr>        
+                <th> Lp.</th>
+                   
+                <th> Cel</th>
+                 
+                <th> Start</th>
+                 
+                <th> Koniec</th>
 
-            <td><span th:text="${rental.target}">  </span></td>
-                        
-            <td><span th:text="${rental.plannedRentalStart}">  </span></td>
-                        
-            <td><span th:text="${rental.plannedRentalEnd}">  </span></td> 
+                <th> Producent</th>
 
-            <td><span th:text="${rental.carBrand}">  </span></td>
+                <th> Model</th>
 
-            <td><span th:text="${rental.carModel}">  </span></td>
+                <th> Typ</th>
 
-            <td><span th:text="${rental.carType.displayValue}">  </span></td>
-
-            <td><span th:text="${rental.applicationDate}">  </span></td>
-
-            <td><span th:text="${rental.distanceTraveled}">  </span></td>
-
-            <td><span th:text="${rental.numberKilometerFromMeter}">  </span></td>
-
-            <td><span th:text="${rental.isAcceptedByBoss}">  </span></td>
-
-            <td><span th:text="${rental.isReceivedPositively}">  </span></td>
+                <th> Data złożenia wniosku</th>
+                    
+                <th> Pokonany dystans</th>
+                    
+                <th> Stan licznika</th>
+                    
+                <th> Zaakaceptowane przez przełożonego</th>
+                    
+                <th> Odbiór pozytywny</th>
+                    
+            </tr>
+            </thead>
              
-        </tr>
-        </tbody>
-    </table>
+            <tbody>    
+            <tr th:if="${rentals.empty}">   
+                <td colspan="2"> Nie wypożyczyłeś jeszcze auta! <br> Zrób to!</td>
+            </tr>
+            <tr th:each="rental : ${rentals}">
+
+                <td class="ordinal-number"><span th:text="${rental.ordinalNumber}">  </span></td>
+
+                <td><span th:text="${rental.target}">  </span></td>
+
+                <td><span
+                        th:text="${#temporals.format(rental.plannedRentalStart, 'dd-MM-yyyy HH:mm')}">  </span>
+                </td>
+                         
+                <td><span
+                        th:text="${#temporals.format(rental.plannedRentalEnd, 'dd-MM-yyyy HH:mm')}">  </span>
+                </td>
+                 
+                <td><span th:text="${rental.carBrand}">  </span></td>
+
+                <td><span th:text="${rental.carModel}">  </span></td>
+
+                <td><span th:text="${rental.carType.displayValue}">  </span></td>
+
+                <td><span
+                        th:text="${#temporals.format(rental.applicationDate, 'dd-MM-yyyy HH:mm')}">  </span>
+                </td>
+
+
+                <td><span
+                        th:text="${#objects.nullSafe(rental.distanceTraveled, 'Nie dotyczy')}">  </span>
+                </td>
+
+                <td><span
+                        th:text="${#objects.nullSafe(rental.numberKilometerFromMeter, 'Nie dotyczy')}">  </span>
+                </td>
+
+                <td><span
+                        th:text="${#objects.nullSafe(rental.isAcceptedByBoss, 'Nie dotyczy')}">  </span>
+                </td>
+
+                <td><span
+                        th:text="${#objects.nullSafe(rental.isReceivedPositively, 'Nie dotyczy')}">  </span>
+                </td>
+                 
+            </tr>
+            </tbody>
+        </table>
     </div>
 
 

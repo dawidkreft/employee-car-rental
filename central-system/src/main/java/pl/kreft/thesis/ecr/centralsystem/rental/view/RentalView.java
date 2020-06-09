@@ -73,10 +73,11 @@ public class RentalView {
 
     @GetMapping(RENTAL_RETURN_REQUEST_WITH_ID)
     public String returnRental(Model model, @PathVariable UUID id,
-            @AuthenticationPrincipal UserDetailsImpl user) {
+            @AuthenticationPrincipal UserDetailsImpl user) throws ObjectNotFoundException {
         ReturnCarRequest returnCarRequest = new ReturnCarRequest();
         returnCarRequest.setRentalId(id);
         model.addAttribute("returnCarRequest", returnCarRequest);
+        model.addAttribute("car", carService.find(rentalService.find(id).getCar().getId()));
         return RENTAL_RETURN_FORM;
     }
 

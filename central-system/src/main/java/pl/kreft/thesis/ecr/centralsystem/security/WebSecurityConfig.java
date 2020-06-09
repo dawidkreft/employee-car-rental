@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.access.AccessDeniedHandler;
 import pl.kreft.thesis.ecr.centralsystem.user.service.UserDetailsProvider;
 
-import static pl.kreft.thesis.ecr.centralsystem.common.RequestPageMappingInfo.HOME_PAGE_REQUEST;
 import static pl.kreft.thesis.ecr.centralsystem.common.RequestPageMappingInfo.LOGIN_PAGE_REQUEST;
 import static pl.kreft.thesis.ecr.centralsystem.common.RequestPageMappingInfo.RENTAL_REQUEST;
 
@@ -19,6 +18,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsProvider userDetailsProvider;
     private final AccessDeniedHandler accessDeniedHandler;
+
+    private static final String[] LOCATIONS = { "/", "/home", "/css/style.css", "/image/logo.png",
+            "/image/favicon.ico", "/css/return_car_form.css" };
 
     @Autowired
     public WebSecurityConfig(UserDetailsProvider userDetailsProvider,
@@ -34,13 +36,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-            .antMatchers("/", HOME_PAGE_REQUEST, "/css/style.css", "/image/logo.png")
+            .antMatchers(LOCATIONS)
             .permitAll()
             .anyRequest()
             .authenticated()
             .and()
             .formLogin()
-            .defaultSuccessUrl(RENTAL_REQUEST,true)
+            .defaultSuccessUrl(RENTAL_REQUEST, true)
             .loginPage(LOGIN_PAGE_REQUEST)
             .permitAll()
             .and()

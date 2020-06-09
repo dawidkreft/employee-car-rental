@@ -33,8 +33,8 @@ INSERT INTO public.rental (rental_id, rental_application_date, rental_car_condit
     rental_received_description, rental_removed, rental_target, rental_car_fk, lender_user_fk,
     rental_is_returned, rental_return_date)
 VALUES ('fd5903a1-d78f-4fe1-aeef-974c6ebab706', current_date, null, current_date, null, null,
-         null, null, current_date, current_date , null, false, 'aaa',
+         null, null, current_date, current_date , null, false, 'Wyjazd do hurtowni',
         'ae98efef-0f84-46e5-bb57-26c69d6b4042', '20ebd0bf-f4b8-4ad0-b1eb-01d373250368', true, current_timestamp ),
         ('1a586b98-8951-45d7-9a22-56807262df17', current_date, null, current_date, null, null,
-         null, null, current_date, current_date , null, false, 'aaa',
+         null, null, current_date, current_date , null, false, 'Wyjazd do klienta',
         'f077c68e-313c-4091-81bf-2805d81d4a13', '20ebd0bf-f4b8-4ad0-b1eb-01d373250368', false, current_timestamp );

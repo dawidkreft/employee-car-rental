@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <title>Pracownicza wypożyczalnia pojazdów</title>
+    <div th:replace="/fragments/header :: header-css"/>
 </head>
 <body>
-<h1>Witaj!</h1>
-<p>Kliknij <a th:href="@{/rentals}">tutaj </a> i wypożycz pojazd.</p>
+<div th:replace="/fragments/header :: header"/>
+
+<div class="home_page">
+    <h1>Witaj!</h1>
+    <p>Kliknij <a th:href="@{/rentals}">tutaj </a> i wypożycz pojazd.</p>
+</div>
+<div th:replace="/fragments/footer :: footer"/>
 </body>
 </html>

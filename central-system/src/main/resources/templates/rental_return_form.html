@@ -2,39 +2,43 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="/fragments/header :: header-css"/>
+    <link href="../../static/css/return_car_form.css" th:href="@{/css/return_car_form.css}"
+          rel="stylesheet"/>
 </head>
 <body>
 <div th:replace="/fragments/header :: header"/>
 
 <div class="wrapper">
     <div class="menu">
-
         <div th:replace="/fragments/menu :: menu"/>
-
-
     </div>
-
     <div class="container">
-
-        <h1>Zwróć auto</h1>aaabb
-        <p th:text="${rentalId}">nie widoczny tekst</p>
-
+<div class="form-style-5">
         <form action="#" th:action="@{/rentals/return}" th:object="${returnCarRequest}"
               method="post">
-            <input type="hidden" th:field="*{rentalId}">
-            <p>opis: <input type="text" th:field="*{receivedDescription}"/></p>
-            <p>przebyty dystans: <input type="number" th:field="*{distanceTraveled}"/></p>
-            <p>dane z licznika: <input type="number" th:field="*{numberKilometerFromMeter}"/></p>
-            <p>opis auta: <input type="text" th:field="*{carCondition}"/></p>
-            <p>stan paliwa: <input type="number" th:field="*{currentFuelLevel}"/></p>
-            <p><input type="submit" value="Zwróć"/> <input type="reset" value="Reset"/></p>
+            <fieldset>
+                <legend> Zwracasz         <span th:inline="text"> [[${car.brand}]]</span>
+                    <span th:inline="text">[[${car.model}]]</span></legend>
+                <input type="hidden" th:field="*{rentalId}">
+                <label> Przebyty dystans</label>
+                <input type="number" th:field="*{distanceTraveled}"
+                       placeholder="Dystans w kilometrach"/>
+                <label>Stan licznika</label>
+                <input type="number" th:field="*{numberKilometerFromMeter}"
+                       placeholder="Stan licznika w km"/>
+                <label> Stan paliwa</label>
+                <input type="number" th:field="*{currentFuelLevel}"
+                       placeholder="Procentowy stan paliwa"/>
+                <label>Szczegóły pojazdu</label>
+                <textarea th:field="*{carCondition}" placeholder="Opis dotyczącu pojazdu, np. czy wystąpiły jakieś problemy"></textarea>
+                <label>Dodatkowy opis</label>
+                <textarea th:field="*{receivedDescription}" placeholder="Opis dotyczący zwrotu, np powód spóźnienia"></textarea>
+            </fieldset>
+            <input type="submit" value="Zwróć"/>       
         </form>
-    </div>
-
-
 </div>
-
-          
+    </div>
+</div>
 <div th:replace="/fragments/footer :: footer"/>
 </body>
 </html>
