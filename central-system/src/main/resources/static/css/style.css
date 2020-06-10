@@ -194,3 +194,8 @@ body {
     background-size: 100% 100%;
     box-shadow: 0 0 0 5px #1abc9c inset;
 }
+
+.error{
+    margin-top: 30px;
+    margin-left: 350px;
+}

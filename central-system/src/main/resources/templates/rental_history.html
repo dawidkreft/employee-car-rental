@@ -79,19 +79,24 @@
 
 
                 <td><span
-                        th:text="${#objects.nullSafe(rental.distanceTraveled, 'Nie dotyczy')}">  </span>
+                        th:text="${#objects.nullSafe(rental.distanceTraveled, 'Brak danych')}">  </span>
                 </td>
 
                 <td><span
-                        th:text="${#objects.nullSafe(rental.numberKilometerFromMeter, 'Nie dotyczy')}">  </span>
+                        th:text="${#objects.nullSafe(rental.numberKilometerFromMeter, 'Brak danych')}">  </span>
                 </td>
 
                 <td><span
-                        th:text="${#objects.nullSafe(rental.isAcceptedByBoss, 'Nie dotyczy')}">  </span>
+                        th:text="${rental.isAcceptedByBoss != null} ? ( ${rental.isAcceptedByBoss == true} ? 'Tak' : 'Nie' ) : 'Brak danych'"
+                        th:style="${rental.isAcceptedByBoss != null} ? (${rental.isAcceptedByBoss == true} ? 'color: green' : 'color:red') : 'color: black'">
+                 </span>
                 </td>
 
                 <td><span
-                        th:text="${#objects.nullSafe(rental.isReceivedPositively, 'Nie dotyczy')}">  </span>
+                        th:text="${rental.isReceivedPositively != null} ? ( ${rental.isReceivedPositively == true} ? 'Tak' : 'Nie' ) : 'Brak danych'"
+                        th:style="${rental.isReceivedPositively != null} ? (${rental.isReceivedPositively == true} ? 'color: green' : 'color:red') : 'color: black'"
+                >
+                    </span>
                 </td>
                  
             </tr>

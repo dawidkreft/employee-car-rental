@@ -29,7 +29,6 @@ public class MyAccessDeniedHandler implements AccessDeniedHandler {
             log.info(String.format("User '%s' attempted to access the protected URL: %s",
                     auth.getName(), httpServletRequest.getRequestURI()));
         }
-
         httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + ERROR_403);
     }
 }

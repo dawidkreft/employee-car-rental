@@ -7,9 +7,13 @@
 <div th:replace="fragments/header :: header"/>
 
 <div class="container">
-    <h1 th:if="${errorMessage}" th:utext="${errorMessage}">Error java.lang.NullPointerException</h1>
-    <h1 th:if="!${errorMessage}">Strona nie istnieje</h1>
-    <a th:href="@{/rentals}"> Wróć do strony głownej</a>
+    <div class="error">
+        <h1> Ups, coś poszło nie tak</h1>
+<!--        <p th:if="${errorMessage}" th:utext="${errorMessage}">
+        <p/>-->
+        <h1 th:if="!${errorMessage}">Strona nie istnieje</h1>
+        <a th:href="@{/rentals}"> Wróć do strony głownej</a>
+    </div>
 </div>
 <div th:replace="fragments/footer :: footer"/>
 

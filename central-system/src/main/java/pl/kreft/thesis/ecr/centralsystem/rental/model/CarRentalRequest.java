@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -28,5 +29,6 @@ public class CarRentalRequest {
     LocalDateTime dateOfEndRent;
 
     @NonNull
+    @Size(min=2, max=30)
     String target;
 }
