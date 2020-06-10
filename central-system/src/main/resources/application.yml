@@ -19,3 +19,10 @@ spring:
     prefix: classpath:/templates/
 
 
+# Logging
+logging:
+  level:
+    root: info
+  file:
+    name: ecr-services.log
+    max-size: 10MB

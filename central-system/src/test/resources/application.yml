@@ -12,3 +12,14 @@ spring:
     show-sql: true
     hibernate.ddl-auto: create-drop
     database-platform: org.hibernate.dialect.H2Dialect
+  thymeleaf:
+    prefix: classpath:/templates/
+
+
+# Logging
+logging:
+  level:
+    root: info
+  file:
+    name: ecr-services.log
+    max-size: 10MB

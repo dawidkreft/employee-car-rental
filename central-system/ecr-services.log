@@ -1,0 +1,48 @@
+2020-06-10 09:18:39.166  INFO 9858 --- [restartedMain] p.k.t.e.c.CentralSystemApplication       : Starting CentralSystemApplication on lenovo-Lenovo-Z51-70 with PID 9858 (/home/lenovo/dev/magisterka/employee-car-rental/central-system/target/classes started by lenovo in /home/lenovo/dev/magisterka/employee-car-rental/central-system)
+2020-06-10 09:18:39.175  INFO 9858 --- [restartedMain] p.k.t.e.c.CentralSystemApplication       : The following profiles are active: prod
+2020-06-10 09:18:39.270  INFO 9858 --- [restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in /home/lenovo/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/jaxb-runtime-2.3.2.jar referenced one or more files that do not exist: file:/home/lenovo/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/jakarta.xml.bind-api-2.3.2.jar,file:/home/lenovo/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/txw2-2.3.2.jar,file:/home/lenovo/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/istack-commons-runtime-3.0.8.jar,file:/home/lenovo/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/stax-ex-1.8.1.jar,file:/home/lenovo/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/FastInfoset-1.2.16.jar,file:/home/lenovo/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/jakarta.activation-api-1.2.1.jar
+2020-06-10 09:18:39.271  INFO 9858 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-06-10 09:18:39.271  INFO 9858 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-06-10 09:18:41.668  INFO 9858 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2020-06-10 09:18:42.008  INFO 9858 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 287ms. Found 4 repository interfaces.
+2020-06-10 09:18:43.079  INFO 9858 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-06-10 09:18:44.036  INFO 9858 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8000 (http)
+2020-06-10 09:18:44.051  INFO 9858 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-06-10 09:18:44.053  INFO 9858 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.27]
+2020-06-10 09:18:44.212  INFO 9858 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-06-10 09:18:44.220  INFO 9858 --- [restartedMain] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 4948 ms
+2020-06-10 09:18:44.686  INFO 9858 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-06-10 09:18:44.849  INFO 9858 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate Core {5.4.8.Final}
+2020-06-10 09:18:45.050  INFO 9858 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-06-10 09:18:45.165  INFO 9858 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : employee_car_rental_db - Starting...
+2020-06-10 09:18:45.246  INFO 9858 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : employee_car_rental_db - Start completed.
+2020-06-10 09:18:45.333  INFO 9858 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL95Dialect
+2020-06-10 09:18:46.476  WARN 9858 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2020-06-10 09:18:46.476  WARN 9858 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : relation "inspection" does not exist, skipping
+2020-06-10 09:18:46.477  WARN 9858 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2020-06-10 09:18:46.478  WARN 9858 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : relation "inspection" does not exist, skipping
+2020-06-10 09:18:46.479  WARN 9858 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2020-06-10 09:18:46.480  WARN 9858 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : relation "rental" does not exist, skipping
+2020-06-10 09:18:46.484  WARN 9858 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2020-06-10 09:18:46.485  WARN 9858 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : relation "rental" does not exist, skipping
+2020-06-10 09:18:46.487  WARN 9858 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2020-06-10 09:18:46.487  WARN 9858 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : table "car" does not exist, skipping
+2020-06-10 09:18:46.488  WARN 9858 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2020-06-10 09:18:46.489  WARN 9858 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : table "inspection" does not exist, skipping
+2020-06-10 09:18:46.490  WARN 9858 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2020-06-10 09:18:46.491  WARN 9858 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : table "rental" does not exist, skipping
+2020-06-10 09:18:46.492  WARN 9858 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2020-06-10 09:18:46.493  WARN 9858 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : table "users" does not exist, skipping
+2020-06-10 09:18:46.556  INFO 9858 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-06-10 09:18:46.565  INFO 9858 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-06-10 09:18:46.642  INFO 9858 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2020-06-10 09:18:47.573  INFO 9858 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@86a6726, org.springframework.security.web.context.SecurityContextPersistenceFilter@56de04dd, org.springframework.security.web.header.HeaderWriterFilter@77d94b4f, org.springframework.security.web.csrf.CsrfFilter@47069003, org.springframework.security.web.authentication.logout.LogoutFilter@1fc7d5e9, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@b6024a5, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2958499, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@33c8a5f5, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4a5ef975, org.springframework.security.web.session.SessionManagementFilter@371e1d44, org.springframework.security.web.access.ExceptionTranslationFilter@6ed1e8db, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@10a260f0]
+2020-06-10 09:18:47.706  INFO 9858 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-06-10 09:18:47.769  INFO 9858 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2020-06-10 09:18:47.968  INFO 9858 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8000 (http) with context path ''
+2020-06-10 09:18:47.972  INFO 9858 --- [restartedMain] p.k.t.e.c.CentralSystemApplication       : Started CentralSystemApplication in 9.701 seconds (JVM running for 11.06)
+2020-06-10 09:19:15.214  INFO 9858 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-06-10 09:19:15.216  INFO 9858 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-06-10 09:19:15.217  INFO 9858 --- [SpringContextShutdownHook] .SchemaDropperImpl$DelayedDropActionImpl : HHH000477: Starting delayed evictData of schema as part of SessionFactory shut-down'
+2020-06-10 09:19:15.248  INFO 9858 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : employee_car_rental_db - Shutdown initiated...
+2020-06-10 09:19:15.262  INFO 9858 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : employee_car_rental_db - Shutdown completed.
