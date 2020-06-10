@@ -15,6 +15,7 @@ spring:
     database: POSTGRESQL
     hibernate.ddl-auto: create-drop
     open-in-view: false
-
+  thymeleaf:
+    prefix: classpath:/templates/
 
 

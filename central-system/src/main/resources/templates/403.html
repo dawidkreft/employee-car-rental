@@ -1,16 +1,18 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
+    <div th:replace="fragments/header :: header-css"/>
 </head>
 <body>
-
+<div th:replace="fragments/header :: header"/>
 <div class="container">
-        <h1>Brak dostępu</h1>
-        <div th:inline="text">Cześć '[[${#httpServletRequest.remoteUser}]]',
-            nie posiadasz odpowiednich uprawnień do tej strony.</div>
+    <h1>Brak dostępu</h1>
+    <div th:inline="text">Cześć '[[${#httpServletRequest.remoteUser}]]',
+        nie posiadasz odpowiednich uprawnień do tej strony.
+        <a th:href="@{/rentals}"> Wróć do strony głownej</a>
+    </div>
 </div>
 
-
+<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

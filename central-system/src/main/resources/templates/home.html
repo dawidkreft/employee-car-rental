@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <div th:replace="/fragments/header :: header-css"/>
+    <div th:replace="fragments/header :: header-css"/>
 </head>
 <body>
-<div th:replace="/fragments/header :: header"/>
+<div th:replace="fragments/header :: header"/>
 
 <div class="home_page">
     <h1>Witaj!</h1>
     <p>Kliknij <a th:href="@{/rentals}">tutaj </a> i wypożycz pojazd.</p>
 </div>
-<div th:replace="/fragments/footer :: footer"/>
+<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>

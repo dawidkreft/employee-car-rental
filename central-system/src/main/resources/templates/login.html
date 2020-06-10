@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <div th:replace="/fragments/header :: header-css"/>
+    <div th:replace="fragments/header :: header-css"/>
 </head>
 <body>
-<div th:replace="/fragments/header :: header"/>
+<div th:replace="fragments/header :: header"/>
 
 <div class="login-panel">
 
@@ -24,6 +24,6 @@
         <div><input type="submit" value="Zaloguj się"/></div>
     </form>
 </div>
-<div th:replace="/fragments/footer :: footer"/>
+<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>
