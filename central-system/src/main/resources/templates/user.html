@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+    <link href="../../static/css/user.css" th:href="@{/css/user.css}"
+          rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+
+<div class="wrapper">
+    <div class="menu">
+
+        <div th:replace="fragments/menu :: menu"/>
+
+
+    </div>
+
+    <div class="container">
+
+        <h1>Twoje dane</h1>
+        <div class="user-list">
+
+            <ol class="user-list">
+                <li>Imię i nazwisko:&nbsp;&nbsp;
+                    <span class="user-info" th:text="${user.name}"></span> &nbsp;
+                    <span class="user-info" th:text="${user.surname}">  </span>
+                </li>
+                <li>Email:&nbsp;&nbsp; <span class="user-info" th:text="${user.email}">  </span>
+                </li>
+                <li>Rodzaj stanowiska:&nbsp;&nbsp; <span class="user-info"
+                                                         th:text="${user.role.displayValue}"></span>
+                </li>
+
+                <li th:if="${user.boss != null }"> Przełożony: &nbsp;&nbsp;
+                    <span class="user-info" th:text="${user.boosName}"></span> &nbsp;
+                    <span class="user-info" th:text="${user.boosSurname}">  </span>
+                </li>
+            </ol>
+
+        </div>
+
+
+        <!--
+                <form action="#" th:action="@{'/rentals/return/{id}'(id=${rental.id})}"
+                      th:method="GET">
+                    <button id="return-button" type="submit">Zwróć</button>
+                </form>-->
+             
+    </div>
+
+
+</div>
+
+          
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

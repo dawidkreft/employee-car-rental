@@ -21,12 +21,18 @@ public class RequestPageMappingInfo {
     public static final String ERROR_REQUEST = "/error";
     public static final String ERROR_403_REQUEST = "/403";
 
-    //Rental
+    //RENTAL
     public static final String RENTAL_REQUEST = "/rentals";
     public static final String RENTAL_RETURN_REQUEST_WITH_ID = "/return/{id}";
     public static final String RENTAL_RETURN_REQUEST = "/return";
     public static final String RENTAL_HISTORY_REQUEST = "/history";
 
-    //Common
+    //COMMON
     public static final String CREATE_NEW_REQUEST = "/create";
+
+    //USERS
+    public static final String USER_REQUESTS = "/users";
+
+    //MESSAGE
+    public static final String MESSAGE_REQUEST = "/messages";
 }

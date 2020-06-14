@@ -5,12 +5,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kreft.thesis.ecr.centralsystem.user.model.User;
+import pl.kreft.thesis.ecr.centralsystem.user.model.UserDTO;
 import pl.kreft.thesis.ecr.centralsystem.user.repository.UserRepository;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static pl.kreft.thesis.ecr.centralsystem.config.GlobalConfiguration.defaultTimeZone;
 
 @Slf4j
 @Service
@@ -21,6 +26,10 @@ public class UserService {
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public UserDTO getUser(UUID userId) throws ObjectNotFoundException {
+        return mapToDtoUser(find(userId));
     }
 
     public User find(UUID id) throws ObjectNotFoundException {
@@ -105,4 +114,31 @@ public class UserService {
         }
     }
 
+    private UserDTO mapToDtoUser(User user) throws ObjectNotFoundException {
+        if (user.getBoss() == null) {
+            return UserDTO.builder()
+                          .id(user.getId())
+                          .name(user.getName())
+                          .surname(user.getSurname())
+                          .email(user.getEmail())
+                          .role(user.getRole())
+                          .creationDate(LocalDateTime.ofInstant(user.getCreationDate(),
+                                  ZoneId.of(defaultTimeZone)))
+                          .build();
+        }
+
+        User boos = find(user.getBoss());
+        return UserDTO.builder()
+                      .id(user.getId())
+                      .name(user.getName())
+                      .surname(user.getSurname())
+                      .email(user.getEmail())
+                      .role(user.getRole())
+                      .creationDate(LocalDateTime.ofInstant(user.getCreationDate(),
+                              ZoneId.of(defaultTimeZone)))
+                      .boss(user.getBoss())
+                      .boosName(boos.getName())
+                      .boosSurname(boos.getSurname())
+                      .build();
+    }
 }

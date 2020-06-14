@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.kreft.thesis.ecr.centralsystem.user.model.User;
+import pl.kreft.thesis.ecr.centralsystem.user.model.UserDTO;
 
 import java.util.List;
 
@@ -76,7 +77,8 @@ class UserServiceTest {
     }
 
     @Test
-    public void shouldRemoveUserAndReturnExceptionWhenTryFindRemovedUser() throws ObjectNotFoundException {
+    public void shouldRemoveUserAndReturnExceptionWhenTryFindRemovedUser()
+            throws ObjectNotFoundException {
         User savedUser = userService.save(getEmployee());
 
         List<User> allUsers = userService.getAll();
@@ -86,5 +88,16 @@ class UserServiceTest {
         assertThrows(ObjectNotFoundException.class, () -> {
             userService.find(savedUser.getId());
         });
+    }
+
+    @Test
+    public void shouldReturnUserDTO() throws ObjectNotFoundException {
+        User savedUser = userService.save(getEmployee());
+
+        UserDTO userDTO = userService.getUser(savedUser.getId());
+
+        assertEquals(savedUser.getId(), userDTO.getId());
+        assertEquals(savedUser.getEmail(), userDTO.getEmail());
+        assertEquals(savedUser.getSurname(), userDTO.getSurname());
     }
 }

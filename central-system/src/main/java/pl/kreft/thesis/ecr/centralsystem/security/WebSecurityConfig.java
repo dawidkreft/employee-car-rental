@@ -20,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final AccessDeniedHandler accessDeniedHandler;
 
     private static final String[] LOCATIONS = { "/", "/home", "/css/style.css", "/image/logo.png",
-            "/image/favicon.ico", "/css/return_car_form.css" };
+            "/image/favicon.ico", "/css/return_car_form.css", "/css/user.css" };
 
     @Autowired
     public WebSecurityConfig(UserDetailsProvider userDetailsProvider,
