@@ -66,7 +66,8 @@ public class CarService {
         log.info("Returning all free cars");
         List<Car> allCars = carRepository.findAll();
         allCars = allCars.stream()
-                         .filter(item -> !item.getRemoved() && item.getStatus().equals(CarStatus.AVAILABLE))
+                         .filter(item -> !item.getRemoved() && item.getStatus()
+                                                                   .equals(CarStatus.AVAILABLE))
                          .collect(Collectors.toList());
         return allCars;
     }

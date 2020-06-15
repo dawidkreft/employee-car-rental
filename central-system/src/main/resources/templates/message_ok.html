@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+    <link href="../../static/css/return_car_form.css" th:href="@{/css/return_car_form.css}"
+          rel="stylesheet"/>
+    <meta http-equiv="refresh" content="0;url=/rentals"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+
+<div class="wrapper">
+    <div class="menu">
+        <div th:replace="fragments/menu :: menu"/>
+    </div>
+
+    <div class="container">
+        <h1>Status</h1>
+
+        <p class="sending-success"> Wysłano ! </p>
+
+
+    </div>
+</div>
+
+          
+<div th:replace="fragments/footer :: footer"/>
+<script>
+
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
+
+window.onload = function() {
+   sleep(8000);
+    window.location.href = "/rentals"
+}
+</script>
+</body>
+</html>

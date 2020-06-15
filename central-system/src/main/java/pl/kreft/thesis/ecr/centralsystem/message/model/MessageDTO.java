@@ -8,8 +8,8 @@ import lombok.NonNull;
 
 import java.util.UUID;
 
-@Data
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageDTO {

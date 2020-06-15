@@ -62,4 +62,18 @@ public class UserFactory {
                    .removed(false)
                    .build();
     }
+
+    static public User getAdmin() {
+        return User.builder()
+                   .name("admin")
+                   .surname("admin")
+                   .password("password")
+                   .email("emailAdmin@email.com")
+                   .boss(null)
+                   .role(UserRole.ADMIN)
+                   .isActive(true)
+                   .creationDate(Instant.now())
+                   .removed(false)
+                   .build();
+    }
 }

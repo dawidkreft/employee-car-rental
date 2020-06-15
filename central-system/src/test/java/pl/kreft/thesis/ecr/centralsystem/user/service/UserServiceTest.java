@@ -15,6 +15,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static pl.kreft.thesis.ecr.centralsystem.dbtestcleaner.DbCleaner.clearDatabase;
+import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getAdmin;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getEmployee;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getInspector;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getSecondEmployee;
@@ -99,5 +100,17 @@ class UserServiceTest {
         assertEquals(savedUser.getId(), userDTO.getId());
         assertEquals(savedUser.getEmail(), userDTO.getEmail());
         assertEquals(savedUser.getSurname(), userDTO.getSurname());
+    }
+
+    @Test
+    public void shouldReturnUserDTOListForAdmins() {
+        User savedUser = userService.save(getAdmin());
+
+        List<UserDTO> userDTOs = userService.getAdmins();
+
+        assertEquals(savedUser.getId(), userDTOs.get(0).getId());
+        assertEquals(savedUser.getEmail(), userDTOs.get(0).getEmail());
+        assertEquals(savedUser.getSurname(), userDTOs.get(0).getSurname());
+        assertEquals(1, userDTOs.size());
     }
 }

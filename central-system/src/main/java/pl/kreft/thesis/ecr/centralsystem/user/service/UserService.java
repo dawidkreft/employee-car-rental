@@ -1,11 +1,13 @@
 package pl.kreft.thesis.ecr.centralsystem.user.service;
 
 import javassist.tools.rmi.ObjectNotFoundException;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kreft.thesis.ecr.centralsystem.user.model.User;
 import pl.kreft.thesis.ecr.centralsystem.user.model.UserDTO;
+import pl.kreft.thesis.ecr.centralsystem.user.model.UserRole;
 import pl.kreft.thesis.ecr.centralsystem.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
@@ -50,6 +52,13 @@ public class UserService {
         throw new ObjectNotFoundException("Unable to locate user with email: " + email);
     }
 
+    public List<UserDTO> getAdmins() {
+        return userRepository.findAllByRoleAndRemovedFalse(UserRole.ADMIN)
+                             .stream()
+                             .map(this::mapToDtoUser)
+                             .collect(Collectors.toList());
+    }
+
     public User save(User user) {
         Optional<User> userInDbOptional = userRepository.findByIdAndRemovedFalse(user.getId());
         User savedUser;
@@ -60,7 +69,7 @@ public class UserService {
             oldUser.setIsActive(user.getIsActive());
             oldUser.setName(user.getName());
             oldUser.setRemoved(user.getRemoved());
-            oldUser.setPassword(user.getPassword()); // TODO
+            oldUser.setPassword(user.getPassword());
             oldUser.setRole(user.getRole());
             oldUser.setSurname(user.getSurname());
             savedUser = userRepository.save(oldUser);
@@ -114,7 +123,8 @@ public class UserService {
         }
     }
 
-    private UserDTO mapToDtoUser(User user) throws ObjectNotFoundException {
+    @SneakyThrows
+    public UserDTO mapToDtoUser(User user) {
         if (user.getBoss() == null) {
             return UserDTO.builder()
                           .id(user.getId())

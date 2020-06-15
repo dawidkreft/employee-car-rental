@@ -199,3 +199,10 @@ body {
     margin-top: 30px;
     margin-left: 350px;
 }
+
+.sending-success{
+    padding-top: 50px;
+    padding-left: 200px;
+    color: green;
+    font-size: 40px;
+}

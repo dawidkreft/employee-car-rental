@@ -32,8 +32,10 @@ build/
 
 ### Logs ###
 logs
+ecr-services.log*
 
 ### Maven ###
 .mvn
 mvnw
 mvnw.cmd
+

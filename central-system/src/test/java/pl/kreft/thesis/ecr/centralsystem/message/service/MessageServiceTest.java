@@ -36,7 +36,7 @@ class MessageServiceTest {
         UUID authorId = UUID.randomUUID();
         MessageDTO messageDTO = getRandomMessageDTO();
 
-        Message message = messageService.save(getRandomMessageDTO(), authorId);
+        Message message = messageService.save(messageDTO, authorId);
 
         Assertions.assertEquals(message.getAuthorId(), authorId);
         Assertions.assertEquals(message.getRecipientId(), messageDTO.getRecipientId());

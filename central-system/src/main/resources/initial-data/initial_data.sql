@@ -7,7 +7,10 @@ VALUES ('20ebd0bf-f4b8-4ad0-b1eb-01d373250368', null, '2020-06-03 10:17:43.10605
        ('ef3f1790-433e-43e1-8b14-4a0b7e27cca6', '20ebd0bf-f4b8-4ad0-b1eb-01d373250368',
         '2020-06-03 10:17:43.106056', 'user@email.com', true, 'Jan', '$2a$10$7zS3RPTW1e8mCFDnuc2GU.uivheGrT8nQckq.P2xYk.i.ebQeaavC', false, 'EMPLOYEE', 'Worker'),
        ('a8226bdc-595b-4be3-b2b6-164788475f41', '20ebd0bf-f4b8-4ad0-b1eb-01d373250368',
-        '2020-06-03 10:17:43.106056', 'user2@email.com', true, 'Jan', '$2a$10$7zS3RPTW1e8mCFDnuc2GU.uivheGrT8nQckq.P2xYk.i.ebQeaavC', false, 'EMPLOYEE', 'Bossman');
+        '2020-06-03 10:17:43.106056', 'user2@email.com', true, 'Jan', '$2a$10$7zS3RPTW1e8mCFDnuc2GU.uivheGrT8nQckq.P2xYk.i.ebQeaavC', false, 'EMPLOYEE', 'Bossman'),
+       ('2b4a92c2-e4ec-4319-af7d-e15c0f9ebfbc', null,
+        '2020-06-03 10:17:43.106056', 'admin@email.com', true, 'Jan', '$2a$10$7zS3RPTW1e8mCFDnuc2GU.uivheGrT8nQckq.P2xYk.i.ebQeaavC', false, 'ADMIN', 'Admiński');
+
 
 -- Cars
 INSERT INTO public.car (car_id, car_brand, car_creation_date, car_date_of_last_review,

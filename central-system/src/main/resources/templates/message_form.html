@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+    <link href="../../static/css/return_car_form.css" th:href="@{/css/return_car_form.css}"
+          rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+
+<div class="wrapper">
+    <div class="menu">
+        <div th:replace="fragments/menu :: menu"/>
+    </div>
+
+    <div class="container">
+        <h1>Wyślij wiadomość</h1>
+
+        <div class="form-style-5">
+            <form action="#" th:action="@{/messages}" th:object="${messageDTO}" method="post">
+                <fieldset>
+                    <legend> Szczegóły</legend>
+                    <label>Wybierz osobę: </label>
+                    <select th:field="*{recipientId}">
+                        <option th:each="admin : ${admins}"
+                                th:value="${admin.id}"
+                                th:text="${ admin.name  + ' ' + admin.surname + ' ' + admin.email  }">
+                        </option>
+                    </select>
+
+                    <label>Typ problemu: </label>
+                    <select th:field="*{type}">
+                        <option th:each="state : ${T(pl.kreft.thesis.ecr.centralsystem.message.model.MessageType).values()}"  th:value="${state}" th:text="${state.displayValue}"></option>
+                    </select>
+
+
+                    <label> Temat:</label>
+                    <input type="text" th:field="*{subject}"/>
+
+                    <label> Treść: </label>
+                    <textarea th:field="*{contents}" placeholder="Opisz problem"></textarea>
+                </fieldset>
+                <input type="submit" value="Wyślij"/>       
+            </form>
+        </div>
+    </div>
+</div>
+          
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>
