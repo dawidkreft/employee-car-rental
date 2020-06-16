@@ -35,10 +35,10 @@
 
 
                     <label> Temat:</label>
-                    <input type="text" th:field="*{subject}"/>
+                    <input type="text" th:field="*{subject}" required/>
 
                     <label> Treść: </label>
-                    <textarea th:field="*{contents}" placeholder="Opisz problem"></textarea>
+                    <textarea th:field="*{contents}" placeholder="Opisz problem" required></textarea>
                 </fieldset>
                 <input type="submit" value="Wyślij"/>       
             </form>

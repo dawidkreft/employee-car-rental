@@ -13,32 +13,43 @@
         <div th:replace="fragments/menu :: menu"/>
     </div>
     <div class="container">
-<div class="form-style-5">
-        <form action="#" th:action="@{/rentals/return}" th:object="${returnCarRequest}"
-              method="post">
-            <fieldset>
-                <legend> Zwracasz         <span th:inline="text"> [[${car.brand}]]</span>
-                    <span th:inline="text">[[${car.model}]]</span></legend>
-                <input type="hidden" th:field="*{rentalId}">
-                <label> Przebyty dystans</label>
-                <input type="number" th:field="*{distanceTraveled}"
-                       placeholder="Dystans w kilometrach"/>
-                <label>Stan licznika</label>
-                <input type="number" th:field="*{numberKilometerFromMeter}"
-                       placeholder="Stan licznika w km"/>
-                <label> Stan paliwa</label>
-                <input type="number" th:field="*{currentFuelLevel}"
-                       placeholder="Procentowy stan paliwa"/>
-                <label>Szczegóły pojazdu</label>
-                <textarea th:field="*{carCondition}" placeholder="Opis dotyczącu pojazdu, np. czy wystąpiły jakieś problemy"></textarea>
-                <label>Dodatkowy opis</label>
-                <textarea th:field="*{receivedDescription}" placeholder="Opis dotyczący zwrotu, np powód spóźnienia"></textarea>
-            </fieldset>
-            <input type="submit" value="Zwróć"/>       
-        </form>
-</div>
+        <div class="form-style-5">
+            <form action="#" th:action="@{/rentals/return}" th:object="${returnCarRequest}"
+                  method="post">
+                <fieldset>
+                    <legend> Zwracasz <span th:inline="text"> [[${car.brand}]]</span>
+                        <span th:inline="text">[[${car.model}]]</span></legend>
+                    <input type="hidden" th:field="*{rentalId}">
+                    <label> Przebyty dystans</label>
+                    <input type="number" th:field="*{distanceTraveled}"
+                           placeholder="Dystans w kilometrach" required/>
+                    <label>Stan licznika</label>
+                    <input type="number" th:field="*{numberKilometerFromMeter}"
+                           placeholder="Stan licznika w km" required/>
+                    <label> Stan paliwa w procentach  <input type="text" id="fuelValue" value=""
+                    placeholder="Wybierz wartość suwakiem"></label>
+                    <input type="range" th:field="*{currentFuelLevel}" min="0" max="100" value="40"
+                           onchange="updateTextInput(this.value);"/>
+                    <label>Szczegóły pojazdu</label>
+                    <textarea th:field="*{carCondition}"
+                              placeholder="Opis dotyczącu pojazdu, np. czy wystąpiły jakieś problemy"
+                              required></textarea>
+                    <label>Dodatkowy opis</label>
+                    <textarea th:field="*{receivedDescription}"
+                              placeholder="Opis dotyczący zwrotu, np powód spóźnienia"
+                              required></textarea>
+                </fieldset>
+                <input type="submit" value="Zwróć"/>       
+            </form>
+        </div>
     </div>
 </div>
 <div th:replace="fragments/footer :: footer"/>
+
+<script>
+    function updateTextInput(val) {
+          document.getElementById('fuelValue').value=val+'%';
+        }
+</script>
 </body>
 </html>

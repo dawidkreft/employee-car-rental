@@ -20,7 +20,7 @@
             <form action="#" th:action="@{/rentals}" th:object="${carRentalRequest}" method="post">
                 <fieldset>
                     <legend> Szczegóły</legend>
-<label>Wybierz auto</label>
+                    <label>Wybierz auto</label>
                     <select th:field="*{rentalCarId}">
                         <option th:each="car : ${cars}"
                                 th:value="${car.id}"
@@ -28,11 +28,12 @@
                         </option>
                     </select>
                     <label> Wybierz date startu:</label>
-                    <input type="datetime-local" th:field="*{dateOfStartRent}"/>
+                    <input type="datetime-local" th:field="*{dateOfStartRent}" required/>
                     <label> Wybierz date zwrotu:</label>
-                    <input type="datetime-local" th:field="*{dateOfEndRent}"/>
+                    <input type="datetime-local" th:field="*{dateOfEndRent}" required/>
                     <label> Cel wypożyczenia</label>
-                    <input type="text" th:field="*{target}" placeholder="Opisz cel wyjazdu"/>
+                    <input type="text" th:field="*{target}" placeholder="Opisz cel wyjazdu"
+                           required/>
                 </fieldset>
                 <input type="submit" value="Wynajmnij"/>       
             </form>

@@ -17,6 +17,7 @@
     margin-bottom: 5px;
 }
 .form-style-5 input[type="text"],
+.form-style-5 input[type="range"],
 .form-style-5 input[type="date"],
 .form-style-5 input[type="datetime"],
 .form-style-5 input[type="datetime-local"],
@@ -46,6 +47,7 @@
 }
 .form-style-5 input[type="text"]:focus,
 .form-style-5 input[type="date"]:focus,
+.form-style-5 input[type="range"],
 .form-style-5 input[type="datetime"]:focus,
 .form-style-5 input[type="datetime-local"]:focus,
 .form-style-5 input[type="email"]:focus,
