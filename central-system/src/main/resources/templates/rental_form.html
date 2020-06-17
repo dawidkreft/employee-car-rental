@@ -14,12 +14,11 @@
     </div>
 
     <div class="container">
-        <h1>Wynajmnij auto</h1>
+        <h1>Wynajem auta</h1>
 
         <div class="form-style-5">
             <form action="#" th:action="@{/rentals}" th:object="${carRentalRequest}" method="post">
                 <fieldset>
-                    <legend> Szczegóły</legend>
                     <label>Wybierz auto</label>
                     <select th:field="*{rentalCarId}">
                         <option th:each="car : ${cars}"

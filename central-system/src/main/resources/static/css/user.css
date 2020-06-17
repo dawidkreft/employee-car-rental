@@ -1,7 +1,7 @@
 .user-list ul {
     counter-reset: index;
     padding: 0;
-    max-width: 300px;
+    max-width: 500px;
 }
 
 .user-list li{
@@ -13,11 +13,12 @@
     align-items: center;
     padding: 12px 0;
     box-sizing: border-box;
+    font-size: 23px;
 }
 
 .user-list li::before {
     content: counters(index, ".", decimal-leading-zero);
-    font-size: 1.5rem;
+    font-size: 2.0rem;
     text-align: right;
     border: 50px;
     font-weight: bold;

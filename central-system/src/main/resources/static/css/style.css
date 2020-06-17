@@ -1,24 +1,26 @@
 body {
     background-color: #f3f3f3;
-    width: 1400px;
-    max-height: 1000px;
+    width: 1650px;
+    max-height: 1250px;
 }
 
 .wrapper {
     margin-top: 15px;
     display: flex;
+    height: 600px;
 }
 
 .menu {
     font-family: Georgia, "Times New Roman", Times, serif;
     text-align: center;
-    margin-right: 10px;
-    width: 250px;
+    font-size: x-large;
+    margin-right: 20px;
+    width: 350px;
 }
 
 .menu li {
-    padding-top: 10px;
-    height: 22px;
+    padding-top: 15px;
+    height: 30px;
     border-bottom: 1px solid silver;
     list-style-type: none;
 }
@@ -38,8 +40,8 @@ body {
 }
 
 .logout-li {
-    padding-top: 40px;
-    height: 30px;
+    padding-top: 45px;
+    height: 40px;
 }
 
 .logout-li:hover {
@@ -48,21 +50,21 @@ body {
 
 .container {
     width: 1150px;
-    margin-left: 45px;
+    margin-left: 55px;
 }
 
 .header img {
-    padding-left: 280px;
-    width: 900px;
-    height: 180px;
+    padding-left: 350px;
+    width: 1000px;
+    height: 210px;
 }
 
 .footer {
-    width: 700px;
-    padding-left: 380px;
-    margin-top: 65px;
+    width: 800px;
+    padding-left: 435px;
     text-align: center;
     align-content: center;
+    font-size: 18px;
 }
 
 .footer hr {
@@ -70,15 +72,27 @@ body {
 }
 
 .login-status {
-    height: 30px;
+    height: 40px;
 }
 
 .login-panel {
-    margin-top: 50px;
-    padding-left: 530px;
-    width: 400px;
+    height: 600px;
+    margin-top: 35px;
+    padding-left: 600px;
+    width: 500px;
     align-content: center;
     text-align: center;
+    font-size: 24px;
+}
+
+.login-panel input {
+    width: 200px;
+    height: 20px;
+    font-size: 18px;
+}
+
+#login-button {
+    height: 28px;
 }
 
 .red_paragraph {
@@ -97,10 +111,11 @@ body {
 }
 
 .home_page {
-    margin-left: 650px;
-    margin-top: 50px;
+    height: 465px;
+    margin-left: 730px;
+    margin-top: 80px;
     margin-bottom: 100px;
-    font-size: 24px;
+    font-size: 30px;
 }
 
 .home_page a {
@@ -124,15 +139,16 @@ body {
     width: 100%;
     align-content: center;
     text-align: center;
+    font-size: 20px;
 }
 
 .cars-table th {
-    height: 18px;
+    height: 25px;
     background-color: #dad8d3;
 }
 
 .cars-table td {
-    height: 15px;
+    height: 20px;
     border-bottom: 1px solid white;
 }
 
@@ -146,15 +162,17 @@ body {
     width: 100%;
     align-content: center;
     text-align: center;
+    font-size: 20px;
 }
 
 .rent-history-table th {
-    height: 18px;
+    height: 30px;
     background-color: #dad8d3;
+    font-size: 18px;
 }
 
 .rent-history-table td {
-    height: 15px;
+    height: 25px;
     border-bottom: 1px solid white;
 }
 
@@ -165,18 +183,19 @@ body {
 .rent-car-list {
     border-collapse: collapse;
     background-color: #eae8e3;
-    width: 80%;
+    width: 100%;
     align-content: center;
     text-align: center;
+    font-size: 20px;
 }
 
 .rent-car-list th {
-    height: 20px;
+    height: 35px;
     background-color: #dad8d3;
 }
 
 .rent-car-list td {
-    height: 15px;
+    height: 20px;
     border-bottom: 2px double white;
 }
 
@@ -187,20 +206,22 @@ body {
 #return-button {
     cursor: pointer;
     background-color: #1abc9c;
-    width: 90px;
-    height: 30px;
+    width: 95px;
+    height: 35px;
     border-radius: 80px;
     font-weight: 500;
     background-size: 100% 100%;
     box-shadow: 0 0 0 5px #1abc9c inset;
 }
 
-.error{
-    margin-top: 30px;
+.error {
+    height: 600px;
+    margin-top: 35px;
     margin-left: 350px;
+    font-size: 18px;
 }
 
-.sending-success{
+.sending-success {
     padding-top: 50px;
     padding-left: 200px;
     color: green;
