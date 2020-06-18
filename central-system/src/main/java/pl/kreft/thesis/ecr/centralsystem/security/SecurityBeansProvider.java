@@ -1,4 +1,4 @@
-package pl.kreft.thesis.ecr.centralsystem.config;
+package pl.kreft.thesis.ecr.centralsystem.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

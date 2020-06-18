@@ -7,14 +7,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
 import pl.kreft.thesis.ecr.centralsystem.car.service.CarService;
+import pl.kreft.thesis.ecr.centralsystem.exception.EcrExceptionMessages;
+import pl.kreft.thesis.ecr.centralsystem.exception.ErrorMessage;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.CarRentalRequest;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.Rental;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.RentalHistoryDTO;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.ReturnCarRequest;
 import pl.kreft.thesis.ecr.centralsystem.rental.repository.RentalRepository;
+import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.RentalByEmployeeException;
+import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.RentalCarException;
+import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.RentalNotFoundException;
 import pl.kreft.thesis.ecr.centralsystem.user.model.User;
 import pl.kreft.thesis.ecr.centralsystem.user.model.UserRole;
 import pl.kreft.thesis.ecr.centralsystem.user.repository.UserRepository;
+import pl.kreft.thesis.ecr.centralsystem.user.service.exception.UserNotExistsException;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -26,6 +32,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static pl.kreft.thesis.ecr.centralsystem.config.GlobalConfiguration.defaultTimeZone;
+import static pl.kreft.thesis.ecr.centralsystem.exception.EcrExceptionMessages.EmployeeRentalException;
 
 @Slf4j
 @Service
@@ -49,7 +56,8 @@ public class RentalService {
             log.info("Found rental by id: " + id);
             return rental.get();
         }
-        throw new ObjectNotFoundException("Unable to locate rental with id: " + id);
+        throw new RentalNotFoundException(
+                new ErrorMessage(EcrExceptionMessages.RentalNotFoundException));
     }
 
     public List<Rental> getAll() {
@@ -104,9 +112,8 @@ public class RentalService {
             log.info("Rental with id: {} successfully saved", savedRental.getId());
             return savedRental;
         }
-        log.warn("Could not find input car with id: {} or user with id: {}",
-                request.getRentalCarId(), userId);
-        throw new IllegalArgumentException("Argument not exists");
+        throw new UserNotExistsException(
+                new ErrorMessage(EcrExceptionMessages.UserNotExistsException));
     }
 
     @Transactional
@@ -131,8 +138,7 @@ public class RentalService {
                 car.getId(), LocalDateTime.now());
 
         if (!foundRentals.isEmpty()) {
-            throw new IllegalArgumentException(
-                    String.format("Car with id: {} is not available", car.getId()));
+            throw new RentalCarException(new ErrorMessage(EcrExceptionMessages.RentalCarException));
         }
     }
 
@@ -141,8 +147,7 @@ public class RentalService {
             List<Rental> foundRentals = rentalRepository.findAllByLenderIdAndPlannedRentalEndIsGreaterThan(
                     user.getId(), LocalDateTime.now());
             if (!foundRentals.isEmpty()) {
-                throw new IllegalArgumentException(
-                        String.format("User with id: {} cannot rent a car", user.getId()));
+                throw new RentalByEmployeeException(new ErrorMessage(EmployeeRentalException));
             }
         }
     }

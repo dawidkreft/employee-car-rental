@@ -15,6 +15,36 @@ spring:
   thymeleaf:
     prefix: classpath:/templates/
 
+# Holiday Calendar
+holiday-calendar:
+  permanent-holidays:
+    -
+      day: 1
+      month: 1
+    -
+      day: 6
+      month: 1
+    -
+      day: 1
+      month: 3
+    -
+      day: 3
+      month: 3
+    -
+      day: 15
+      month: 8
+    -
+      day: 1
+      month: 11
+    -
+      day: 11
+      month: 11
+    -
+      day: 25
+      month: 12
+    -
+      day: 26
+      month: 12
 
 # Logging
 logging:

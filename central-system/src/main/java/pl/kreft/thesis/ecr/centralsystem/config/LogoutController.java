@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static pl.kreft.thesis.ecr.centralsystem.common.PageRedirectComponent.redirectTo;
+
 @Controller
 public class LogoutController {
 
@@ -19,6 +21,6 @@ public class LogoutController {
         if (auth != null){
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "redirect:/login?logout";
+        return redirectTo("/login?logout");
     }
 }
