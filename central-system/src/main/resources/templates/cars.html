@@ -19,6 +19,7 @@
         <table class="cars-table">
             <thead>
             <tr>
+                <th> Nr. rejestracji</th>
                 <th> Producent</th>
                 <th> Model</th>
                 <th> Typ</th>
@@ -33,6 +34,7 @@
 
             <tr th:each="car : ${cars}">
             <tr th:id="${car.id}" th:each="car,iterStat : ${cars}">
+                <td><span th:text="${car.plate}">  </span></td>
                 <td><span th:text="${car.brand}">  </span></td>
                 <td><span th:text="${car.model}">  </span></td>
                 <td><span th:text="${car.type.displayValue}">  </span></td>

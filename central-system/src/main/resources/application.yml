@@ -54,5 +54,5 @@ logging:
   level:
     root: info
   file:
-    name: ecr-services.log
+    name: ./logs/ecr-services.log
     max-size: 10MB

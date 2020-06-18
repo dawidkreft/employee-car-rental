@@ -14,7 +14,7 @@ import pl.kreft.thesis.ecr.centralsystem.car.service.CarService;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.CarRentalRequest;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.ReturnCarRequest;
 import pl.kreft.thesis.ecr.centralsystem.rental.service.RentalService;
-import pl.kreft.thesis.ecr.centralsystem.user.model.UserDetailsImpl;
+import pl.kreft.thesis.ecr.centralsystem.user.model.UserDetailsProvider;
 
 import java.util.UUID;
 
@@ -43,13 +43,13 @@ public class RentalView {
     }
 
     @RequestMapping
-    public String rental(Model model, @AuthenticationPrincipal UserDetailsImpl user) {
+    public String rental(Model model, @AuthenticationPrincipal UserDetailsProvider user) {
         model.addAttribute("activeRentals", rentalService.getAllActiveByUserId(user.getId()));
         return RENTAL;
     }
 
     @RequestMapping(CREATE_NEW_REQUEST)
-    public String getRentalForm(Model model, @AuthenticationPrincipal UserDetailsImpl user) {
+    public String getRentalForm(Model model, @AuthenticationPrincipal UserDetailsProvider user) {
         model.addAttribute("carRentalRequest", new CarRentalRequest());
         model.addAttribute("userID", user.getId().toString());
         model.addAttribute("cars", carService.getAllFreeCars());
@@ -57,7 +57,7 @@ public class RentalView {
     }
 
     @RequestMapping(RENTAL_HISTORY_REQUEST)
-    public String getRentalHistory(Model model, @AuthenticationPrincipal UserDetailsImpl user)
+    public String getRentalHistory(Model model, @AuthenticationPrincipal UserDetailsProvider user)
             throws ObjectNotFoundException {
         model.addAttribute("userID", user.getId().toString());
         model.addAttribute("rentals", rentalService.getRentalHistory(user.getId()));
@@ -66,14 +66,14 @@ public class RentalView {
 
     @PostMapping
     public String createNewRental(@ModelAttribute CarRentalRequest carRentalRequest,
-            @AuthenticationPrincipal UserDetailsImpl user) throws ObjectNotFoundException {
+            @AuthenticationPrincipal UserDetailsProvider user) throws ObjectNotFoundException {
         rentalService.rentCar(carRentalRequest, user.getId());
         return redirectTo(RENTAL_REQUEST);
     }
 
     @GetMapping(RENTAL_RETURN_REQUEST_WITH_ID)
     public String returnRental(Model model, @PathVariable UUID id,
-            @AuthenticationPrincipal UserDetailsImpl user) throws ObjectNotFoundException {
+            @AuthenticationPrincipal UserDetailsProvider user) throws ObjectNotFoundException {
         ReturnCarRequest returnCarRequest = new ReturnCarRequest();
         returnCarRequest.setRentalId(id);
         model.addAttribute("returnCarRequest", returnCarRequest);
@@ -83,7 +83,7 @@ public class RentalView {
 
     @PostMapping(RENTAL_RETURN_REQUEST)
     public String returnCar(@ModelAttribute ReturnCarRequest returnCarRequest,
-            @AuthenticationPrincipal UserDetailsImpl user) throws ObjectNotFoundException {
+            @AuthenticationPrincipal UserDetailsProvider user) {
         rentalService.returnCar(returnCarRequest);
         return redirectTo(RENTAL_REQUEST);
     }

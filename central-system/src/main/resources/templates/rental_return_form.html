@@ -18,7 +18,7 @@
                   method="post">
                 <fieldset>
                     <legend> Zwracasz <span th:inline="text"> [[${car.brand}]]</span>
-                        <span th:inline="text">[[${car.model}]]</span></legend>
+                        <span th:inline="text">[[${car.model}]]</span> <span th:inline="text">[[${car.plate}]]</span></legend>
                     <input type="hidden" th:field="*{rentalId}">
                     <label> Przebyty dystans</label>
                     <input type="number" th:field="*{distanceTraveled}"

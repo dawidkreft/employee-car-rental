@@ -6,6 +6,7 @@ import pl.kreft.thesis.ecr.centralsystem.car.model.CarType;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class CarFactory {
     static public Car getCar() {
@@ -16,6 +17,7 @@ public class CarFactory {
                   .type(CarType.CAR)
                   .productionYear(2020)
                   .status(CarStatus.AVAILABLE)
+                  .plate(UUID.randomUUID().toString())
                   .dateOfNextTechnicalExamination(LocalDate.now())
                   .dateOfNextReview(LocalDate.now())
                   .dateOfLastReview(LocalDate.now())
@@ -31,6 +33,7 @@ public class CarFactory {
                   .type(CarType.PREMIUM_CAR)
                   .productionYear(2020)
                   .status(CarStatus.AVAILABLE)
+                  .plate(UUID.randomUUID().toString())
                   .dateOfNextTechnicalExamination(LocalDate.now())
                   .dateOfNextReview(LocalDate.now())
                   .dateOfLastReview(LocalDate.now())

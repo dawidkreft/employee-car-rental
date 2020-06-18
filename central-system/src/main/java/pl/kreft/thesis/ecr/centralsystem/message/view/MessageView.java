@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.kreft.thesis.ecr.centralsystem.message.model.MessageDTO;
 import pl.kreft.thesis.ecr.centralsystem.message.service.MessageService;
-import pl.kreft.thesis.ecr.centralsystem.user.model.UserDetailsImpl;
+import pl.kreft.thesis.ecr.centralsystem.user.model.UserDetailsProvider;
 import pl.kreft.thesis.ecr.centralsystem.user.service.UserService;
 
 import static pl.kreft.thesis.ecr.centralsystem.common.RequestPageMappingInfo.MESSAGE_REQUEST;
@@ -38,7 +38,7 @@ public class MessageView {
     }
 
     @PostMapping
-    public String saveMessage(@AuthenticationPrincipal UserDetailsImpl user,
+    public String saveMessage(@AuthenticationPrincipal UserDetailsProvider user,
             @ModelAttribute MessageDTO messageDTO) {
         messageService.save(messageDTO, user.getId());
         return MESSAGE_OK;

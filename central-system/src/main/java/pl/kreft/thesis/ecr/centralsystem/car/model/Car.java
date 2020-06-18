@@ -35,6 +35,10 @@ public class Car {
     UUID id;
 
     @NonNull
+    @Column(name = "car_plate", unique = true)
+    String plate;
+
+    @NonNull
     @Column(name = "car_status")
     @Enumerated(EnumType.STRING)
     CarStatus status;

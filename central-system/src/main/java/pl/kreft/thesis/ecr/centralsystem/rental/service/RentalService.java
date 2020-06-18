@@ -1,10 +1,13 @@
 package pl.kreft.thesis.ecr.centralsystem.rental.service;
 
 import javassist.tools.rmi.ObjectNotFoundException;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.kreft.thesis.ecr.centralsystem.calendar.model.DayType;
+import pl.kreft.thesis.ecr.centralsystem.calendar.service.HolidayCalendarService;
 import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
 import pl.kreft.thesis.ecr.centralsystem.car.service.CarService;
 import pl.kreft.thesis.ecr.centralsystem.exception.EcrExceptionMessages;
@@ -14,9 +17,14 @@ import pl.kreft.thesis.ecr.centralsystem.rental.model.Rental;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.RentalHistoryDTO;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.ReturnCarRequest;
 import pl.kreft.thesis.ecr.centralsystem.rental.repository.RentalRepository;
+import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.IncorrectCurrentFuelException;
+import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.IncorrectDistanceTraveledException;
+import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.IncorrectNumberKilometerFromMeterException;
 import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.RentalByEmployeeException;
 import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.RentalCarException;
+import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.RentalDateEndIsBeforeStartException;
 import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.RentalNotFoundException;
+import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.RentalOnlyWorkDayPossibleException;
 import pl.kreft.thesis.ecr.centralsystem.user.model.User;
 import pl.kreft.thesis.ecr.centralsystem.user.model.UserRole;
 import pl.kreft.thesis.ecr.centralsystem.user.repository.UserRepository;
@@ -41,16 +49,18 @@ public class RentalService {
     private final RentalRepository rentalRepository;
     private final UserRepository userRepository;
     private final CarService carService;
+    private final HolidayCalendarService holidayCalendarService;
 
     @Autowired
     public RentalService(RentalRepository rentalRepository, UserRepository userRepository,
-            CarService carService) {
+            CarService carService, HolidayCalendarService holidayCalendarService) {
         this.rentalRepository = rentalRepository;
         this.userRepository = userRepository;
         this.carService = carService;
+        this.holidayCalendarService = holidayCalendarService;
     }
 
-    public Rental find(UUID id) throws ObjectNotFoundException {
+    public Rental find(UUID id) {
         Optional<Rental> rental = rentalRepository.findByIdAndRemovedFalse(id);
         if (rental.isPresent()) {
             log.info("Found rental by id: " + id);
@@ -89,11 +99,17 @@ public class RentalService {
 
     @Transactional
     public Rental rentCar(CarRentalRequest request, UUID userId) throws ObjectNotFoundException {
+        log.info("Method rentCar called for user Id: " + userId);
+        log.debug("Method rentCar called for user Id: " + userId + "with following data: " + request
+                .toString());
         Optional<User> user = userRepository.findById(userId);
         Car car = carService.find(request.getRentalCarId());
         if (user.isPresent()) {
-            checkIsUserAbilityToRentCar(user.get());
-            checkIsCarAbilityForRent(car);
+            checkIfNotHolidayAndDateIsCorrect(request.getDateOfStartRent(),
+                    request.getDateOfEndRent());
+            checkIsUserAbilityToRentCar(user.get(), request.getDateOfStartRent());
+            checkIsCarAbilityForRent(car, request.getDateOfStartRent());
+
             Rental savedRental = rentalRepository.save(Rental.builder()
                                                              .applicationDate(Instant.now())
                                                              .car(car)
@@ -117,8 +133,10 @@ public class RentalService {
     }
 
     @Transactional
-    public Rental returnCar(ReturnCarRequest returnCarRequest) throws ObjectNotFoundException {
+    public Rental returnCar(ReturnCarRequest returnCarRequest) {
         log.info("Method returnCar was called");
+        log.debug("Method rentCar called with following data: " + returnCarRequest.toString());
+        validateReturnCarRequest(returnCarRequest);
         Rental rental = find(returnCarRequest.getRentalId());
         rental.setCarCondition(returnCarRequest.getCarCondition());
         rental.setDistanceTraveled(returnCarRequest.getDistanceTraveled());
@@ -133,19 +151,35 @@ public class RentalService {
         return rentalRepository.save(rental);
     }
 
-    private void checkIsCarAbilityForRent(Car car) {
+    private void validateReturnCarRequest(ReturnCarRequest returnCarRequest) {
+        if (returnCarRequest.getNumberKilometerFromMeter() < 0) {
+            throw new IncorrectNumberKilometerFromMeterException(
+                    new ErrorMessage(EcrExceptionMessages.IncorrectNumberKilometer));
+        }
+        if (returnCarRequest.getDistanceTraveled() < 0) {
+            throw new IncorrectDistanceTraveledException(
+                    new ErrorMessage(EcrExceptionMessages.IncorrectTraveledDistance));
+        }
+        if (returnCarRequest.getCurrentFuelLevel() < 0
+                || returnCarRequest.getCurrentFuelLevel() > 100) {
+            throw new IncorrectCurrentFuelException(
+                    new ErrorMessage(EcrExceptionMessages.IncorrectFuelLevel));
+        }
+    }
+
+    private void checkIsCarAbilityForRent(Car car, @NonNull LocalDateTime dateOfStartRent) {
         List<Rental> foundRentals = rentalRepository.findAllByCarIdAndPlannedRentalEndIsGreaterThan(
-                car.getId(), LocalDateTime.now());
+                car.getId(), dateOfStartRent);
 
         if (!foundRentals.isEmpty()) {
             throw new RentalCarException(new ErrorMessage(EcrExceptionMessages.RentalCarException));
         }
     }
 
-    private void checkIsUserAbilityToRentCar(User user) {
+    private void checkIsUserAbilityToRentCar(User user, @NonNull LocalDateTime dateOfStartRent) {
         if (user.getRole().equals(UserRole.EMPLOYEE)) {
             List<Rental> foundRentals = rentalRepository.findAllByLenderIdAndPlannedRentalEndIsGreaterThan(
-                    user.getId(), LocalDateTime.now());
+                    user.getId(), dateOfStartRent);
             if (!foundRentals.isEmpty()) {
                 throw new RentalByEmployeeException(new ErrorMessage(EmployeeRentalException));
             }
@@ -184,5 +218,23 @@ public class RentalService {
             index++;
         }
         return results;
+    }
+
+    private void checkIfNotHolidayAndDateIsCorrect(@NonNull LocalDateTime dateOfStartRent,
+            LocalDateTime dateOfEndRent) {
+        checkIfWorkDayOrThrow(dateOfStartRent);
+        checkIfWorkDayOrThrow(dateOfStartRent);
+        if (dateOfStartRent.isAfter(dateOfEndRent)) {
+            throw new RentalDateEndIsBeforeStartException(
+                    new ErrorMessage(EcrExceptionMessages.RentalIncorrectDate));
+        }
+
+    }
+
+    private void checkIfWorkDayOrThrow(LocalDateTime date) {
+        if (holidayCalendarService.checkDay(date.toLocalDate()).equals(DayType.HOLIDAY)
+                || DayType.SATURDAY.equals(holidayCalendarService.checkDay(date.toLocalDate())))
+            throw new RentalOnlyWorkDayPossibleException(
+                    new ErrorMessage(EcrExceptionMessages.RentalOnlyWorkDay));
     }
 }

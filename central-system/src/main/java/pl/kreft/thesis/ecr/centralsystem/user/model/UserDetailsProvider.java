@@ -12,14 +12,13 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class UserDetailsImpl implements UserDetails {
+public class UserDetailsProvider implements UserDetails {
 
     private UUID id;
     private String email;
     private String password;
     private String role;
     private boolean isEnabled;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

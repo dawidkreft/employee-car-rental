@@ -2,7 +2,6 @@ package pl.kreft.thesis.ecr.centralsystem;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
 public class CentralSystemApplication {
@@ -10,5 +9,4 @@ public class CentralSystemApplication {
     public static void main(String[] args) {
         SpringApplication.run(CentralSystemApplication.class, args);
     }
-
 }

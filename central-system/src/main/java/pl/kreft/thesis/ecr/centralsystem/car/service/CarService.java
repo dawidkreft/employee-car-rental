@@ -37,6 +37,7 @@ public class CarService {
 
     public Car save(NewCarRequest car) {
         Car newCar = Car.builder()
+                        .plate(car.getPlate())
                         .brand(car.getBrand())
                         .model(car.getModel())
                         .type(car.getType())

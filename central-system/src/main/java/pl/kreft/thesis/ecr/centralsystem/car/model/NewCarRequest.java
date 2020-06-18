@@ -11,6 +11,9 @@ import java.time.LocalDate;
 @Builder
 public class NewCarRequest {
 
+    @NonNull
+    String plate;
+
     @NonNull 
     String brand;
 
