@@ -5,9 +5,6 @@ public class RequestPageMappingInfo {
     //REDIRECT
     public static final String REDIRECT = "redirect:";
 
-    //INDEX
-    public static final String INDEX_PAGE_REQUEST = "/index";
-
     //HOME
     public static final String HOME_PAGE_REQUEST = "/home";
 

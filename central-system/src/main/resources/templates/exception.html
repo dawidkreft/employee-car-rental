@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+    <div class="error">
+        <h1> Ups, coś zrobiłeś nie tak </h1>
+        <span th:if="${errorMessage}">Powód błędu jest poniżej: <br> </span>
+        <span th:if="${errorMessage}" th:utext="${errorMessage}"></span>
+        <br>
+        <h1 th:if="!${errorMessage}">Strona nie istnieje</h1>
+        <p> <a th:href="@{/rentals}"> Wróć do strony głownej</a> </p>
+
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

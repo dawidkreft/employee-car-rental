@@ -17,6 +17,7 @@ public class ResponsePageMappingInfo {
     //Error page
     public static final String ERROR = "error";
     public static final String ERROR_403 = "403";
+    public static final String EXCEPTION = "exception";
 
     //Rental
     public static final String RENTAL = "rental";
