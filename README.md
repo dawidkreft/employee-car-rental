@@ -5,5 +5,5 @@ Employee car rental as a multi-layered web application - Thesis project
 June 2020
 Probably you can try this on:
 ```sh
-http://dawidkreft.bieda.it/
+http://20.188.58.70:8000/
 ```
