@@ -12,10 +12,11 @@ import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
 import pl.kreft.thesis.ecr.centralsystem.car.service.CarService;
 import pl.kreft.thesis.ecr.centralsystem.exception.EcrExceptionMessages;
 import pl.kreft.thesis.ecr.centralsystem.exception.ErrorMessage;
-import pl.kreft.thesis.ecr.centralsystem.rental.model.CarRentalRequest;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.Rental;
-import pl.kreft.thesis.ecr.centralsystem.rental.model.RentalHistoryDTO;
-import pl.kreft.thesis.ecr.centralsystem.rental.model.ReturnCarRequest;
+import pl.kreft.thesis.ecr.centralsystem.rental.model.dto.CarRentalRequest;
+import pl.kreft.thesis.ecr.centralsystem.rental.model.dto.RentalHistoryResponse;
+import pl.kreft.thesis.ecr.centralsystem.rental.model.dto.ReturnCarRequest;
+import pl.kreft.thesis.ecr.centralsystem.rental.model.dto.UsersRentalHistoryResponse;
 import pl.kreft.thesis.ecr.centralsystem.rental.repository.RentalRepository;
 import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.IncorrectCurrentFuelException;
 import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.IncorrectDistanceTraveledException;
@@ -27,18 +28,17 @@ import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.RentalNotFound
 import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.RentalOnlyWorkDayPossibleException;
 import pl.kreft.thesis.ecr.centralsystem.user.model.User;
 import pl.kreft.thesis.ecr.centralsystem.user.model.UserRole;
-import pl.kreft.thesis.ecr.centralsystem.user.repository.UserRepository;
-import pl.kreft.thesis.ecr.centralsystem.user.service.exception.UserNotExistsException;
+import pl.kreft.thesis.ecr.centralsystem.user.service.UserService;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static pl.kreft.thesis.ecr.centralsystem.common.DateConverter.convertInstantToLocalDateTime;
 import static pl.kreft.thesis.ecr.centralsystem.config.GlobalConfiguration.defaultTimeZone;
 import static pl.kreft.thesis.ecr.centralsystem.exception.EcrExceptionMessages.EmployeeRentalException;
 
@@ -47,15 +47,15 @@ import static pl.kreft.thesis.ecr.centralsystem.exception.EcrExceptionMessages.E
 public class RentalService {
 
     private final RentalRepository rentalRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final CarService carService;
     private final HolidayCalendarService holidayCalendarService;
 
     @Autowired
-    public RentalService(RentalRepository rentalRepository, UserRepository userRepository,
+    public RentalService(RentalRepository rentalRepository, UserService userService,
             CarService carService, HolidayCalendarService holidayCalendarService) {
         this.rentalRepository = rentalRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.carService = carService;
         this.holidayCalendarService = holidayCalendarService;
     }
@@ -88,6 +88,46 @@ public class RentalService {
         return allRentals;
     }
 
+    public List<UsersRentalHistoryResponse> getAllUsersRentalBossId(UUID bossId) {
+        log.info("Method getAllUsersRentalBossId called");
+        List<Rental> rentals = rentalRepository.findAllByLenderBossId(bossId);
+        List<UsersRentalHistoryResponse> results = new ArrayList<>();
+        int index = 1;
+        for (Rental rental : rentals) {
+            results.add(mapToUserRentalHistoryResponse(rental, index));
+            index++;
+        }
+        return results;
+    }
+
+    private UsersRentalHistoryResponse mapToUserRentalHistoryResponse(Rental rental, int index) {
+        return (UsersRentalHistoryResponse.builder()
+                                          .ordinalNumber(index)
+                                          .lenderId(rental.getLender().getId())
+                                          .lenderName(rental.getLender().getName())
+                                          .lenderSurname(rental.getLender().getSurname())
+                                          .id(rental.getId())
+                                          .applicationDate(convertInstantToLocalDateTime(
+                                                  rental.getApplicationDate(), defaultTimeZone))
+                                          .carId(rental.getCar().getId())
+                                          .carBrand(rental.getCar().getBrand())
+                                          .carModel(rental.getCar().getModel())
+                                          .carType(rental.getCar().getType())
+                                          .carCondition(rental.getCarCondition())
+                                          .distanceTraveled(rental.getDistanceTraveled())
+                                          .isAcceptedByBoss(rental.getIsAcceptedByBoss())
+                                          .isReceivedPositively(rental.getIsReceivedPositively())
+                                          .isReturned(rental.getIsReturned())
+                                          .numberKilometerFromMeter(
+                                                  rental.getNumberKilometerFromMeter())
+                                          .plannedRentalEnd(rental.getPlannedRentalEnd())
+                                          .plannedRentalStart(rental.getPlannedRentalStart())
+                                          .returnDate(convertInstantToLocalDateTime(
+                                                  rental.getReturnDate(), defaultTimeZone))
+                                          .target(rental.getTarget())
+                                          .build());
+    }
+
     public List<Rental> getAllActiveByUserId(UUID userId) {
         log.info("Method getAllActiveByUserId called for user Id: " + userId);
         List<Rental> allRentals = rentalRepository.findAllByLenderId(userId);
@@ -102,34 +142,30 @@ public class RentalService {
         log.info("Method rentCar called for user Id: " + userId);
         log.debug("Method rentCar called for user Id: " + userId + "with following data: " + request
                 .toString());
-        Optional<User> user = userRepository.findById(userId);
+        User user = userService.find(userId);
         Car car = carService.find(request.getRentalCarId());
-        if (user.isPresent()) {
-            checkIfNotHolidayAndDateIsCorrect(request.getDateOfStartRent(),
-                    request.getDateOfEndRent());
-            checkIsUserAbilityToRentCar(user.get(), request.getDateOfStartRent());
-            checkIsCarAbilityForRent(car, request.getDateOfStartRent());
 
-            Rental savedRental = rentalRepository.save(Rental.builder()
-                                                             .applicationDate(Instant.now())
-                                                             .car(car)
-                                                             .creationDate(Instant.now())
-                                                             .plannedRentalEnd(
-                                                                     request.getDateOfEndRent())
-                                                             .plannedRentalStart(
-                                                                     request.getDateOfStartRent())
-                                                             .lender(user.get())
-                                                             .removed(false)
-                                                             .isReturned(false)
-                                                             .target(request.getTarget())
-                                                             .build());
+        checkIfNotHolidayAndDateIsCorrect(request.getDateOfStartRent(), request.getDateOfEndRent());
+        checkIsUserAbilityToRentCar(user, request.getDateOfStartRent());
+        checkIsCarAbilityForRent(car, request.getDateOfStartRent());
 
-            carService.rentCar(car);
-            log.info("Rental with id: {} successfully saved", savedRental.getId());
-            return savedRental;
-        }
-        throw new UserNotExistsException(
-                new ErrorMessage(EcrExceptionMessages.UserNotExistsException));
+        Rental savedRental = rentalRepository.save(Rental.builder()
+                                                         .applicationDate(Instant.now())
+                                                         .car(car)
+                                                         .creationDate(Instant.now())
+                                                         .plannedRentalEnd(
+                                                                 request.getDateOfEndRent())
+                                                         .plannedRentalStart(
+                                                                 request.getDateOfStartRent())
+                                                         .lender(user)
+                                                         .removed(false)
+                                                         .isReturned(false)
+                                                         .target(request.getTarget())
+                                                         .build());
+
+        carService.rentCar(car);
+        log.info("Rental with id: {} successfully saved", savedRental.getId());
+        return savedRental;
     }
 
     @Transactional
@@ -186,38 +222,39 @@ public class RentalService {
         }
     }
 
-    public List<RentalHistoryDTO> getRentalHistory(UUID lenderId) throws ObjectNotFoundException {
-        List<RentalHistoryDTO> results = new ArrayList<>();
+    public List<RentalHistoryResponse> getRentalHistory(UUID lenderId) {
+        List<RentalHistoryResponse> results = new ArrayList<>();
         int index = 1;
         List<Rental> rentals = rentalRepository.findAllByLenderId(lenderId);
         for (Rental rental : rentals) {
-            Car car = carService.find(rental.getCar().getId());
-            results.add(RentalHistoryDTO.builder()
-                                        .ordinalNumber(index)
-                                        .id(rental.getId())
-                                        .applicationDate(
-                                                LocalDateTime.ofInstant(rental.getApplicationDate(),
-                                                        ZoneId.of(defaultTimeZone)))
-                                        .carId(rental.getCar().getId())
-                                        .carBrand(car.getBrand())
-                                        .carModel(car.getModel())
-                                        .carType(car.getType())
-                                        .carCondition(rental.getCarCondition())
-                                        .distanceTraveled(rental.getDistanceTraveled())
-                                        .isAcceptedByBoss(rental.getIsAcceptedByBoss())
-                                        .isReceivedPositively(rental.getIsReceivedPositively())
-                                        .isReturned(rental.getIsReturned())
-                                        .numberKilometerFromMeter(
-                                                rental.getNumberKilometerFromMeter())
-                                        .plannedRentalEnd(rental.getPlannedRentalEnd())
-                                        .plannedRentalStart(rental.getPlannedRentalStart())
-                                        .returnDate(LocalDateTime.ofInstant(rental.getReturnDate(),
-                                                ZoneId.of(defaultTimeZone)))
-                                        .target(rental.getTarget())
-                                        .build());
+            results.add(mapToRentalHistoryResponse(rental, index));
             index++;
         }
         return results;
+    }
+
+    private RentalHistoryResponse mapToRentalHistoryResponse(Rental rental, int index) {
+        return RentalHistoryResponse.builder()
+                                    .ordinalNumber(index)
+                                    .id(rental.getId())
+                                    .applicationDate(convertInstantToLocalDateTime(
+                                            rental.getApplicationDate(), defaultTimeZone))
+                                    .carId(rental.getCar().getId())
+                                    .carBrand(rental.getCar().getBrand())
+                                    .carModel(rental.getCar().getModel())
+                                    .carType(rental.getCar().getType())
+                                    .carCondition(rental.getCarCondition())
+                                    .distanceTraveled(rental.getDistanceTraveled())
+                                    .isAcceptedByBoss(rental.getIsAcceptedByBoss())
+                                    .isReceivedPositively(rental.getIsReceivedPositively())
+                                    .isReturned(rental.getIsReturned())
+                                    .numberKilometerFromMeter(rental.getNumberKilometerFromMeter())
+                                    .plannedRentalEnd(rental.getPlannedRentalEnd())
+                                    .plannedRentalStart(rental.getPlannedRentalStart())
+                                    .returnDate(convertInstantToLocalDateTime(
+                                            rental.getReturnDate(), defaultTimeZone))
+                                    .target(rental.getTarget())
+                                    .build();
     }
 
     private void checkIfNotHolidayAndDateIsCorrect(@NonNull LocalDateTime dateOfStartRent,

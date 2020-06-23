@@ -1,9 +1,9 @@
 package pl.kreft.thesis.ecr.centralsystem.testobjectfactories;
 
 import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
-import pl.kreft.thesis.ecr.centralsystem.rental.model.CarRentalRequest;
+import pl.kreft.thesis.ecr.centralsystem.rental.model.dto.CarRentalRequest;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.Rental;
-import pl.kreft.thesis.ecr.centralsystem.rental.model.ReturnCarRequest;
+import pl.kreft.thesis.ecr.centralsystem.rental.model.dto.ReturnCarRequest;
 import pl.kreft.thesis.ecr.centralsystem.user.model.User;
 
 import java.time.Instant;

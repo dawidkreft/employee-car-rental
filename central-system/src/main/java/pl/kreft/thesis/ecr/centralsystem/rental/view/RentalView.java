@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.kreft.thesis.ecr.centralsystem.car.service.CarService;
-import pl.kreft.thesis.ecr.centralsystem.rental.model.CarRentalRequest;
-import pl.kreft.thesis.ecr.centralsystem.rental.model.ReturnCarRequest;
+import pl.kreft.thesis.ecr.centralsystem.rental.model.dto.CarRentalRequest;
+import pl.kreft.thesis.ecr.centralsystem.rental.model.dto.ReturnCarRequest;
 import pl.kreft.thesis.ecr.centralsystem.rental.service.RentalService;
 import pl.kreft.thesis.ecr.centralsystem.user.model.UserDetailsProvider;
 
@@ -24,6 +24,7 @@ import static pl.kreft.thesis.ecr.centralsystem.common.RequestPageMappingInfo.RE
 import static pl.kreft.thesis.ecr.centralsystem.common.RequestPageMappingInfo.RENTAL_REQUEST;
 import static pl.kreft.thesis.ecr.centralsystem.common.RequestPageMappingInfo.RENTAL_RETURN_REQUEST;
 import static pl.kreft.thesis.ecr.centralsystem.common.RequestPageMappingInfo.RENTAL_RETURN_REQUEST_WITH_ID;
+import static pl.kreft.thesis.ecr.centralsystem.common.RequestPageMappingInfo.RENTAL_USERS_HISTORY;
 import static pl.kreft.thesis.ecr.centralsystem.common.ResponsePageMappingInfo.RENTAL;
 import static pl.kreft.thesis.ecr.centralsystem.common.ResponsePageMappingInfo.RENTAL_FORM;
 import static pl.kreft.thesis.ecr.centralsystem.common.ResponsePageMappingInfo.RENTAL_HISTORY;
@@ -88,4 +89,9 @@ public class RentalView {
         return redirectTo(RENTAL_REQUEST);
     }
 
+    @GetMapping(RENTAL_USERS_HISTORY)
+    public String returnCar(Model model, @AuthenticationPrincipal UserDetailsProvider user) {
+        model.addAttribute("rentals", rentalService.getAllUsersRentalBossId(user.getId()));
+        return redirectTo(RENTAL_USERS_HISTORY);
+    }
 }

@@ -14,7 +14,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class UserResponse {
 
     @NonNull
     UUID id;
@@ -35,7 +35,7 @@ public class UserDTO {
     LocalDateTime creationDate;
 
     @Nullable
-    UUID boss;
+    UUID bossId;
 
     @Nullable
     String boosName;

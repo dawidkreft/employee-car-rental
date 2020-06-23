@@ -32,7 +32,7 @@
                                                          th:text="${user.role.displayValue}"></span>
                 </li>
 
-                <li th:if="${user.boss != null }"> Przełożony: &nbsp;&nbsp;
+                <li th:if="${user.bossId != null }"> Przełożony: &nbsp;&nbsp;
                     <span class="user-info" th:text="${user.boosName}"></span> &nbsp;
                     <span class="user-info" th:text="${user.boosSurname}">  </span>
                 </li>

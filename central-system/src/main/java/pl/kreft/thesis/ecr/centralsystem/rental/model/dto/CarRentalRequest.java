@@ -1,4 +1,4 @@
-package pl.kreft.thesis.ecr.centralsystem.rental.model;
+package pl.kreft.thesis.ecr.centralsystem.rental.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

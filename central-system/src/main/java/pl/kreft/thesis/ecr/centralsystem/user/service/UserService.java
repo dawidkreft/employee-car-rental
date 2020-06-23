@@ -1,14 +1,16 @@
 package pl.kreft.thesis.ecr.centralsystem.user.service;
 
-import javassist.tools.rmi.ObjectNotFoundException;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pl.kreft.thesis.ecr.centralsystem.exception.EcrExceptionMessages;
+import pl.kreft.thesis.ecr.centralsystem.exception.ErrorMessage;
 import pl.kreft.thesis.ecr.centralsystem.user.model.User;
-import pl.kreft.thesis.ecr.centralsystem.user.model.UserDTO;
+import pl.kreft.thesis.ecr.centralsystem.user.model.UserResponse;
 import pl.kreft.thesis.ecr.centralsystem.user.model.UserRole;
 import pl.kreft.thesis.ecr.centralsystem.user.repository.UserRepository;
+import pl.kreft.thesis.ecr.centralsystem.user.service.exception.UserNotExistsException;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -30,32 +32,34 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDTO getUser(UUID userId) throws ObjectNotFoundException {
-        return mapToDtoUser(find(userId));
+    public UserResponse getUser(UUID userId) {
+        return mapToUserResponse(find(userId));
     }
 
-    public User find(UUID id) throws ObjectNotFoundException {
+    public User find(UUID id) {
         Optional<User> user = userRepository.findByIdAndRemovedFalse(id);
         if (user.isPresent()) {
             log.info("Found user by id: " + id);
             return user.get();
         }
-        throw new ObjectNotFoundException("Unable to locate user with id: " + id);
+        throw new UserNotExistsException(
+                new ErrorMessage(EcrExceptionMessages.UserNotExistsException));
     }
 
-    public User findByEmail(String email) throws ObjectNotFoundException {
+    public User findByEmail(String email) {
         Optional<User> user = userRepository.findByEmailAndRemovedFalse(email);
         if (user.isPresent()) {
             log.info("Found user by email: " + email);
             return user.get();
         }
-        throw new ObjectNotFoundException("Unable to locate user with email: " + email);
+        throw new UserNotExistsException(
+                new ErrorMessage(EcrExceptionMessages.UserNotExistsException));
     }
 
-    public List<UserDTO> getAdmins() {
+    public List<UserResponse> getAdmins() {
         return userRepository.findAllByRoleAndRemovedFalse(UserRole.ADMIN)
                              .stream()
-                             .map(this::mapToDtoUser)
+                             .map(this::mapToUserResponse)
                              .collect(Collectors.toList());
     }
 
@@ -64,7 +68,7 @@ public class UserService {
         User savedUser;
         if (userInDbOptional.isPresent()) {
             User oldUser = userInDbOptional.get();
-            oldUser.setBoss(user.getBoss());
+            oldUser.setBossId(user.getBossId());
             oldUser.setEmail(user.getEmail());
             oldUser.setIsActive(user.getIsActive());
             oldUser.setName(user.getName());
@@ -90,6 +94,14 @@ public class UserService {
         return allUsers;
     }
 
+    public List<UserResponse> getAllUsersByBossId(UUID bossId) {
+        log.info("Method getAllUsersByBossId called for boos with id: " + bossId.toString());
+        return userRepository.findAllByBossIdAndRemovedIsFalseAndIsActiveTrue(bossId)
+                             .stream()
+                             .map(this::mapToUserResponse)
+                             .collect(Collectors.toList());
+    }
+
     public List<User> getAllActiveUser() {
         log.info("Returning all active users");
         List<User> allUsers = userRepository.findAll();
@@ -99,56 +111,46 @@ public class UserService {
         return allUsers;
     }
 
-    public void remove(UUID userId) throws ObjectNotFoundException {
-        Optional<User> user = userRepository.findByIdAndRemovedFalse(userId);
-        if (user.isPresent()) {
-            User userInDb = user.get();
-            userInDb.setRemoved(true);
-            userRepository.save(userInDb);
-            log.info("Removed user by id: " + userId);
-        } else {
-            throw new ObjectNotFoundException("Unable to locate user with id: " + userId);
-        }
+    @Transactional
+    public void remove(UUID userId) {
+        User user = find(userId);
+        user.setRemoved(true);
+        userRepository.save(user);
+        log.info("Removed user by id: " + userId);
     }
 
-    public void disableUser(UUID userId) throws ObjectNotFoundException {
-        Optional<User> user = userRepository.findByIdAndRemovedFalse(userId);
-        if (user.isPresent()) {
-            User userInDb = user.get();
-            userInDb.setIsActive(false);
-            userRepository.save(userInDb);
-            log.info("Removed user by id: " + userId);
-        } else {
-            throw new ObjectNotFoundException("Unable to locate user with id: " + userId);
-        }
+    public void disableUser(UUID userId) {
+        User user = find(userId);
+        user.setIsActive(false);
+        userRepository.save(user);
+        log.info("Removed user by id: " + userId);
     }
 
-    @SneakyThrows
-    public UserDTO mapToDtoUser(User user) {
-        if (user.getBoss() == null) {
-            return UserDTO.builder()
-                          .id(user.getId())
-                          .name(user.getName())
-                          .surname(user.getSurname())
-                          .email(user.getEmail())
-                          .role(user.getRole())
-                          .creationDate(LocalDateTime.ofInstant(user.getCreationDate(),
-                                  ZoneId.of(defaultTimeZone)))
-                          .build();
+    public UserResponse mapToUserResponse(User user) {
+        if (user.getBossId() == null) {
+            return UserResponse.builder()
+                               .id(user.getId())
+                               .name(user.getName())
+                               .surname(user.getSurname())
+                               .email(user.getEmail())
+                               .role(user.getRole())
+                               .creationDate(LocalDateTime.ofInstant(user.getCreationDate(),
+                                       ZoneId.of(defaultTimeZone)))
+                               .build();
         }
 
-        User boos = find(user.getBoss());
-        return UserDTO.builder()
-                      .id(user.getId())
-                      .name(user.getName())
-                      .surname(user.getSurname())
-                      .email(user.getEmail())
-                      .role(user.getRole())
-                      .creationDate(LocalDateTime.ofInstant(user.getCreationDate(),
-                              ZoneId.of(defaultTimeZone)))
-                      .boss(user.getBoss())
-                      .boosName(boos.getName())
-                      .boosSurname(boos.getSurname())
-                      .build();
+        User boos = find(user.getBossId());
+        return UserResponse.builder()
+                           .id(user.getId())
+                           .name(user.getName())
+                           .surname(user.getSurname())
+                           .email(user.getEmail())
+                           .role(user.getRole())
+                           .creationDate(LocalDateTime.ofInstant(user.getCreationDate(),
+                                   ZoneId.of(defaultTimeZone)))
+                           .bossId(user.getBossId())
+                           .boosName(boos.getName())
+                           .boosSurname(boos.getSurname())
+                           .build();
     }
 }

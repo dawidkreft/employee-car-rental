@@ -24,6 +24,7 @@ public class ResponsePageMappingInfo {
     public static final String RENTAL_HISTORY = "rental_history";
     public static final String RENTAL_FORM = "rental_form";
     public static final String RENTAL_RETURN_FORM = "rental_return_form";
+    public static final String RENTAL_USERS_HISTORY = "rental_user_history";
 
     //User
     public static final String USER = "user";

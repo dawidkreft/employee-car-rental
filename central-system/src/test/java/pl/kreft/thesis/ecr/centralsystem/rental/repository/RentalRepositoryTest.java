@@ -1,6 +1,5 @@
 package pl.kreft.thesis.ecr.centralsystem.rental.repository;
 
-import org.junit.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,9 +20,9 @@ import static org.junit.Assert.assertEquals;
 import static pl.kreft.thesis.ecr.centralsystem.dbtestcleaner.DbCleaner.clearDatabase;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.CarFactory.getCar;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.RentalFactory.getRandomRental;
+import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getBoss;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getEmployee;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getSecondEmployee;
-import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getSecondInspector;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -75,29 +74,21 @@ class RentalRepositoryTest {
         assertEquals(2, allRentals.size());
     }
 
-  /*  @Test
-    void shouldFindRentalFromUserIdWhenNotReturnCar() {
-        Rental testRental = getRandomRental(lender, car);
-        Rental savedRental = rentalRepository.save(testRental);
+    @Test
+    void shouldFindAllUserRentalByBoss() {
+        User boos = userRepository.save(getBoss());
+        lender.setBossId(boos.getId());
+        lender1.setBossId(boos.getId());
+        userRepository.save(lender);
+        userRepository.save(lender1);
+        rentalRepository.save(getRandomRental(lender, car));
+        rentalRepository.save(getRandomRental(lender1, car));
 
-        List<Rental> foundRentals = rentalRepository.findAllByLenderIdAndRealRentalEndIsNull(
-                lender.getId());
+        List<Rental> rental = rentalRepository.findAllByLenderBossId(boos.getId());
 
-        assertEquals(1, foundRentals.size());
-        assertEquals(lender.getId(),foundRentals.get(0).getLender().getId());
-        assertEquals(savedRental.getId(),foundRentals.get(0).getId());
+        assertEquals(2, rental.size());
+        assertEquals(lender, rental.get(0).getLender());
+        assertEquals(lender1, rental.get(1).getLender());
     }
 
-    @Test
-    void shouldFindRentalFromCarIdWhenIsNotReturn() {
-        Rental testRental = getRandomRental(lender, car);
-        Rental savedRental = rentalRepository.save(testRental);
-
-        List<Rental> foundRentals = rentalRepository.findAllByCarIdAndRealRentalEndIsNull(
-                car.getId());
-
-        assertEquals(1, foundRentals.size());
-        assertEquals(car.getId(),foundRentals.get(0).getCar().getId());
-        assertEquals(savedRental.getId(),foundRentals.get(0).getId());
-    }*/
 }

@@ -10,9 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.kreft.thesis.ecr.centralsystem.car.model.Car;
 import pl.kreft.thesis.ecr.centralsystem.car.repository.CarRepository;
-import pl.kreft.thesis.ecr.centralsystem.rental.model.CarRentalRequest;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.Rental;
-import pl.kreft.thesis.ecr.centralsystem.rental.model.ReturnCarRequest;
+import pl.kreft.thesis.ecr.centralsystem.rental.model.dto.CarRentalRequest;
+import pl.kreft.thesis.ecr.centralsystem.rental.model.dto.ReturnCarRequest;
+import pl.kreft.thesis.ecr.centralsystem.rental.model.dto.UsersRentalHistoryResponse;
 import pl.kreft.thesis.ecr.centralsystem.rental.repository.RentalRepository;
 import pl.kreft.thesis.ecr.centralsystem.user.model.User;
 import pl.kreft.thesis.ecr.centralsystem.user.repository.UserRepository;
@@ -25,6 +26,7 @@ import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.CarFactory.g
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.RentalFactory.getRandomRental;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.RentalFactory.prepareRequest;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.RentalFactory.prepareReturnRequest;
+import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getBoss;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getEmployee;
 import static pl.kreft.thesis.ecr.centralsystem.testobjectfactories.UserFactory.getSecondEmployee;
 
@@ -118,7 +120,22 @@ class RentalServiceTest {
         List<Rental> rentals = rentalService.getAllActiveByUserId(lender.getId());
 
         int rentalsNumber = rentalRepository.findAll().size();
-        assertEquals(rentals.size(), 0);
-        assertEquals(rentalsNumber, 1);
+        assertEquals(0, rentals.size());
+        assertEquals(1, rentalsNumber);
+    }
+
+    @Test
+    public void shouldFindAllUsersRentalByBoosId() {
+        User boos = userRepository.save(getBoss());
+        lender.setBossId(boos.getId());
+        lender1.setBossId(boos.getId());
+        userRepository.save(lender);
+        userRepository.save(lender1);
+        rentalRepository.save(getRandomRental(lender, car));
+        rentalRepository.save(getRandomRental(lender1, car));
+
+        List<UsersRentalHistoryResponse> rentals = rentalService.getAllUsersRentalBossId(boos.getId());
+
+        assertEquals(2, rentals.size());
     }
 }

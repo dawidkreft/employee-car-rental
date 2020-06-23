@@ -20,6 +20,8 @@ public interface RentalRepository extends JpaRepository<Rental, UUID> {
 
     List<Rental> findAllByLenderId(UUID userId);
 
+    List<Rental> findAllByLenderBossId(UUID bossId);
+
     List<Rental> findAllByCarIdAndPlannedRentalEndIsGreaterThan(UUID carId, LocalDateTime date);
 
     List<Rental> findAllByLenderIdAndPlannedRentalEndIsGreaterThan(UUID userId, LocalDateTime date);

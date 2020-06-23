@@ -7,13 +7,27 @@ import java.time.Instant;
 
 public class UserFactory {
 
+    static public User getBoss() {
+        return User.builder()
+                   .name("user")
+                   .surname("surname")
+                   .password("password")
+                   .email("boss@email.com")
+                   .bossId(null)
+                   .role(UserRole.BOSS)
+                   .isActive(true)
+                   .creationDate(Instant.now())
+                   .removed(false)
+                   .build();
+    }
+
     static public User getEmployee() {
         return User.builder()
                    .name("user")
                    .surname("surname")
                    .password("password")
                    .email("email@email.com")
-                   .boss(null)
+                   .bossId(null)
                    .role(UserRole.EMPLOYEE)
                    .isActive(true)
                    .creationDate(Instant.now())
@@ -27,7 +41,7 @@ public class UserFactory {
                    .surname("surname")
                    .password("password")
                    .email("email2@email.com")
-                   .boss(null)
+                   .bossId(null)
                    .role(UserRole.EMPLOYEE)
                    .isActive(true)
                    .creationDate(Instant.now())
@@ -41,7 +55,7 @@ public class UserFactory {
                    .surname("gadzet")
                    .password("password")
                    .email("emailInspector@email.com")
-                   .boss(null)
+                   .bossId(null)
                    .role(UserRole.DISPATCHER)
                    .isActive(true)
                    .creationDate(Instant.now())
@@ -55,7 +69,7 @@ public class UserFactory {
                    .surname("gadzet")
                    .password("password")
                    .email("emailInspector2@email.com")
-                   .boss(null)
+                   .bossId(null)
                    .role(UserRole.DISPATCHER)
                    .isActive(true)
                    .creationDate(Instant.now())
@@ -69,7 +83,7 @@ public class UserFactory {
                    .surname("admin")
                    .password("password")
                    .email("emailAdmin@email.com")
-                   .boss(null)
+                   .bossId(null)
                    .role(UserRole.ADMIN)
                    .isActive(true)
                    .creationDate(Instant.now())

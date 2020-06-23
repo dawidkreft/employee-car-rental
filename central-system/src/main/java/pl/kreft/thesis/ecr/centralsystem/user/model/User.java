@@ -47,7 +47,8 @@ public class User {
     String password;
 
     @NonNull
-    @Column(name = "user_email" , unique = true)
+    @Column(name = "user_email",
+            unique = true)
     String email;
 
     @NonNull
@@ -57,7 +58,7 @@ public class User {
 
     @Nullable
     @Column(name = "user_boss_id_fk")
-    UUID boss;
+    UUID bossId;
 
     @NonNull
     @Column(name = "user_active")

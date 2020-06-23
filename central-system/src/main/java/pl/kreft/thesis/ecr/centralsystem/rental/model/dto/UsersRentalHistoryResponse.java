@@ -1,4 +1,4 @@
-package pl.kreft.thesis.ecr.centralsystem.rental.model;
+package pl.kreft.thesis.ecr.centralsystem.rental.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,6 @@ import lombok.NonNull;
 import org.springframework.lang.Nullable;
 import pl.kreft.thesis.ecr.centralsystem.car.model.CarType;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -16,11 +15,17 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RentalHistoryDTO {
+public class UsersRentalHistoryResponse {
 
     @NonNull int ordinalNumber;
 
     @NonNull UUID id;
+
+    @NonNull UUID lenderId;
+
+    @NonNull String lenderName;
+
+    @NonNull String lenderSurname;
 
     @NonNull UUID carId;
 

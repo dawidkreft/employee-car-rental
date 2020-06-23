@@ -20,6 +20,7 @@ public class RequestPageMappingInfo {
 
     //RENTAL
     public static final String RENTAL_REQUEST = "/rentals";
+    public static final String RENTAL_USERS_HISTORY = "/users/history";
     public static final String RENTAL_RETURN_REQUEST_WITH_ID = "/return/{id}";
     public static final String RENTAL_RETURN_REQUEST = "/return";
     public static final String RENTAL_HISTORY_REQUEST = "/history";
