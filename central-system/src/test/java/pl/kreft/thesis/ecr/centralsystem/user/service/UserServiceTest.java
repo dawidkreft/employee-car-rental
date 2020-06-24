@@ -127,7 +127,6 @@ class UserServiceTest {
 
         List<UserResponse> usersResponse= userService.getAllUsersByBossId(boss.getId());
 
-
         assertNotNull(usersResponse);
         assertEquals(2, usersResponse.size());
         assertEquals(boss.getId(), usersResponse.get(0).getBossId());

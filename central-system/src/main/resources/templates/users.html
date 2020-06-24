@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+    <link href="../../static/css/user.css" th:href="@{/css/user.css}"
+          rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+
+<div class="wrapper">
+    <div class="menu">
+
+        <div th:replace="fragments/menu :: menu"/>
+
+
+    </div>
+
+    <div class="container">
+
+        <h1>Pracownicy</h1>
+
+        <form action="#" th:action="@{'/users/forms'}"
+              th:method="GET">
+            <button class="button" type="submit">Dodaj pracownika</button>
+        </form>
+
+        <table class="rent-history-table">
+                
+            <thead>         
+            <tr>        
+                <th> Imię i Nazwisko</th>
+                   
+
+                <th> Email</th>
+
+                <th>Pozycja</th>
+
+                <th>Data zatrudnienia</th>
+
+                <th>Usuń</th>
+            </tr>
+            </thead>
+             
+            <tbody>    
+            <tr th:if="${users.empty}">   
+                <td colspan="5">Brak pracowników</td>
+            </tr>
+            <tr th:each="user : ${users}">
+
+                <td><span th:text="${user.name}"> </span> <span
+                        th:text="${user.surname}">  </span></td>
+
+                <td><span th:text="${user.email}">  </span></td>
+
+                <td><span th:text="${user.role.displayValue}">  </span></td>
+
+                <td><span
+                        th:text="${#temporals.format(user.creationDate, 'dd-MM-yyyy HH:mm')}">  </span>
+                </td>
+
+                <td>
+                    <form action="#" th:action="@{'/users/remove/{id}'(id=${user.id})}"
+                          th:method="GET">
+                        <button id="remove-button" type="submit">Usuń</button>
+                    </form>
+
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+          
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

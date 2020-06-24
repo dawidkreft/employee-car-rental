@@ -20,6 +20,7 @@ public class RequestPageMappingInfo {
 
     //RENTAL
     public static final String RENTAL_REQUEST = "/rentals";
+    public static final String RENTAL_ACCEPT_ID = "/accept/{id}";
     public static final String RENTAL_USERS_HISTORY = "/users/history";
     public static final String RENTAL_RETURN_REQUEST_WITH_ID = "/return/{id}";
     public static final String RENTAL_RETURN_REQUEST = "/return";
@@ -30,6 +31,9 @@ public class RequestPageMappingInfo {
 
     //USERS
     public static final String USER_REQUESTS = "/users";
+    public static final String USER_BY_BOSS = "/boss";
+    public static final String USER_REMOVE_ID = "/remove/{id}";
+    public static final String USER_FORM = "/forms";
 
     //MESSAGE
     public static final String MESSAGE_REQUEST = "/messages";

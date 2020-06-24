@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 
 import static pl.kreft.thesis.ecr.centralsystem.common.DateConverter.convertInstantToLocalDateTime;
 import static pl.kreft.thesis.ecr.centralsystem.config.GlobalConfiguration.defaultTimeZone;
-import static pl.kreft.thesis.ecr.centralsystem.exception.EcrExceptionMessages.EmployeeRentalException;
+import static pl.kreft.thesis.ecr.centralsystem.exception.EcrExceptionMessages.employeeRentalException;
 
 @Slf4j
 @Service
@@ -53,7 +53,7 @@ public class RentalService {
 
     @Autowired
     public RentalService(RentalRepository rentalRepository, UserService userService,
-            CarService carService, HolidayCalendarService holidayCalendarService) {
+                         CarService carService, HolidayCalendarService holidayCalendarService) {
         this.rentalRepository = rentalRepository;
         this.userService = userService;
         this.carService = carService;
@@ -67,15 +67,15 @@ public class RentalService {
             return rental.get();
         }
         throw new RentalNotFoundException(
-                new ErrorMessage(EcrExceptionMessages.RentalNotFoundException));
+                new ErrorMessage(EcrExceptionMessages.rentalNotFoundException));
     }
 
     public List<Rental> getAll() {
         log.info("Returning all rental list");
         List<Rental> allRentals = rentalRepository.findAll();
         allRentals = allRentals.stream()
-                               .filter(item -> !item.getRemoved())
-                               .collect(Collectors.toList());
+                .filter(item -> !item.getRemoved())
+                .collect(Collectors.toList());
         return allRentals;
     }
 
@@ -83,8 +83,8 @@ public class RentalService {
         log.info("Returning all rental list for user Id: " + userId);
         List<Rental> allRentals = rentalRepository.findAllByLenderId(userId);
         allRentals = allRentals.stream()
-                               .filter(item -> !item.getRemoved())
-                               .collect(Collectors.toList());
+                .filter(item -> !item.getRemoved())
+                .collect(Collectors.toList());
         return allRentals;
     }
 
@@ -100,40 +100,72 @@ public class RentalService {
         return results;
     }
 
+    public String getRentalHistoryReportCsvByBossId(UUID bossId) {
+        String NEW_LINE_SEPARATOR = "\n";
+        String COLUMN_SEPARATOR = ";";
+        String header = "Lp;Imie;Nazwisko;Marka pojazdu;Model;Typ;Stan pojazdu;Przebyty dystans;Start podróży;Koniec podróży;Data aplikacji";
+        StringBuilder results = new StringBuilder().append(header).append(NEW_LINE_SEPARATOR);
+        getAllUsersRentalBossId(bossId).forEach(item -> {
+            results.append(item.getOrdinalNumber())
+                    .append(COLUMN_SEPARATOR)
+                    .append(item.getLenderName())
+                    .append(COLUMN_SEPARATOR)
+                    .append(item.getLenderSurname())
+                    .append(COLUMN_SEPARATOR)
+                    .append(item.getCarBrand())
+                    .append(COLUMN_SEPARATOR)
+                    .append(item.getCarModel())
+                    .append(COLUMN_SEPARATOR)
+                    .append(item.getCarType().getDisplayValue())
+                    .append(COLUMN_SEPARATOR)
+                    .append(item.getCarCondition())
+                    .append(COLUMN_SEPARATOR)
+                    .append(item.getDistanceTraveled())
+                    .append(COLUMN_SEPARATOR)
+                    .append(item.getPlannedRentalStart())
+                    .append(COLUMN_SEPARATOR)
+                    .append(item.getPlannedRentalEnd())
+                    .append(COLUMN_SEPARATOR)
+                    .append(item.getApplicationDate())
+                    .append(NEW_LINE_SEPARATOR);
+        });
+        return results.toString();
+    }
+
     private UsersRentalHistoryResponse mapToUserRentalHistoryResponse(Rental rental, int index) {
         return (UsersRentalHistoryResponse.builder()
-                                          .ordinalNumber(index)
-                                          .lenderId(rental.getLender().getId())
-                                          .lenderName(rental.getLender().getName())
-                                          .lenderSurname(rental.getLender().getSurname())
-                                          .id(rental.getId())
-                                          .applicationDate(convertInstantToLocalDateTime(
-                                                  rental.getApplicationDate(), defaultTimeZone))
-                                          .carId(rental.getCar().getId())
-                                          .carBrand(rental.getCar().getBrand())
-                                          .carModel(rental.getCar().getModel())
-                                          .carType(rental.getCar().getType())
-                                          .carCondition(rental.getCarCondition())
-                                          .distanceTraveled(rental.getDistanceTraveled())
-                                          .isAcceptedByBoss(rental.getIsAcceptedByBoss())
-                                          .isReceivedPositively(rental.getIsReceivedPositively())
-                                          .isReturned(rental.getIsReturned())
-                                          .numberKilometerFromMeter(
-                                                  rental.getNumberKilometerFromMeter())
-                                          .plannedRentalEnd(rental.getPlannedRentalEnd())
-                                          .plannedRentalStart(rental.getPlannedRentalStart())
-                                          .returnDate(convertInstantToLocalDateTime(
-                                                  rental.getReturnDate(), defaultTimeZone))
-                                          .target(rental.getTarget())
-                                          .build());
+                .ordinalNumber(index)
+                .lenderId(rental.getLender().getId())
+                .lenderName(rental.getLender().getName())
+                .lenderSurname(rental.getLender().getSurname())
+                .id(rental.getId())
+                .applicationDate(convertInstantToLocalDateTime(
+                        rental.getApplicationDate(), defaultTimeZone))
+                .carId(rental.getCar().getId())
+                .carBrand(rental.getCar().getBrand())
+                .carModel(rental.getCar().getModel())
+                .carType(rental.getCar().getType())
+                .carCondition(rental.getCarCondition())
+                .distanceTraveled(rental.getDistanceTraveled())
+                .isAcceptedByBoss(rental.getIsAcceptedByBoss())
+                .isReceivedPositively(rental.getIsReceivedPositively())
+                .isReturned(rental.getIsReturned())
+                .numberKilometerFromMeter(
+                        rental.getNumberKilometerFromMeter())
+                .plannedRentalEnd(rental.getPlannedRentalEnd())
+                .plannedRentalStart(rental.getPlannedRentalStart())
+                .returnDate(convertInstantToLocalDateTime(
+                        rental.getReturnDate(), defaultTimeZone))
+                .target(rental.getTarget())
+                .build());
     }
 
     public List<Rental> getAllActiveByUserId(UUID userId) {
         log.info("Method getAllActiveByUserId called for user Id: " + userId);
         List<Rental> allRentals = rentalRepository.findAllByLenderId(userId);
         allRentals = allRentals.stream()
-                               .filter(item -> !item.getRemoved() && !item.getIsReturned())
-                               .collect(Collectors.toList());
+                .filter(item -> !item.getRemoved() && !item.getIsReturned())
+                .collect(Collectors.toList());
         return allRentals;
     }
 
@@ -150,18 +182,18 @@ public class RentalService {
         checkIsCarAbilityForRent(car, request.getDateOfStartRent());
 
         Rental savedRental = rentalRepository.save(Rental.builder()
-                                                         .applicationDate(Instant.now())
-                                                         .car(car)
-                                                         .creationDate(Instant.now())
-                                                         .plannedRentalEnd(
-                                                                 request.getDateOfEndRent())
-                                                         .plannedRentalStart(
-                                                                 request.getDateOfStartRent())
-                                                         .lender(user)
-                                                         .removed(false)
-                                                         .isReturned(false)
-                                                         .target(request.getTarget())
-                                                         .build());
+                .applicationDate(Instant.now())
+                .car(car)
+                .creationDate(Instant.now())
+                .plannedRentalEnd(
+                        request.getDateOfEndRent())
+                .plannedRentalStart(
+                        request.getDateOfStartRent())
+                .lender(user)
+                .removed(false)
+                .isReturned(false)
+                .target(request.getTarget())
+                .build());
 
         carService.rentCar(car);
         log.info("Rental with id: {} successfully saved", savedRental.getId());
@@ -190,16 +222,16 @@ public class RentalService {
     private void validateReturnCarRequest(ReturnCarRequest returnCarRequest) {
         if (returnCarRequest.getNumberKilometerFromMeter() < 0) {
             throw new IncorrectNumberKilometerFromMeterException(
-                    new ErrorMessage(EcrExceptionMessages.IncorrectNumberKilometer));
+                    new ErrorMessage(EcrExceptionMessages.incorrectNumberKilometer));
         }
         if (returnCarRequest.getDistanceTraveled() < 0) {
             throw new IncorrectDistanceTraveledException(
-                    new ErrorMessage(EcrExceptionMessages.IncorrectTraveledDistance));
+                    new ErrorMessage(EcrExceptionMessages.incorrectTraveledDistance));
         }
         if (returnCarRequest.getCurrentFuelLevel() < 0
                 || returnCarRequest.getCurrentFuelLevel() > 100) {
             throw new IncorrectCurrentFuelException(
-                    new ErrorMessage(EcrExceptionMessages.IncorrectFuelLevel));
+                    new ErrorMessage(EcrExceptionMessages.incorrectFuelLevel));
         }
     }
 
@@ -208,7 +240,7 @@ public class RentalService {
                 car.getId(), dateOfStartRent);
 
         if (!foundRentals.isEmpty()) {
-            throw new RentalCarException(new ErrorMessage(EcrExceptionMessages.RentalCarException));
+            throw new RentalCarException(new ErrorMessage(EcrExceptionMessages.rentalCarException));
         }
     }
 
@@ -217,7 +249,7 @@ public class RentalService {
             List<Rental> foundRentals = rentalRepository.findAllByLenderIdAndPlannedRentalEndIsGreaterThan(
                     user.getId(), dateOfStartRent);
             if (!foundRentals.isEmpty()) {
-                throw new RentalByEmployeeException(new ErrorMessage(EmployeeRentalException));
+                throw new RentalByEmployeeException(new ErrorMessage(employeeRentalException));
             }
         }
     }
@@ -235,43 +267,50 @@ public class RentalService {
 
     private RentalHistoryResponse mapToRentalHistoryResponse(Rental rental, int index) {
         return RentalHistoryResponse.builder()
-                                    .ordinalNumber(index)
-                                    .id(rental.getId())
-                                    .applicationDate(convertInstantToLocalDateTime(
-                                            rental.getApplicationDate(), defaultTimeZone))
-                                    .carId(rental.getCar().getId())
-                                    .carBrand(rental.getCar().getBrand())
-                                    .carModel(rental.getCar().getModel())
-                                    .carType(rental.getCar().getType())
-                                    .carCondition(rental.getCarCondition())
-                                    .distanceTraveled(rental.getDistanceTraveled())
-                                    .isAcceptedByBoss(rental.getIsAcceptedByBoss())
-                                    .isReceivedPositively(rental.getIsReceivedPositively())
-                                    .isReturned(rental.getIsReturned())
-                                    .numberKilometerFromMeter(rental.getNumberKilometerFromMeter())
-                                    .plannedRentalEnd(rental.getPlannedRentalEnd())
-                                    .plannedRentalStart(rental.getPlannedRentalStart())
-                                    .returnDate(convertInstantToLocalDateTime(
-                                            rental.getReturnDate(), defaultTimeZone))
-                                    .target(rental.getTarget())
-                                    .build();
+                .ordinalNumber(index)
+                .id(rental.getId())
+                .applicationDate(convertInstantToLocalDateTime(
+                        rental.getApplicationDate(), defaultTimeZone))
+                .carId(rental.getCar().getId())
+                .carBrand(rental.getCar().getBrand())
+                .carModel(rental.getCar().getModel())
+                .carType(rental.getCar().getType())
+                .carCondition(rental.getCarCondition())
+                .distanceTraveled(rental.getDistanceTraveled())
+                .isAcceptedByBoss(rental.getIsAcceptedByBoss())
+                .isReceivedPositively(rental.getIsReceivedPositively())
+                .isReturned(rental.getIsReturned())
+                .numberKilometerFromMeter(rental.getNumberKilometerFromMeter())
+                .plannedRentalEnd(rental.getPlannedRentalEnd())
+                .plannedRentalStart(rental.getPlannedRentalStart())
+                .returnDate(convertInstantToLocalDateTime(
+                        rental.getReturnDate(), defaultTimeZone))
+                .target(rental.getTarget())
+                .build();
     }
 
     private void checkIfNotHolidayAndDateIsCorrect(@NonNull LocalDateTime dateOfStartRent,
-            LocalDateTime dateOfEndRent) {
+                                                   LocalDateTime dateOfEndRent) {
         checkIfWorkDayOrThrow(dateOfStartRent);
         checkIfWorkDayOrThrow(dateOfStartRent);
         if (dateOfStartRent.isAfter(dateOfEndRent)) {
             throw new RentalDateEndIsBeforeStartException(
-                    new ErrorMessage(EcrExceptionMessages.RentalIncorrectDate));
+                    new ErrorMessage(EcrExceptionMessages.rentalIncorrectDate));
         }
-
     }
 
     private void checkIfWorkDayOrThrow(LocalDateTime date) {
         if (holidayCalendarService.checkDay(date.toLocalDate()).equals(DayType.HOLIDAY)
                 || DayType.SATURDAY.equals(holidayCalendarService.checkDay(date.toLocalDate())))
             throw new RentalOnlyWorkDayPossibleException(
-                    new ErrorMessage(EcrExceptionMessages.RentalOnlyWorkDay));
+                    new ErrorMessage(EcrExceptionMessages.rentalOnlyWorkDay));
+    }
+
+    public void acceptRental(UUID rentalId, UUID boosId) {
+        Rental rental = find(rentalId);
+        if (rental.getLender().getBossId().equals(boosId)) {
+            rental.setIsAcceptedByBoss(true);
+            rentalRepository.save(rental);
+        }
     }
 }

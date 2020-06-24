@@ -2,6 +2,7 @@ package pl.kreft.thesis.ecr.centralsystem.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,12 +20,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsProvider userDetailsProvider;
     private final AccessDeniedHandler accessDeniedHandler;
 
-    private static final String[] LOCATIONS = { "/", "/home", "/css/style.css", "/image/logo.png",
-            "/image/favicon.ico", "/css/return_car_form.css", "/css/user.css" };
+    private static final String[] LOCATIONS = {"/", "/home", "/css/style.css", "/image/logo.png",
+            "/image/favicon.ico", "/css/return_car_form.css", "/css/user.css"};
 
     @Autowired
     public WebSecurityConfig(UserDetailsProvider userDetailsProvider,
-            AccessDeniedHandler accessDeniedHandler) {
+                             AccessDeniedHandler accessDeniedHandler) {
         this.userDetailsProvider = userDetailsProvider;
         this.accessDeniedHandler = accessDeniedHandler;
     }
@@ -36,21 +37,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-            .antMatchers(LOCATIONS).permitAll()
-            .antMatchers("/rentals/users/history").hasAnyAuthority("ROLE_BOSS","ADMIN")
-            .anyRequest()
-            .authenticated()
-            .and()
-            .formLogin()
-            .defaultSuccessUrl(RENTAL_REQUEST, true)
-            .loginPage(LOGIN_PAGE_REQUEST)
-            .permitAll()
-            .and()
-            .exceptionHandling()
-            .accessDeniedHandler(accessDeniedHandler)
-            .and()
-            .logout()
-            .permitAll();
+                .antMatchers(LOCATIONS).permitAll()
+                .antMatchers("/rentals/users/history").hasAnyAuthority("ROLE_BOSS", "ADMIN")
+                .antMatchers("/rentals/accept/*").hasAnyAuthority("ROLE_BOSS", "ADMIN")
+                .antMatchers("/rentals/report.csv").hasAnyAuthority("ROLE_BOSS", "ADMIN")
+                .antMatchers("/users/boss").hasAnyAuthority("ROLE_BOSS", "ADMIN")
+                .antMatchers("/users/remove/*").hasAnyAuthority("ROLE_BOSS", "ADMIN")
+                .antMatchers("/users/forms").hasAnyAuthority("ROLE_BOSS", "ADMIN")
+                .antMatchers(HttpMethod.POST, "/users").hasAnyAuthority("ROLE_BOSS", "ADMIN")
+                .anyRequest()
+                .authenticated()
+                .and()
+                .formLogin()
+                .defaultSuccessUrl(RENTAL_REQUEST, true)
+                .loginPage(LOGIN_PAGE_REQUEST)
+                .permitAll()
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler)
+                .and()
+                .logout()
+                .permitAll();
     }
 }
 

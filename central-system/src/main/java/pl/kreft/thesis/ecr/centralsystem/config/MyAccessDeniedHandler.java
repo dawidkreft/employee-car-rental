@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static pl.kreft.thesis.ecr.centralsystem.common.ResponsePageMappingInfo.ERROR_403;
+import static pl.kreft.thesis.ecr.centralsystem.common.RequestPageMappingInfo.ERROR_403_REQUEST;
 
 @Slf4j
 @Component
@@ -29,6 +29,6 @@ public class MyAccessDeniedHandler implements AccessDeniedHandler {
             log.info(String.format("User '%s' attempted to access the protected URL: %s",
                     auth.getName(), httpServletRequest.getRequestURI()));
         }
-        httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + ERROR_403);
+        httpServletResponse.sendRedirect(ERROR_403_REQUEST);
     }
 }

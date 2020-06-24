@@ -4,15 +4,16 @@
 <body>
 <div th:fragment="menu">
 
-
     <div class="menu-list">
-        <p class="greeting" th:inline="text">Witaj  <br> [[${#httpServletRequest.remoteUser}]]!</p>
+        <p class="greeting" th:inline="text">Witaj <br> [[${#httpServletRequest.remoteUser}]]!</p>
         <ul>
             <li><a href="/rentals">Start</a></li>
             <li><a href="/rentals/create">Wypożycz</a></li>
             <li><a href="/cars">Pojazdy</a></li>
             <li><a href="/rentals/history">Historia wypożyczeń</a></li>
             <li><a href="/users">Moje dane</a></li>
+            <li><a href="/rentals/users/history">Wypożyczenia pracownicze</a></li>
+            <li><a href="/users/boss">Pracownicy</a></li>
             <li><a href="/messages">Kontakt z administratorem</a></li>
             <li class="logout-li"><a href="#" th:href="@{/logout}">Wyloguj</a></li>
 

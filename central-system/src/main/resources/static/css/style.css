@@ -214,6 +214,28 @@ body {
     box-shadow: 0 0 0 5px #1abc9c inset;
 }
 
+.button {
+    cursor: pointer;
+    background-color: #1abc9c;
+    width: 150px;
+    height: 35px;
+    border-radius: 80px;
+    font-weight: 500;
+    background-size: 100% 100%;
+    box-shadow: 0 0 0 5px #1abc9c inset;
+}
+
+#remove-button {
+    cursor: pointer;
+    background-color: #bc1a1a;
+    width: 95px;
+    height: 35px;
+    border-radius: 80px;
+    font-weight: 500;
+    background-size: 100% 100%;
+    box-shadow: 0 0 0 5px #bc1a1a    inset;
+}
+
 .error {
     height: 600px;
     margin-top: 35px;

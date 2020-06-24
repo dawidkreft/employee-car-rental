@@ -16,13 +16,20 @@
 
     <div class="container">
 
-        <h1>Historia wypożyczeń</h1>
+        <h1>Historia wypożyczeń pracownikóœ</h1>
 
-     <!--   <table class="rent-history-table">
+        <form action="#" th:action="@{'/rentals/reports.csv'}"
+              th:method="GET">
+            <button class="button" type="submit">Pobierz raport csv</button>
+        </form>
+
+        <table class="rent-history-table">
                 
             <thead>         
             <tr>        
                 <th> Lp.</th>
+
+                <th> Imię i Nazwisko</th>
                    
                 <th> Cel</th>
                  
@@ -51,11 +58,14 @@
              
             <tbody>    
             <tr th:if="${rentals.empty}">   
-                <td colspan="2"> Nie wypożyczyłeś jeszcze auta! <br> Zrób to!</td>
+                <td colspan="5">Brak historii</td>
             </tr>
             <tr th:each="rental : ${rentals}">
 
                 <td class="ordinal-number"><span th:text="${rental.ordinalNumber}">  </span></td>
+
+                <td><span th:text="${rental.lenderName}"> </span> <span
+                        th:text="${rental.lenderSurname}">  </span></td>
 
                 <td><span th:text="${rental.target}">  </span></td>
 
@@ -87,8 +97,16 @@
                 </td>
 
                 <td><span
-                        th:text="${rental.isAcceptedByBoss != null} ? ( ${rental.isAcceptedByBoss == true} ? 'Tak' : 'Nie' ) : 'Brak danych'"
-                        th:style="${rental.isAcceptedByBoss != null} ? (${rental.isAcceptedByBoss == true} ? 'color: green' : 'color:red') : 'color: black'">
+                        th:if="${rental.isAcceptedByBoss == null}">
+                          <form action="#" th:action="@{'/rentals/accept/{id}'(id=${rental.id})}"
+                                th:method="GET">
+                        <button id="return-button" type="submit">Zaakceptuj</button>
+                    </form>
+                 </span>
+
+                    <span
+                            th:if="${rental.isAcceptedByBoss == true}"> TAK
+                        </form>
                  </span>
                 </td>
 
@@ -102,7 +120,7 @@
             </tr>
             </tbody>
         </table>
-    </div>-->
+    </div>
 
 
 </div>
