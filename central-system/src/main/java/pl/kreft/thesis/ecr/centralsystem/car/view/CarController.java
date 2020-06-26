@@ -11,12 +11,12 @@ import static pl.kreft.thesis.ecr.centralsystem.common.RequestPageMappingInfo.CA
 
 @RequestMapping(CAR_REQUEST)
 @Controller
-public class CarView {
+public class CarController {
 
     private CarService carService;
 
     @Autowired
-    public CarView(CarService carService) {
+    public CarController(CarService carService) {
         this.carService = carService;
     }
 
@@ -25,5 +25,4 @@ public class CarView {
         model.addAttribute("cars", carService.getAll());
         return "cars";
     }
-
 }

@@ -26,12 +26,12 @@ import static pl.kreft.thesis.ecr.centralsystem.common.ResponsePageMappingInfo.U
 
 @Controller
 @RequestMapping(USER_REQUESTS)
-public class UserView {
+public class UserController {
 
     private final UserService userService;
 
     @Autowired
-    public UserView(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 

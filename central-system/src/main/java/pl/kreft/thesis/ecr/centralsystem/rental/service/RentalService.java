@@ -18,6 +18,7 @@ import pl.kreft.thesis.ecr.centralsystem.rental.model.dto.RentalHistoryResponse;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.dto.ReturnCarRequest;
 import pl.kreft.thesis.ecr.centralsystem.rental.model.dto.UsersRentalHistoryResponse;
 import pl.kreft.thesis.ecr.centralsystem.rental.repository.RentalRepository;
+import pl.kreft.thesis.ecr.centralsystem.rental.service.config.RentalReportComponent;
 import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.IncorrectCurrentFuelException;
 import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.IncorrectDistanceTraveledException;
 import pl.kreft.thesis.ecr.centralsystem.rental.service.exception.IncorrectNumberKilometerFromMeterException;
@@ -50,14 +51,16 @@ public class RentalService {
     private final UserService userService;
     private final CarService carService;
     private final HolidayCalendarService holidayCalendarService;
+    private final RentalReportComponent rentalReportComponent;
 
     @Autowired
     public RentalService(RentalRepository rentalRepository, UserService userService,
-                         CarService carService, HolidayCalendarService holidayCalendarService) {
+                         CarService carService, HolidayCalendarService holidayCalendarService, RentalReportComponent rentalReportComponent) {
         this.rentalRepository = rentalRepository;
         this.userService = userService;
         this.carService = carService;
         this.holidayCalendarService = holidayCalendarService;
+        this.rentalReportComponent = rentalReportComponent;
     }
 
     public Rental find(UUID id) {
@@ -101,35 +104,8 @@ public class RentalService {
     }
 
     public String getRentalHistoryReportCsvByBossId(UUID bossId) {
-        String NEW_LINE_SEPARATOR = "\n";
-        String COLUMN_SEPARATOR = ";";
-        String header = "Lp;Imie;Nazwisko;Marka pojazdu;Model;Typ;Stan pojazdu;Przebyty dystans;Start podróży;Koniec podróży;Data aplikacji";
-        StringBuilder results = new StringBuilder().append(header).append(NEW_LINE_SEPARATOR);
-        getAllUsersRentalBossId(bossId).forEach(item -> {
-            results.append(item.getOrdinalNumber())
-                    .append(COLUMN_SEPARATOR)
-                    .append(item.getLenderName())
-                    .append(COLUMN_SEPARATOR)
-                    .append(item.getLenderSurname())
-                    .append(COLUMN_SEPARATOR)
-                    .append(item.getCarBrand())
-                    .append(COLUMN_SEPARATOR)
-                    .append(item.getCarModel())
-                    .append(COLUMN_SEPARATOR)
-                    .append(item.getCarType().getDisplayValue())
-                    .append(COLUMN_SEPARATOR)
-                    .append(item.getCarCondition())
-                    .append(COLUMN_SEPARATOR)
-                    .append(item.getDistanceTraveled())
-                    .append(COLUMN_SEPARATOR)
-                    .append(item.getPlannedRentalStart())
-                    .append(COLUMN_SEPARATOR)
-                    .append(item.getPlannedRentalEnd())
-                    .append(COLUMN_SEPARATOR)
-                    .append(item.getApplicationDate())
-                    .append(NEW_LINE_SEPARATOR);
-        });
-        return results.toString();
+        log.info("Method getRentalHistoryReportCsvByBossId called for boss with id " + bossId.toString());
+        return rentalReportComponent.prepareReport(getAllUsersRentalBossId(bossId));
     }
 
     private UsersRentalHistoryResponse mapToUserRentalHistoryResponse(Rental rental, int index) {

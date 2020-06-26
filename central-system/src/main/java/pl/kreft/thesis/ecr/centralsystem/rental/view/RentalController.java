@@ -27,13 +27,13 @@ import static pl.kreft.thesis.ecr.centralsystem.common.PageRedirectComponent.red
 
 @Controller
 @RequestMapping(RequestPageMappingInfo.RENTAL_REQUEST)
-public class RentalView {
+public class RentalController {
 
     private final RentalService rentalService;
     private final CarService carService;
 
     @Autowired
-    public RentalView(RentalService rentalService, CarService carService) {
+    public RentalController(RentalService rentalService, CarService carService) {
         this.rentalService = rentalService;
         this.carService = carService;
     }

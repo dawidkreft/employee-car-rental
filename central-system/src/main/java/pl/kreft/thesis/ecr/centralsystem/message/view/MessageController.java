@@ -19,13 +19,13 @@ import static pl.kreft.thesis.ecr.centralsystem.common.ResponsePageMappingInfo.M
 
 @RequestMapping(MESSAGE_REQUEST)
 @Controller
-public class MessageView {
+public class MessageController {
 
     private final MessageService messageService;
     private final UserService userService;
 
     @Autowired
-    public MessageView(MessageService messageService, UserService userService) {
+    public MessageController(MessageService messageService, UserService userService) {
         this.messageService = messageService;
         this.userService = userService;
     }
