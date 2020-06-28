@@ -1,5 +1,10 @@
 server:
   port: 8000
+  ssl:
+    key-password: password
+    key-store-password: password
+    key-store: src/main/resources/keystore.jks
+
 
 spring:
   profiles.active: prod

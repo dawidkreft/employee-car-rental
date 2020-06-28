@@ -39,4 +39,10 @@ VALUES ('fd5903a1-d78f-4fe1-aeef-974c6ebab706', current_date, null, current_date
         'ae98efef-0f84-46e5-bb57-26c69d6b4042', '20ebd0bf-f4b8-4ad0-b1eb-01d373250368', true, current_timestamp ),
         ('1a586b98-8951-45d7-9a22-56807262df17', current_date, null, current_date, null, null,
          null, null, current_date, current_date , null, false, 'Wyjazd do klienta',
-        'f077c68e-313c-4091-81bf-2805d81d4a13', '20ebd0bf-f4b8-4ad0-b1eb-01d373250368', false, current_timestamp );
+        'f077c68e-313c-4091-81bf-2805d81d4a13', '20ebd0bf-f4b8-4ad0-b1eb-01d373250368', false, current_timestamp ),
+        ('4f0232e1-0bc9-4dab-8058-227c2cae54fb', current_date, 'OK', current_date, 240, true,
+         true, 250000, current_date, current_date , null, false, 'Wyjazd do hurtowni',
+        'ae98efef-0f84-46e5-bb57-26c69d6b4042', 'ef3f1790-433e-43e1-8b14-4a0b7e27cca6', true, current_timestamp ),
+        ('08030217-adee-4f77-a6bf-9a9ff835a2c3', current_date, null, current_date, null, null,
+         null, null, current_date, current_date , null, false, 'Wyjazd do klienta',
+        'f077c68e-313c-4091-81bf-2805d81d4a13', 'ef3f1790-433e-43e1-8b14-4a0b7e27cca6', false, current_timestamp );
